@@ -8,11 +8,11 @@ using namespace std;
 struct Especie {
     int id;
     DatosEspecie* datosEspecie;
-    int vida;
+    int vida = 100;
     //time_t tiempoVida;
     char genero;
     string color;
-    string estadoSalud;
+    string estadoSalud = "sano";
     //Generacion* generacion;
     Especie* sgteEspecie;
 };

@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <conio.h>
-#include "datosEspecie.h"
+#include <vector>
+#include "DatosEspecie.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -12,9 +13,9 @@ const string vegetal = "catalogo/vegetal.json";
 const string bioma = "catalogo/bioma.json";
 
 void menu();
-void agregarEspecie();
-void modificarEspecie();
-void eliminarEspecie();
+void crearDatosEspecie();
+void modificarDatosEspecie();
+void eliminarDatosEspecie();
 void escribirArchivo(const string&, const json&);
 json leerArchivo(const string&);
 int seleccionarTipoEspecie();
@@ -68,7 +69,7 @@ void menu() {
 
 //*******************************************************************************************************
 
-void agregarEspecie() {
+void crearDatosEspecie() {
     string nombre, nombrecientifico, familia, biomaa;
     float esperanza, tasar, inact, salinidadMax, salinidadMin, oxigenoMax, oxigenoMin, tempMax, tempMin;
 
@@ -155,7 +156,7 @@ void agregarEspecie() {
 
 //****************************************************************************************
 
-void modificarEspecie() {
+void modificarDatosEspecie() {
     json especies;
     string nombreBuscado;
 
@@ -361,24 +362,10 @@ DatosEspecie* extraerDatosEspecie(int tipoEspecie, string nombreBuscado) {
             especieEncontrada->tempMax = especie["rango temperatura"][0];
             especieEncontrada->tempMin = especie["rango temperatura"][1];
 
-            // Mostramos los datos
-            cout << "\nDATOS DE LA ESPECIE:\n";
-            cout << "Nombre comun: " << especieEncontrada->nombreComun << endl;
-            cout << "Nombre cientifico: " << especieEncontrada->nombreCientifico << endl;
-            cout << "Familia biologica: " << especieEncontrada->familiaBiologica << endl;
-            cout << "Bioma nativo: " << especieEncontrada->biomaNativo << endl;
-            cout << "Esperanza de vida: " << especieEncontrada->esperanzaVida << endl;
-            cout << "Tasa de reproduccion: " << especieEncontrada->tasaReproduccion << endl;
-            cout << "Inactividad reproductiva: " << especieEncontrada->inactividadReproductiva << endl;
-            cout << "Rango salinidad: [" << especieEncontrada->salinidadMax << ", " << especieEncontrada->salinidadMin << "]" << endl;
-            cout << "Rango oxigeno: [" << especieEncontrada->oxigenoMax << ", " << especieEncontrada->oxigenoMin << "]" << endl;
-            cout << "Rango temperatura: [" << especieEncontrada->tempMax << ", " << especieEncontrada->tempMin << "]" << endl;
-
             return especieEncontrada; // Retornamos la estructura con los datos
         }
     }
 
-    cout << "Especie no encontrada.\n";
     delete especieEncontrada; // Liberamos la memoria en caso de que no se encuentre
     return nullptr; // Retornamos nullptr si no se encuentra la especie
 }
@@ -452,7 +439,7 @@ int seleccionarTipoEspecie() {
 
         if (ops < 1 || ops > 3) {
             cout << "Opcion invalida" << endl;
-            getch();
+            _getch();
         }
     } while (ops < 1 || ops > 3);
     return ops;
