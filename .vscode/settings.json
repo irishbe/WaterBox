@@ -1,0 +1,20 @@
+{
+    "c-cpp-compile-run.run-in-external-terminal": true,
+    "editor.mouseWheelZoom": true,
+    "terminal.integrated.mouseWheelZoom": true,
+    "files.associations": {
+        "*.h": "cpp",
+        "*.hpp": "cpp",
+        "*.hxx": "cpp",
+        "iostream": "cpp",
+        "xstring": "cpp"
+    },
+    "c-cpp-compile-run.cpp-compiler":
+        //Para cambiar el compilador, descomentar la ruta 
+
+        "C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/g++.exe",
+        //"C:/MinGW/bin/g++.exe",
+    "c-cpp-compile-run.output-location": "../",
+    "c-cpp-compile-run.cpp-flags": "-Wall -Wextra -O2 -std=c++11 -static -I../include",
+    "C_Cpp.errorSquiggles": "disabled"
+}
