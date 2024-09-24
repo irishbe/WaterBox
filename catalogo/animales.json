@@ -1,0 +1,23 @@
+[
+    {
+        "bioma nativo": "Mi casa",
+        "esperanza de vida": 1.0,
+        "familia biologica": "aaa",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "no se",
+        "nombre comun": "Gato",
+        "rango oxigeno": [
+            1.0,
+            1.0
+        ],
+        "rango salinidad": [
+            1.0,
+            1.0
+        ],
+        "rango temperatura": [
+            1.0,
+            1.0
+        ],
+        "tasa de reproduccion": 1.0
+    }
+]
