@@ -55,17 +55,26 @@ void generarIDs(){
 }
 
 void agregarEspecie() {
-    string nombre, tipoEspecie;
+    // Escogiendo el archivo de extraccion (animales.json o vegetales.json)
+    string tipoEspecie;
     vector<string> tiposEspecies = {"Animal", "Vegetal"};
-    vector<string> nombresEspecies = {"Gato", "Perro", "Elefante"};
 
     tipoEspecie = seleccionConFlechas("Tipo de especie", tiposEspecies, "horizontal");
     if( tipoEspecie == "" ) return;
 
+    // Escogiendo el nombre de la especie a agregar
+    string nombre;
+    vector<string> nombresEspecies = extraerNombresEspecies(tipoEspecie);
+    if( nombresEspecies.empty() ){
+        cout << "\nNo se encontraron especies en \"" << tipoEspecie << "\"..." << endl << endl;
+        _getch();
+        return;   
+    }
+
     nombre = seleccionConFlechas("Seleccione el nombre de la especie", nombresEspecies, "vertical");
     if( nombre == "" ) return;
 
-
+    // Asignacion de datos a la especie
     DatosEspecie *datos = extraerDatosEspecie(tipoEspecie, nombre);
     if ( datos == nullptr ) {
         cout << "\nEspecie \"" << nombre << "\" no fue encontrada en \"" << tipoEspecie << "\"... " << endl << endl;
@@ -92,9 +101,9 @@ void agregarEspecie() {
     }
 
     cout << "\nEspecie \"" << nuevaEspecie->datosEspecie->nombreComun << "\" con ID (" << nuevaEspecie->id << ") fue agregada con exito! " << endl << endl;
-    
-    generarIDs();
     _getch();
+
+    generarIDs();
 }
 
 void enlistarEspecies(){    

@@ -20,8 +20,11 @@ void eliminarDatosEspecie();
 void escribirArchivo(const string&, const json&);
 json leerArchivo(const string&);
 int seleccionarTipoEspecie();
-DatosEspecie extraerDatosEspecie();
 float leerFloat();
+
+// Funcionalidades auxiliares en el simulador
+DatosEspecie extraerDatosEspecie();
+vector<string> extraerNombresEspecies(string tipoEspecie);
 
 /*
 int main() {
@@ -373,6 +376,22 @@ DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
     return nullptr; // Retornamos nullptr si no se encuentra la especie
 }
 
+vector<string> extraerNombresEspecies(string tipoEspecie){
+    json especies;
+    vector<string> nombresEspecies;
+    
+    if( tipoEspecie == "Animal" ){
+        especies = leerArchivo(animal);
+    }else if( tipoEspecie == "Vegetal" ){
+        especies = leerArchivo(vegetal);
+    }
+
+    for (const auto& especie : especies) {
+        nombresEspecies.push_back( especie["nombre comun"] );
+    }
+    
+    return nombresEspecies;
+}
 
 //*****************************************************************************************
 
