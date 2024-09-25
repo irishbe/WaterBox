@@ -6,9 +6,11 @@
 using namespace std;
 Especie *listaEspecies = nullptr;
 
+void generarIDs();
 void agregarEspecie();
 void enlistarEspecies();
 void mostrarEspecie();
+void eliminarEspecie();
 
 int main() {
     char opc;
@@ -28,14 +30,28 @@ int main() {
             case '1': agregarEspecie(); break;
             case '2': enlistarEspecies(); _getch(); break;
             case '3': mostrarEspecie(); break;
-            default: cout << "\nOpcion invalida! " << endl; break; 
+            case '4': eliminarEspecie(); break;
+            case '0': cout << "\nSaliendo..." << endl; _getch(); break;
+            default : cout << "\nOpcion invalida..." << endl; _getch(); break; 
         }
 
         system("cls");
 
     }while(opc != '0');
-    
+
     return 0;
+}
+
+void generarIDs(){
+    Especie *especieActual = listaEspecies;
+    short id = 0;
+
+    // Recorremos la lista para asignar los IDs
+    while( especieActual != nullptr ){
+        especieActual->id = id;
+        id++;
+        especieActual = especieActual->sgteEspecie;
+    }
 }
 
 void agregarEspecie() {
@@ -57,29 +73,27 @@ void agregarEspecie() {
         return;
     }
 
-    Especie *nuevaEspecie = new Especie(); 
+    Especie *nuevaEspecie = new Especie();
     nuevaEspecie->datosEspecie = datos;
     nuevaEspecie->sgteEspecie = nullptr;
 
     // Inserta en la lista
     if ( listaEspecies == nullptr ) {
         listaEspecies = nuevaEspecie;
-        listaEspecies->id = 0;
     } else {
         Especie *aux = listaEspecies;
-        short cantidadEspecies = 1;
 
         // Recorremos hasta el final de la lista
         while ( aux->sgteEspecie != nullptr ) {
             aux = aux->sgteEspecie;
-            cantidadEspecies++;
         }
 
-        nuevaEspecie->id = cantidadEspecies;
         aux->sgteEspecie = nuevaEspecie;
     }
 
     cout << "\nEspecie \"" << nuevaEspecie->datosEspecie->nombreComun << "\" con ID (" << nuevaEspecie->id << ") fue agregada con exito! " << endl << endl;
+    
+    generarIDs();
     _getch();
 }
 
@@ -134,6 +148,46 @@ void mostrarEspecie(){
     cout << "Rango salinidad: [" << especieEncontrada->salinidadMax << ", " << especieEncontrada->salinidadMin << "]" << endl;
     cout << "Rango oxigeno: [" << especieEncontrada->oxigenoMax << ", " << especieEncontrada->oxigenoMin << "]" << endl;
     cout << "Rango temperatura: [" << especieEncontrada->tempMax << ", " << especieEncontrada->tempMin << "]" << endl << endl;
+
+    _getch();
+}
+
+void eliminarEspecie(){
+    enlistarEspecies();
+
+    if( listaEspecies == nullptr ){
+        _getch();
+        return; 
+    }
+
+    Especie *aux = listaEspecies, *anterior = nullptr;
+    short idBuscado;
+
+    cout << "ID de la especie a eliminar ---> "; cin >> idBuscado;
+
+    while( aux != nullptr && aux->id != idBuscado){
+        anterior = aux;
+        aux = aux->sgteEspecie;
+    }
+
+    if ( aux == nullptr ) {
+        cout << "\nEspecie con ID (" << idBuscado << ") no encontrada..." << endl;
+    }else{
+
+        if( anterior == nullptr ){
+            listaEspecies = aux->sgteEspecie;
+        }else{
+            anterior->sgteEspecie = aux->sgteEspecie;
+        }
+        
+        delete aux->datosEspecie;
+        delete aux;
+
+        cout << "\nEspecie con ID (" << idBuscado << ") eliminada con exito!" << endl;
+        
+        // Reajustar los IDs después de la eliminación
+        generarIDs();
+    }
 
     _getch();
 }

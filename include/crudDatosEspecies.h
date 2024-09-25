@@ -376,7 +376,7 @@ DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
 
 //*****************************************************************************************
 
-void eliminarEspecie() {
+void eliminarDatosEspecie() {
     string nombre;
     int ops = seleccionarTipoEspecie();
     json especies;
