@@ -1,0 +1,107 @@
+[
+    {
+        "bioma nativo": "Arrecifes de Coral",
+        "esperanza de vida": 25.0,
+        "familia biologica": "Carcharhinidae",
+        "inactividad reproductiva": 2.0,
+        "nombre cientifico": "Carcharhinus perezii",
+        "nombre comun": "Tiburon de arrecife",
+        "rango oxigeno": [
+            6.0,
+            4.0
+        ],
+        "rango salinidad": [
+            27.0,
+            24.0
+        ],
+        "rango temperatura": [
+            28.0,
+            20.0
+        ],
+        "tasa de reproduccion": 10.0
+    },
+    {
+        "bioma nativo": "Arrecifes de Coral",
+        "esperanza de vida": 6.0,
+        "familia biologica": "Pomacentridae",
+        "inactividad reproductiva": 12.0,
+        "nombre cientifico": "Amphiprioninae",
+        "nombre comun": "Pez payaso",
+        "rango oxigeno": [
+            5.0,
+            5.0
+        ],
+        "rango salinidad": [
+            34.0,
+            30.0
+        ],
+        "rango temperatura": [
+            28.0,
+            24.0
+        ],
+        "tasa de reproduccion": 8.0
+    },
+    {
+        "bioma nativo": "Arrecifes de Coral",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Palinuridae",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "Panulirus argus",
+        "nombre comun": "Langosta comun",
+        "rango oxigeno": [
+            4.0,
+            4.0
+        ],
+        "rango salinidad": [
+            35.0,
+            33.0
+        ],
+        "rango temperatura": [
+            30.0,
+            20.0
+        ],
+        "tasa de reproduccion": 4.0
+    },
+    {
+        "bioma nativo": "Arrecifes de Coral",
+        "esperanza de vida": 7.5,
+        "familia biologica": "Chaetodontidae",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "Chaetodontidae",
+        "nombre comun": "Pez mariposa",
+        "rango oxigeno": [
+            4.0,
+            4.0
+        ],
+        "rango salinidad": [
+            35.0,
+            30.0
+        ],
+        "rango temperatura": [
+            28.0,
+            22.0
+        ],
+        "tasa de reproduccion": 32.0
+    },
+    {
+        "bioma nativo": "Arrecifes de Coral",
+        "esperanza de vida": 2.5,
+        "familia biologica": "Hippolytidae",
+        "inactividad reproductiva": 1.5,
+        "nombre cientifico": "Lysmata amboinensis",
+        "nombre comun": "Camaron Limpiador",
+        "rango oxigeno": [
+            4.0,
+            4.0
+        ],
+        "rango salinidad": [
+            35.0,
+            30.0
+        ],
+        "rango temperatura": [
+            288.0,
+            24.0
+        ],
+        "tasa de reproduccion": 13.0
+    }
+]

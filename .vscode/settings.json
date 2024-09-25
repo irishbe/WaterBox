@@ -7,14 +7,12 @@
         "*.hpp": "cpp",
         "*.hxx": "cpp",
         "iostream": "cpp",
-        "xstring": "cpp"
+        "ostream": "cpp",
+        "xstring": "cpp",
+        "vector": "cpp"
     },
-    "c-cpp-compile-run.cpp-compiler":
-        //Para cambiar el compilador, descomentar la ruta 
-
-        "C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/g++.exe",
-        //"C:/MinGW/bin/g++.exe",
+    "c-cpp-compile-run.cpp-compiler": "C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/g++.exe",
     "c-cpp-compile-run.output-location": "../",
-    "c-cpp-compile-run.cpp-flags": "-Wall -Wextra -O2 -std=c++11 -static -I../include",
+    "c-cpp-compile-run.cpp-flags": "-w -O0 -std=c++11 -I../include -IC:/Progra~2/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include", //-IC:/Progra~2/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include",
     "C_Cpp.errorSquiggles": "disabled"
 }

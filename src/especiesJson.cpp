@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <conio.h>
-#include "datosEspecies.h" // header de la estructura
+#include "datosEspecie.h" // header de la estructura
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -19,7 +19,7 @@ void eliminarEspecie();
 void escribirArchivo(const string&, const json&);
 json leerArchivo(const string&);
 int seleccionarTipoEspecie();
-Especie extraerDatosEspecie();
+DatosEspecie extraerDatosEspecie();
 float leerFloat();
 
 int main() {
@@ -274,10 +274,10 @@ void modificarEspecie() {
 
 //********************************************************************************************
 
-Especie extraerDatosEspecie() {
+DatosEspecie extraerDatosEspecie() {
     json especies;
     string nombreBuscado;
-    Especie especieEncontrada; // Variable para la estructura
+    DatosEspecie especieEncontrada; // Variable para la estructura
 
     int ops = seleccionarTipoEspecie();
     
@@ -329,7 +329,7 @@ Especie extraerDatosEspecie() {
     }
 
     cout << "Especie no encontrada.\n";
-    return Especie(); //Damos una estruct vacia si no se encuentra
+    return DatosEspecie(); //Damos una estruct vacia si no se encuentra
 }
 
 //*****************************************************************************************
