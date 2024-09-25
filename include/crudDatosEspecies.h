@@ -2,6 +2,7 @@
 #include <fstream>
 #include <conio.h>
 #include <vector>
+#include <cctype>
 #include "DatosEspecie.h"
 #include "json.hpp"
 
@@ -335,18 +336,20 @@ DatosEspecie extraerDatosEspecie() {
 
 //******************************** AÑADIDO POR WHENDAVI *********************************************************
 
-DatosEspecie* extraerDatosEspecie(int tipoEspecie, string nombreBuscado) {
+DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
     json especies;
-    DatosEspecie* especieEncontrada = new DatosEspecie(); // Asignamos memoria dinámicamente
-
-    switch (tipoEspecie) {
-        case 1: especies = leerArchivo(animal); break; // Añadir break para evitar el "fall-through"
-        case 2: especies = leerArchivo(vegetal); break; // Añadir break
-        default: cout << "Tipo de especie desconocido.\n"; return nullptr; // Manejo de error
+    
+    if( tipoEspecie == "Animal" ){
+        especies = leerArchivo(animal);
+    }else if( tipoEspecie == "Vegetal" ){
+        especies = leerArchivo(vegetal);
     }
 
     for (const auto& especie : especies) {
         if (especie["nombre comun"] == nombreBuscado) {
+
+            DatosEspecie* especieEncontrada = new DatosEspecie();
+            
             // Asignamos los datos a la estructura
             especieEncontrada->nombreComun = especie["nombre comun"];
             especieEncontrada->nombreCientifico = especie["nombre cientifico"];
@@ -363,10 +366,10 @@ DatosEspecie* extraerDatosEspecie(int tipoEspecie, string nombreBuscado) {
             especieEncontrada->tempMin = especie["rango temperatura"][1];
 
             return especieEncontrada; // Retornamos la estructura con los datos
+            
         }
     }
 
-    delete especieEncontrada; // Liberamos la memoria en caso de que no se encuentre
     return nullptr; // Retornamos nullptr si no se encuentra la especie
 }
 
