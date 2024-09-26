@@ -100,10 +100,10 @@ void agregarEspecie() {
         aux->sgteEspecie = nuevaEspecie;
     }
 
-    cout << "\nEspecie \"" << nuevaEspecie->datosEspecie->nombreComun << "\" con ID (" << nuevaEspecie->id << ") fue agregada con exito! " << endl << endl;
-    _getch();
-
     generarIDs();
+    cout << "\nEspecie \"" << nuevaEspecie->datosEspecie->nombreComun << "\" con ID (" << nuevaEspecie->id << ") fue agregada con exito! " << endl << endl;
+    
+    _getch();
 }
 
 void enlistarEspecies(){    
