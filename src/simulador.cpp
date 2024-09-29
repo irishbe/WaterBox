@@ -19,7 +19,18 @@ int main() {
     imprimirCuadro2("Animaaal", 5, 21, 84, 5);
     imprimirCuadro2("Animaaal", 5, 21, 107, 5);
     imprimirCuadro2("Animaaal", 5, 21, 130, 5);
-    imprimirCuadro2("Animaaal", 5, 21, 153, 5);
+
+    imprimirCuadro2("Animaaal", 7, 21, 15, 11);
+    imprimirCuadro2("Animaaal", 7, 21, 38, 11);
+    imprimirCuadro2("Animaaal", 7, 21, 61, 11);
+    imprimirCuadro2("Animaaal", 7, 21, 84, 11);
+    imprimirCuadro2("Animaaal", 7, 21, 107, 11);
+    imprimirCuadro2("Animaaal", 7, 21, 130, 11);
+
+    imprimirCuadro2("Animaaal", 9, 33, 15, 19);
+    imprimirCuadro2("Animaaal", 9, 33, 49, 19);
+    imprimirCuadro2("Animaaal", 9, 33, 84, 19);
+    imprimirCuadro2("Animaaal", 9, 33, 118, 19);
 
     /*cout << endl;
     imprimirCuadro("NOMBREEEEEEEEEEEEEEEEEEEEEEEEEE", 5, 21);
