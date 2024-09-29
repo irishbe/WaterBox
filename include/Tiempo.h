@@ -5,7 +5,7 @@
 
 using namespace std;
 
-struct Time {
+struct Tiempo {
     int hora;
     int minutos;
     int segundos;
@@ -14,7 +14,7 @@ struct Time {
     int anio;
 };
 
-Time getTiempoActual() {
+Tiempo getTiempoActual() {
     time_t ahora = time(0);
     tm *ltm = localtime(&ahora);
 
@@ -31,7 +31,7 @@ Time getTiempoActual() {
 
 // Función para formatear el tiempo [YYYY-MM-DD HH:MM:SS]
 
-string formatearTiempo(Time tiempo) {
+string formatearTiempo(Tiempo tiempo) {
     // Construir la cadena en el formato solicitado
     string resultado = "[" 
                        + to_string(tiempo.anio) + "-"

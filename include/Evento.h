@@ -2,14 +2,14 @@
 #define EVENTO_H
 
 #include "Especie.h"
-#include "Time.h"
+#include "Tiempo.h"
 
 using namespace std;
 
 struct Evento {
     string tipo;
     string descripcion;
-    Time tiempoOcurrencia;
+    Tiempo tiempoOcurrencia;
     Especie especieInvolucrada1;
     Especie especieInvolucrada2;
     string biomaOcurrencia;
