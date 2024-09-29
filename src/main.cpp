@@ -10,7 +10,7 @@ int main() {
     cout << obtenerArteASCII();
     //vector<string> opcionesMenu = {"INICIAR", "WIKIWATER", "CODIGOS", "SALIR"};
     
-    //string opcion = seleccionConFlechas( tituloWaterBox(), opcionesMenu, "vertical", 30, 15);
+    string opcion = seleccionConFlechas( tituloWaterBox(), opcionesMenu, "vertical", 10, 5);
 
     return 0;
 }
