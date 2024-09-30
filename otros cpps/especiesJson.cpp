@@ -1,9 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <conio.h>
-#include <vector>
-#include <cctype>
-#include "DatosEspecie.h"
+#include "datosEspecie.h" // header de la estructura
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -14,19 +13,15 @@ const string vegetal = "catalogo/vegetal.json";
 const string bioma = "catalogo/bioma.json";
 
 void menu();
-void crearDatosEspecie();
-void modificarDatosEspecie();
-void eliminarDatosEspecie();
+void agregarEspecie();
+void modificarEspecie();
+void eliminarEspecie();
 void escribirArchivo(const string&, const json&);
 json leerArchivo(const string&);
 int seleccionarTipoEspecie();
+DatosEspecie extraerDatosEspecie();
 float leerFloat();
 
-// Funcionalidades auxiliares en el simulador
-DatosEspecie extraerDatosEspecie();
-vector<string> extraerNombresEspecies(string tipoEspecie);
-
-/*
 int main() {
     int op;
 
@@ -57,7 +52,7 @@ int main() {
     } while (op != 0);
 
     return 0;
-}*/
+}
 
 //*******************************************************************************
 
@@ -73,7 +68,7 @@ void menu() {
 
 //*******************************************************************************************************
 
-void crearDatosEspecie() {
+void agregarEspecie() {
     string nombre, nombrecientifico, familia, biomaa;
     float esperanza, tasar, inact, salinidadMax, salinidadMin, oxigenoMax, oxigenoMin, tempMax, tempMin;
 
@@ -160,7 +155,7 @@ void crearDatosEspecie() {
 
 //****************************************************************************************
 
-void modificarDatosEspecie() {
+void modificarEspecie() {
     json especies;
     string nombreBuscado;
 
@@ -337,65 +332,9 @@ DatosEspecie extraerDatosEspecie() {
     return DatosEspecie(); //Damos una estruct vacia si no se encuentra
 }
 
-//******************************** AÑADIDO POR WHENDAVI *********************************************************
-
-DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
-    json especies;
-    
-    if( tipoEspecie == "Animal" ){
-        especies = leerArchivo(animal);
-    }else if( tipoEspecie == "Vegetal" ){
-        especies = leerArchivo(vegetal);
-    }
-
-    for (const auto& especie : especies) {
-        if (especie["nombre comun"] == nombreBuscado) {
-
-            DatosEspecie* especieEncontrada = new DatosEspecie();
-            
-            // Asignamos los datos a la estructura
-            especieEncontrada->nombreComun = especie["nombre comun"];
-            especieEncontrada->nombreCientifico = especie["nombre cientifico"];
-            especieEncontrada->familiaBiologica = especie["familia biologica"];
-            especieEncontrada->biomaNativo = especie["bioma nativo"];
-            especieEncontrada->esperanzaVida = especie["esperanza de vida"];
-            especieEncontrada->tasaReproduccion = especie["tasa de reproduccion"];
-            especieEncontrada->inactividadReproductiva = especie["inactividad reproductiva"];
-            especieEncontrada->salinidadMax = especie["rango salinidad"][0];
-            especieEncontrada->salinidadMin = especie["rango salinidad"][1];
-            especieEncontrada->oxigenoMax = especie["rango oxigeno"][0];
-            especieEncontrada->oxigenoMin = especie["rango oxigeno"][1];
-            especieEncontrada->tempMax = especie["rango temperatura"][0];
-            especieEncontrada->tempMin = especie["rango temperatura"][1];
-
-            return especieEncontrada; // Retornamos la estructura con los datos
-            
-        }
-    }
-
-    return nullptr; // Retornamos nullptr si no se encuentra la especie
-}
-
-vector<string> extraerNombresEspecies(string tipoEspecie){
-    json especies;
-    vector<string> nombresEspecies;
-    
-    if( tipoEspecie == "Animal" ){
-        especies = leerArchivo(animal);
-    }else if( tipoEspecie == "Vegetal" ){
-        especies = leerArchivo(vegetal);
-    }
-
-    for (const auto& especie : especies) {
-        nombresEspecies.push_back( especie["nombre comun"] );
-    }
-    
-    return nombresEspecies;
-}
-
 //*****************************************************************************************
 
-void eliminarDatosEspecie() {
+void eliminarEspecie() {
     string nombre;
     int ops = seleccionarTipoEspecie();
     json especies;
@@ -428,7 +367,7 @@ void eliminarDatosEspecie() {
         }
     }
 
-    cout << "\nEspecie no encontrada." << endl;
+    cout << "Especie no encontrada." << endl;
 }
 
 //*******************************************************************************
@@ -461,7 +400,7 @@ int seleccionarTipoEspecie() {
 
         if (ops < 1 || ops > 3) {
             cout << "Opcion invalida" << endl;
-            _getch();
+            getch();
         }
     } while (ops < 1 || ops > 3);
     return ops;
