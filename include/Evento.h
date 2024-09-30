@@ -1,34 +1,58 @@
 #ifndef EVENTO_H
 #define EVENTO_H
 
+#include <fstream>
 #include "Especie.h"
 #include "Tiempo.h"
 
 using namespace std;
 
+void agregarColaEventos(string descripcionEvento);
+
 struct Evento {
     string tipo;
     string descripcion;
     Tiempo tiempoOcurrencia;
-    Especie especieInvolucrada1;
-    Especie especieInvolucrada2;
+    Especie *especieInvolucrada1;
+    Especie *especieInvolucrada2;
     string biomaOcurrencia;
 };
 
-string crearEvento(string tipo, Especie especie1, Especie especie2, string bioma){
+void crearEvento(string tipo, string bioma, Especie *especie1 = nullptr, Especie *especie2 = nullptr){
     Evento evento;
 
-    if( tipo == "ESPECIE AGREGADA" ){
-        evento.tiempoOcurrencia = getTiempoActual();
+    evento.tiempoOcurrencia = getTiempoActual();
+    evento.biomaOcurrencia = bioma;
+
+    if( tipo == "AGREGAR ESPECIE" ){
         evento.especieInvolucrada1 = especie1;
-        evento.biomaOcurrencia = bioma;
         evento.descripcion = formatearTiempo(evento.tiempoOcurrencia)
-                             + " Agregaste un " + evento.especieInvolucrada1 
-                             + " al bioma " + evento.bioma;
+                             + " Agregaste un " + evento.especieInvolucrada1->datosEspecie->nombreComun
+                             + " con ID (" + to_string(evento.especieInvolucrada1->id) + ")"
+                             + " al bioma " + evento.biomaOcurrencia;
+    }
+    else if( tipo == "ELIMINAR ESPECIE" ){
+        evento.especieInvolucrada1 = especie1;
+        evento.descripcion = formatearTiempo(evento.tiempoOcurrencia)
+                             + " Eliminaste un " + evento.especieInvolucrada1->datosEspecie->nombreComun
+                             + " con ID (" + to_string(evento.especieInvolucrada1->id) + ")"
+                             + " del bioma " + evento.biomaOcurrencia;
     }
 
     // agregarColaEventos(evento)
-    return evento.descripcion;
+    agregarColaEventos(evento.descripcion);
+}
+
+void agregarColaEventos(string descripcionEvento){
+    ofstream archivo("catalogo/ColaEventos.txt", ios::app);
+
+    if( archivo.is_open() ){
+        archivo << descripcionEvento << endl;
+    }else{
+        cout << "No se pudo acceder a la Cola de Eventos.. " << endl;
+    }
+
+    archivo.close();
 }
 
 #endif // EVENTO_H

@@ -63,55 +63,72 @@ int imprimirTitulo(string titulo, int x, int y) {
         }
     }
 
-    if (!linea.empty()) {
+    if ( !linea.empty() ) {
         moverCursor(x, y);
         cout << linea << endl;
     }
 
-    return y;
+    return y + 2;
 }
 
 // Función para imprimir las opciones
-void imprimirOpciones(vector<string>& opciones, string sentido, int x, int y, int index) {
+int imprimirOpciones(vector<string> opciones, string sentido, bool centrado, int x, int y, int index) {
+    
     for (int i = 0; i < opciones.size(); i++) {
         
-        if(x >= 0 && y >= 0 ){
-
-            if (sentido == "vertical") {
-                moverCursor(x, y + (i + 1) );
-            } else{
-                moverCursor(x + (i * 15), y);
+        // Mover el cursor según el sentido
+        if (sentido == "vertical") {
+            
+            if( x >= 0 && y >= 0 ){
+                moverCursor(x, y + (i + 1));
+            }else{
+                cout << endl;
             }
 
-        }else{
+            if (centrado) {
+                cout << "\t\t\t";
+            }
 
-            if (sentido == "vertical") {
-                cout << endl;
+        } else if( sentido == "horizontal" ){  // Horizontal
+
+            if( x >= 0 && y >= 0 ){
+                moverCursor(x + (i * 15), y);
             }else{
                 cout << "   ";
             }
-
+            
+            if (centrado) {
+                cout << "\t\t\t";
+            }
         }
 
+        // Imprimir la opción
         if (i == index) {
             cout << "> " << opciones[i];
         } else {
             cout << "  " << opciones[i];
         }
     }
+
+    return y + opciones.size() + 3;
 }
 
-void imprimirCancelar(){
-    cout << "\n\nPresione ESC o 0 para cancelar la seleccion." << endl;
+void imprimirCancelar(int x, int y){
+    if( x >= 0 && y >= 0 ){
+        moverCursor(x,y);
+        cout << "Presione ESC o 0 para cancelar la seleccion." << endl;
+    }else{
+        cout << "\n\nPresione ESC o 0 para cancelar la seleccion." << endl;
+    }
 }
 
 // Función para la selección con flechas
-string seleccionConFlechas(string titulo, vector<string> opciones, string sentido, int posX = -1, int posY = -1) {
+string seleccionConFlechas(string titulo, vector<string> opciones, string sentido, bool centrado = false, int posX = -1, int posY = -1) {
     const char ENTER = 13, ESC = 27, TECLAESPECIAL = 224;
     const int UP = 72, DOWN = 80, LEFT = 75, RIGHT = 77;
 
     char tecla;
-    int index = 0, tituloY; // Inicializa el índice en 0
+    int index = 0, tituloY, opcionesY; // Inicializa el índice en 0
     int numeroOpciones = opciones.size(); // Obtiene el tamaño del vector
 
     if( sentido != "vertical" && sentido != "horizontal" ) return "";
@@ -123,9 +140,9 @@ string seleccionConFlechas(string titulo, vector<string> opciones, string sentid
         tituloY = imprimirTitulo(titulo, posX, posY); // Actualizar posY según la altura del título
 
         // Imprime las opciones en la posición Y que sigue al título
-        imprimirOpciones(opciones, sentido, posX, tituloY + 2, index); // Dejar espacio para el título
+        opcionesY = imprimirOpciones(opciones, sentido, centrado, posX, tituloY, index); // Dejar espacio para el título
 
-        imprimirCancelar();
+        imprimirCancelar(posX, opcionesY);
 
         tecla = _getch();
 
@@ -134,6 +151,7 @@ string seleccionConFlechas(string titulo, vector<string> opciones, string sentid
 
 
             if (sentido == "vertical") {
+
                 switch (tecla) {
                     case UP:
                         index = (index - 1 + numeroOpciones) % numeroOpciones; // Mover hacia arriba en vertical
@@ -142,7 +160,9 @@ string seleccionConFlechas(string titulo, vector<string> opciones, string sentid
                         index = (index + 1) % numeroOpciones; // Mover hacia abajo en vertical
                         break;
                 }
-            }else{
+
+            }else if(sentido == "horizontal"){
+
                 switch (tecla) {
                     case LEFT:
                         index = (index - 1 + numeroOpciones) % numeroOpciones; // Mover hacia la izquierda en horizontal
@@ -151,6 +171,7 @@ string seleccionConFlechas(string titulo, vector<string> opciones, string sentid
                         index = (index + 1) % numeroOpciones; // Mover hacia la derecha en horizontal
                         break;
                 }
+
             }
         }
 

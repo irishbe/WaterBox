@@ -18,7 +18,7 @@ Tiempo getTiempoActual() {
     time_t ahora = time(0);
     tm *ltm = localtime(&ahora);
 
-    Time tiempoActual;
+    Tiempo tiempoActual;
     tiempoActual.hora = ltm->tm_hour;
     tiempoActual.minutos = ltm->tm_min;
     tiempoActual.segundos = ltm->tm_sec;

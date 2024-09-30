@@ -1,7 +1,7 @@
 #include <iostream>
 #include "utilidades.h"
 #include "Especie.h"
-#include "crudDatosEspecies.h"
+#include "crudDatos.h"
 
 using namespace std;
 Especie *listaEspecies = nullptr;
