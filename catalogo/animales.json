@@ -99,9 +99,93 @@
             30.0
         ],
         "rango temperatura": [
-            288.0,
+            28.0,
             24.0
         ],
         "tasa de reproduccion": 13.0
+    },
+    {
+        "bioma nativo": "a",
+        "esperanza de vida": 1.0,
+        "familia biologica": "a",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "a",
+        "nombre comun": "Pez globo",
+        "rango oxigeno": [
+            1.0,
+            1.0
+        ],
+        "rango salinidad": [
+            1.0,
+            1.0
+        ],
+        "rango temperatura": [
+            1.0,
+            1.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "gggg",
+        "esperanza de vida": 1.0,
+        "familia biologica": "hhh",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "hola123",
+        "nombre comun": "hola",
+        "rango oxigeno": [
+            1.0,
+            1.0
+        ],
+        "rango salinidad": [
+            1.0,
+            1.0
+        ],
+        "rango temperatura": [
+            1.0,
+            1.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "aa",
+        "esperanza de vida": 1.0,
+        "familia biologica": "aa",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "aaa",
+        "nombre comun": "AA",
+        "rango oxigeno": [
+            1.0,
+            1.0
+        ],
+        "rango salinidad": [
+            1.0,
+            1.0
+        ],
+        "rango temperatura": [
+            1.0,
+            1.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "XX",
+        "esperanza de vida": 7.0,
+        "familia biologica": "XX",
+        "inactividad reproductiva": 7.0,
+        "nombre cientifico": "XX",
+        "nombre comun": "ZZZ",
+        "rango oxigeno": [
+            77.0,
+            7.0
+        ],
+        "rango salinidad": [
+            7.0,
+            7.0
+        ],
+        "rango temperatura": [
+            7.0,
+            7.0
+        ],
+        "tasa de reproduccion": 7.0
     }
 ]

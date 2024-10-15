@@ -1,0 +1,5 @@
+[2024-10-14 23:24:57] Agregaste un Tiburon de arrecife con ID (0) al bioma Arrecifes de coral
+[2024-10-14 23:25:01] Agregaste un Pez mariposa con ID (1) al bioma Arrecifes de coral
+[2024-10-14 23:25:08] Agregaste un hola con ID (2) al bioma Arrecifes de coral
+[2024-10-14 23:25:20] Eliminaste un Tiburon de arrecife con ID (0) del bioma Arrecifes de coral
+[2024-10-15 17:06:40] Agregaste un Pez globo con ID (0) al bioma Arrecifes de coral
