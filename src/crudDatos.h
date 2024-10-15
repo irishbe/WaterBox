@@ -1,12 +1,11 @@
 #ifndef CRUD_DATOS_H
 #define CRUD_DATOS_H
 
-#include <iostream>
 #include <fstream>
-#include <conio.h>
-#include <vector>
 #include <cctype>
 #include "DatosEspecie.h"
+#include "Bioma.h"
+#include "utilidades.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -18,18 +17,19 @@ const string bioma = "catalogo/bioma.json";
 
 void menu();
 
-void crearDatosEspecie();
-void modificarDatosEspecie();
-void eliminarDatosEspecie();
+void crearDatos();
+void modificarDatos();
+void eliminarDatos();
 
 void escribirArchivo(const string&, const json&);
 json leerArchivo(const string&);
-int seleccionarTipoEspecie();
+int seleccionarTipo();
 float leerFloat();
 
 // Funcionalidades auxiliares en el simulador
 DatosEspecie extraerDatosEspecie();
-vector<string> extraerNombresEspecies(string tipoEspecie);
+Bioma extraerBioma();
+vector<string> extraerNombres(string tipo);
 
 //************************************************************************
 
@@ -43,16 +43,16 @@ void iniciarCrudJson() {
 
         switch (op) {
             case 1:
-                crearDatosEspecie();
+                crearDatos();
                 break;
             case 2:
-                modificarDatosEspecie();
+                modificarDatos();
                 break;
             case 3:
-                eliminarDatosEspecie();
+                eliminarDatos();
                 break;
             case 4:
-                extraerDatosEspecie(); // para extraer datos de la especie dada
+                extraerDatos();
                 break;
             default:
                 cout << "Saliendo..." << endl;
@@ -79,94 +79,144 @@ void menu() {
 
 //*******************************************************************************************************
 
-void crearDatosEspecie() {
-    string nombre, nombrecientifico, familia, biomaa;
-    float esperanza, tasar, inact, salinidadMax, salinidadMin, oxigenoMax, oxigenoMin, tempMax, tempMin;
+void crearDatos() {
+    vector<string> tipos = {"Animal", "Vegetal", "Bioma"};
+    string tipoSeleccionado = seleccionarConFlechas("Seleccione un tipo de dato: ", tipos, "vertical")
 
-    int ops = seleccionarTipoEspecie();
+    if ( tipoSeleccionado == "Bioma" ){
+        Bioma bioma;
 
-    cout << "Nombre-->";
-    fflush(stdin);
-    getline(cin, nombre);
+        // Especie* listaEspecies
+        
+        fflush(stdin);
+        cout<<"Nombre--> ";
+        getline(cin, bioma.nombre);
+        
+        bioma.diasPasados = 0;
+        
+        fflush(stdin);
+        cout<<"Nivel Salinidad--> ";
+        cin>>bioma.nivelSalinidad;
+        
+        fflush(stdin);
+        cout<<"Nivel Oxigeno--> ";
+        cin>>bioma.nivelOxigeno;
+        
+        fflush(stdin);
+        cout<<"Nivel Temperatura-->";
+        cin>>bioma.nivelTemperatura;
+        
+        fflush(stdin);
+        cout<<"Nivel Contaminacion-->";
+        cin>>bioma.nivelContaminacion;
+        
+        json bioma = {
+            {"nombre", bioma.nombre},
+            {"diasPasados", bioma.diasPasados},
+            {"nivelSalinidad", bioma.nivelSalinidad},
+            {"nivelOxigeno", bioma.nivelOxigeno},
+            {"nivelTemperatura", bioma.nivelTemperatura},
+            {"nivelContaminacion", bioma.nivelContaminacion}
+        };
+        
+        
+        json biomas;	
+        ifstream archivo("biomas.json");
+        
+        if (archivo) {
+            archivo>>biomas;
+            archivo.close();
+        } else {
+            biomass = json::array();
+        }
+        
+        biomas.push_back(bioma);
+        
+        ofstream salida("biomas.json");
+        salida<<biomas.dump(4)<<endl;
+        salida.close();
+    }else {
+        DatosEspecie datosEspecie;
+        
+        cout << "Nombre-->";
+        fflush(stdin);
+        getline(cin, datosEspecie.nombreComun);
 
-    cout << "Nombre Cientifico-->";
-    getline(cin, nombrecientifico);
+        cout << "Nombre Cientifico-->";
+        getline(cin, datosEspecie.nombreCientifico);
 
-    cout << "Familia Biologica-->";
-    getline(cin, familia);
+        cout << "Familia Biologica-->";
+        getline(cin, datosEspecie.familiaBiologica);
 
-    cout << "Bioma nativo-->";
-    getline(cin, biomaa);
+        cout << "Bioma nativo-->";
+        getline(cin, datosEspecie.biomaNativo);
 
-    fflush(stdin);
-    cout << "Esperanza de vida-->";
-    esperanza = leerFloat();
+        fflush(stdin);
+        cout << "Esperanza de vida-->";
+        datosEspecie.esperanzaVida = leerFloat();
 
-    fflush(stdin);
-    cout << "Taza de reproduccion-->";
-    tasar = leerFloat();
+        fflush(stdin);
+        cout << "Taza de reproduccion-->";
+        datosEspecie.tasaReproduccion = leerFloat();
 
-    fflush(stdin);
-    cout << "Inactividad reproductiva-->";
-    inact = leerFloat();
+        fflush(stdin);
+        cout << "Inactividad reproductiva-->";
+        datosEspecie.inactividadReproductiva = leerFloat();
 
-    // Para el rango de salinidad
-    fflush(stdin);
-    cout << "Rango salinidad maximo-->";
-    salinidadMax = leerFloat();
-    fflush(stdin);
-    cout << "Rango salinidad minimo-->";
-    salinidadMin = leerFloat();
+        // Para el rango de salinidad
+        fflush(stdin);
+        cout << "Rango salinidad maximo-->";
+        datosEspecie.salinidadMax = leerFloat();
+        fflush(stdin);
+        cout << "Rango salinidad minimo-->";
+        datosEspecie.salinidadMin = leerFloat();
 
-    // Para el rango de oxigeno
-    fflush(stdin);
-    cout << "Rango oxigeno maximo-->";
-    oxigenoMax = leerFloat();
-    fflush(stdin);
-    cout << "Rango oxigeno minimo-->";
-    oxigenoMin = leerFloat();
+        // Para el rango de oxigeno
+        fflush(stdin);
+        cout << "Rango oxigeno maximo-->";
+        datosEspecie.oxigenoMax = leerFloat();
+        fflush(stdin);
+        cout << "Rango oxigeno minimo-->";
+        datosEspecie.oxigenoMin = leerFloat();
 
-    // Para el rango de temperatura
-    fflush(stdin);
-    cout << "Rango temperatura maximo-->";
-    tempMax = leerFloat();
-    fflush(stdin);
-    cout << "Rango temperatura minimo-->";
-    tempMin = leerFloat();
+        // Para el rango de temperatura
+        fflush(stdin);
+        cout << "Rango temperatura maximo-->";
+        datosEspecie.temperaturaMax = leerFloat();
+        fflush(stdin);
+        cout << "Rango temperatura minimo-->";
+        datosEspecie.temperaturaMin = leerFloat();
 
-    json especie = {
-        {"nombre comun", nombre},
-        {"nombre cientifico", nombrecientifico},
-        {"familia biologica", familia},
-        {"bioma nativo", biomaa},
-        {"esperanza de vida", esperanza},
-        {"tasa de reproduccion", tasar},
-        {"inactividad reproductiva", inact},
-        {"rango salinidad", {salinidadMax, salinidadMin}}, 
-        {"rango oxigeno", {oxigenoMax, oxigenoMin}},       
-        {"rango temperatura", {tempMax, tempMin}}        
-    };
+        json especie = {
+            {"nombre comun", datosEspecie.nombreComun},
+            {"nombre cientifico", datosEspecie.nombrecientifico},
+            {"familia biologica", datosEspecie.familiaBiologica},
+            {"bioma nativo", datosEspecie.biomaNativo},
+            {"esperanza de vida", datosEspecie.esperanzaVida},
+            {"tasa de reproduccion", datosEspecie.tasaReproduccion},
+            {"inactividad reproductiva", datosEspecie.inactividadReproductiva},
+            {"rango salinidad", {datosEspecie.salinidadMax , datosEspecie.salinidadMin }}, 
+            {"rango oxigeno", {datosEspecie.oxigenoMax , datosEspecie.oxigenoMin}},       
+            {"rango temperatura", {datosEspecie.tempMax, datosEspecie.temperaturaMin}}        
+        };
 
-    json especies;
-	
-	if (ops == 1) { // Animal
-	    especies = leerArchivo(animal);
-	    especies.push_back(especie);
-	    escribirArchivo(animal, especies);
-	} else if (ops == 2) { // Vegetal
-	    especies = leerArchivo(vegetal);
-	    especies.push_back(especie);
-	    escribirArchivo(vegetal, especies);
-	} else if (ops == 3) { // Bioma
-	    especies = leerArchivo(bioma);
-	    especies.push_back(especie);
-	    escribirArchivo(bioma, especies);
-	}
+        json especies;
+        
+        if ( tipo == "Animal" ) { // Animal
+            especies = leerArchivo(animal);
+            especies.push_back(especie);
+            escribirArchivo(animal, especies);
+        } else { // Vegetal
+            especies = leerArchivo(vegetal);
+            especies.push_back(especie);
+            escribirArchivo(vegetal, especies);
+        }
+    }
 }
 
 //****************************************************************************************
 
-void modificarDatosEspecie() {
+void modificarDatos() {
     json especies;
     string nombreBuscado;
 
@@ -455,7 +505,7 @@ float leerFloat() {
 }
 
 //*******************************************************************************
-int seleccionarTipoEspecie() {
+int seleccionarTipo() {
     int ops;
     do {
         system("cls");
