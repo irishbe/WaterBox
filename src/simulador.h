@@ -12,11 +12,14 @@ void mostrarConsolaEventos();
 void iniciarSimulador() {
     string opcion, titulo = "MENU DE OPCIONES\n";
     vector<string> opciones = {"Agregar especie", "Enlistar especies", "Mostrar datos especie", "Eliminar especie", "CANCELAR", "SALIR"};
+    bool desplegarCuadros = true;
 
     do {
-        mostrarTodosCuadros();
-        mostrarConsolaEventos();
-        getch();
+        if( desplegarCuadros ){
+            mostrarTodosCuadros();
+            mostrarConsolaEventos();
+            getch();
+        }
 
         opcion = seleccionConFlechas(titulo, opciones, "horizontal");
 
@@ -24,27 +27,35 @@ void iniciarSimulador() {
 
         if (opcion == "Agregar especie") {
             agregarEspecie();
-        } 
+            desplegarCuadros = true;
+        }
         else if (opcion == "Enlistar especies") {
             enlistarEspecies();
+            desplegarCuadros = false;
+            getch();
         } 
         else if (opcion == "Mostrar datos especie") {
             mostrarEspecie();
+            desplegarCuadros = false;
+            getch();
         } 
         else if (opcion == "Eliminar especie") {
             eliminarEspecie();
+            desplegarCuadros = true;
         }
         else if( opcion == "CANCELAR" ){
-            // pasar de largo
+            desplegarCuadros = true;
+            continue;
         }
         else if ( opcion == "SALIR" || opcion == "" ) {
-            cout << "Saliendo..." << endl;
+            
         } 
         else {
             cout << "Opcion invalida..." << endl;
+            desplegarCuadros = false;
+            getch();          
         }
 
-        getch();
         system("cls");
 
     } while ( opcion != "SALIR" && opcion != "" );

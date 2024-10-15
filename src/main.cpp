@@ -31,13 +31,13 @@ int main() {
             ingresarCodigos();
         }
         else if( opcionMenu == "SALIR" || ""){
-            cout << "Saliendo..." << endl;
+            
         }
         else{
             cout << "Opcion invalida" << endl;
+            getch();
         }
 
-        getch();
         system("cls");
 
     }while( opcionMenu != "SALIR" && opcionMenu != "");
@@ -61,5 +61,6 @@ void ingresarCodigos(){
 
     }else{
         cout << "\n\nERROR..." << endl << endl;
+        getch();
     }
 }
