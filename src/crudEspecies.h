@@ -2,10 +2,9 @@
 #define CRUD_ESPECIES_H
 
 #include <iostream>
-#include "utilidades.h"
-#include "Especie.h"
 #include "crudDatos.h"
-#include "Evento.h"
+#include "Especie.h"
+//#include "Evento.hpp"
 
 using namespace std;
 
@@ -32,14 +31,13 @@ void generarIDs(){
 void agregarEspecie() {
     // Escogiendo el archivo de extraccion (animales.json o vegetales.json)
     string tipoEspecie, evento;
-    vector<string> tiposEspecies = {"Animal", "Vegetal"};
 
     tipoEspecie = seleccionConFlechas("Tipo de especie\n", tiposEspecies, "horizontal");
     if( tipoEspecie == "" ) return;
 
     // Escogiendo el nombre de la especie a agregar
     string nombre;
-    vector<string> nombresEspecies = extraerNombresEspecies(tipoEspecie);
+    vector<string> nombresEspecies = extraerNombres(tipoEspecie);
     if( nombresEspecies.empty() ){
         cout << "\nNo se encontraron especies en \"" << tipoEspecie << "\"..." << endl << endl;
         return;   
@@ -75,7 +73,7 @@ void agregarEspecie() {
 
     generarIDs();
 
-    crearEvento("AGREGAR ESPECIE", "Arrecifes de coral", nuevaEspecie);
+    //crearEvento("AGREGAR ESPECIE", "Arrecifes de coral", nuevaEspecie);
 }
 
 void enlistarEspecies(){    
@@ -127,7 +125,7 @@ void mostrarEspecie(){
     cout << "Inactividad reproductiva: " << especieEncontrada->inactividadReproductiva << endl;
     cout << "Rango salinidad: [" << especieEncontrada->salinidadMax << ", " << especieEncontrada->salinidadMin << "]" << endl;
     cout << "Rango oxigeno: [" << especieEncontrada->oxigenoMax << ", " << especieEncontrada->oxigenoMin << "]" << endl;
-    cout << "Rango temperatura: [" << especieEncontrada->tempMax << ", " << especieEncontrada->tempMin << "]" << endl << endl;
+    cout << "Rango temperatura: [" << especieEncontrada->temperaturaMax << ", " << especieEncontrada->temperaturaMin << "]" << endl << endl;
 }
 
 void eliminarEspecie(){
@@ -157,7 +155,7 @@ void eliminarEspecie(){
             anterior->sgteEspecie = aux->sgteEspecie;
         }
         
-        crearEvento("ELIMINAR ESPECIE", "Arrecifes de coral", aux);
+        //crearEvento("ELIMINAR ESPECIE", "Arrecifes de coral", aux);
         
         delete aux->datosEspecie;
         delete aux;

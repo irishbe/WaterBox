@@ -16,8 +16,8 @@ struct DatosEspecie {
     float salinidadMin;
     float oxigenoMax;
     float oxigenoMin;
-    float tempMax;
-    float tempMin;
+    float temperaturaMax;
+    float temperaturaMin;
 };
 
 #endif // DATOS_ESPECIE_H
