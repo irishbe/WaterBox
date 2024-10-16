@@ -1,6 +1,3 @@
-#ifndef CRUD_DATOS_H
-#define CRUD_DATOS_H
-
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -17,11 +14,9 @@ const string vegetal = "catalogo/vegetal.json";
 const string bioma = "catalogo/bioma.json";
 
 void menu();
-
 void crearDatosEspecie();
 void modificarDatosEspecie();
 void eliminarDatosEspecie();
-
 void escribirArchivo(const string&, const json&);
 json leerArchivo(const string&);
 int seleccionarTipoEspecie();
@@ -31,9 +26,8 @@ float leerFloat();
 DatosEspecie extraerDatosEspecie();
 vector<string> extraerNombresEspecies(string tipoEspecie);
 
-//************************************************************************
-
-void iniciarCrudJson() {
+/*
+int main() {
     int op;
 
     do {
@@ -43,13 +37,13 @@ void iniciarCrudJson() {
 
         switch (op) {
             case 1:
-                crearDatosEspecie();
+                agregarEspecie();
                 break;
             case 2:
-                modificarDatosEspecie();
+                modificarEspecie();
                 break;
             case 3:
-                eliminarDatosEspecie();
+                eliminarEspecie();
                 break;
             case 4:
                 extraerDatosEspecie(); // para extraer datos de la especie dada
@@ -60,10 +54,10 @@ void iniciarCrudJson() {
         }
 
         system("pause");
-        system("cls");
-
     } while (op != 0);
-}
+
+    return 0;
+}*/
 
 //*******************************************************************************
 
@@ -492,7 +486,3 @@ void escribirArchivo(const string& nombreArchivo, const json& especies) {
     salida << especies.dump(4) << endl;
     salida.close();
 }
-
-//****************************************************************************************
-
-#endif //CRUD_DATOS_H
