@@ -21,24 +21,24 @@
         "tasa de reproduccion": 20.0
     },
     {
-        "bioma nativo": "v",
-        "esperanza de vida": 1.0,
-        "familia biologica": "v",
-        "inactividad reproductiva": 1.0,
-        "nombre cientifico": "v",
-        "nombre comun": "v",
+        "bioma nativo": "A",
+        "esperanza de vida": 13.0,
+        "familia biologica": "A",
+        "inactividad reproductiva": 13.0,
+        "nombre cientifico": "AA",
+        "nombre comun": "AA",
         "rango oxigeno": [
             1.0,
-            1.0
+            13.0
         ],
         "rango salinidad": [
-            1.0,
-            1.0
+            131.0,
+            13.0
         ],
         "rango temperatura": [
             1.0,
-            1.0
+            2.0
         ],
-        "tasa de reproduccion": 1.0
+        "tasa de reproduccion": 123.0
     }
 ]
