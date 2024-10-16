@@ -148,6 +148,27 @@
     },
     {
         "bioma nativo": "Oceano profundo",
+        "esperanza de vida": 20.0,
+        "familia biologica": "Stomiidae",
+        "inactividad reproductiva": 2.0,
+        "nombre cientifico": "Chauliodus sloani",
+        "nombre comun": "Pez Vibora",
+        "rango oxigeno": [
+            4.0,
+            2.0
+        ],
+        "rango salinidad": [
+            37.0,
+            35.0
+        ],
+        "rango temperatura": [
+            5.0,
+            4.0
+        ],
+        "tasa de reproduccion": 5.0
+    },
+    {
+        "bioma nativo": "Oceano profundo",
         "esperanza de vida": 0.25,
         "familia biologica": "Ctenophora",
         "inactividad reproductiva": 0.0,

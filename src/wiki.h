@@ -20,12 +20,17 @@ void wiki_seleccionarBioma();
 void wiki_lista();
 void wiki_especies(string nombreEspecie);
 
+//ARRECIFES_DE_CORAL
 void tiburon_arrecife();
 void pez_payaso();
 void langosta_comun();
 void pez_mariposa();
 void camaron_limpiador();
 void algas_coralinas();
+//OCEANO_PROFUNDO
+void pez_linterna();
+void pez_vibora();
+void medusa_peine();
 
 void iniciarWiki(){
     string opcion;
@@ -110,25 +115,31 @@ void wiki_especies(string nombreEspecie){
     else if(nombreEspecie=="Algas coralinas"){
         algas_coralinas();
     }
+    else if(nombreEspecie=="Pez Linterna"){
+        pez_linterna();
+    }
+    else if(nombreEspecie=="Pez Vibora"){
+        pez_vibora();
+    }
+    else if(nombreEspecie=="Medusa Peine"){
+        medusa_peine();
+    }
 }
 
 void wiki_seleccionarBioma(){
-    vector<string> biomas = {"Arrecifes de coral"};
+    vector<string> biomas = {"Arrecifes de coral", "Oceano profundo"}; // Agregar "Oceano profundo"
     string bioma = seleccionConFlechas("Seleccione el bioma", biomas, "vertical");
 
-    // Inicializar el vector nombresBioma vacío
-    vector<string> nombresEspeciesBioma, nombresAnimales, nombresVegetales;
-
-    nombresAnimales = extraerNombres("Animal");
-    nombresVegetales = extraerNombres("Vegetal");
-
-    // Agregar ambos vectores a nombresBioma
-    nombresEspeciesBioma.insert(nombresEspeciesBioma.end(), nombresAnimales.begin(), nombresAnimales.end());
-    nombresEspeciesBioma.insert(nombresEspeciesBioma.end(), nombresVegetales.begin(), nombresVegetales.end());
-
-    string especieSeleccionada = seleccionConFlechas("Seleccione la especie", nombresEspeciesBioma, "vertical");
-    
-    wiki_especies(especieSeleccionada);
+    if (bioma == "Arrecifes de coral") {
+        vector<string> nombresEspeciesBioma = {"Tiburon de arrecife", "Pez payaso", "Langosta comun", "Pez mariposa", "Camaron Limpiador", "Algas coralinas"};
+        string especieSeleccionada = seleccionConFlechas("Seleccione la especie", nombresEspeciesBioma, "vertical");
+        wiki_especies(especieSeleccionada);
+    }
+    else if (bioma == "Oceano profundo") {
+        vector<string> nombresEspeciesBioma = {"Pez Linterna", "Pez Vibora", "Medusa Peine"};
+        string especieSeleccionada = seleccionConFlechas("Seleccione la especie", nombresEspeciesBioma, "vertical");
+        wiki_especies(especieSeleccionada);
+    }
 }
 
 //LISTA DE TODAS LAS ESPECIES
@@ -153,7 +164,7 @@ void tiburon_arrecife(){
     gotoxy(24,15);
     cout<<"  \\_____)\\_____      ";
     gotoxy(24,16);
-    cout<<"  /--_____||___>    ";
+    cout<<"  /--_____||__`_>    ";
     gotoxy(24,17);
     cout<<"          )/         ";
     gotoxy(24,18);
@@ -354,4 +365,120 @@ void algas_coralinas(){
     cout<<"Oxigeno: 4";
 }
 
+void pez_linterna(){
+    system("CLS");
+    titulo_wikiwater();
+    gotoxy(19,11);
+    cout<<" ---------------------------";
+    gotoxy(19,21);
+    cout<<" ---------------------------";
+    for(int y=11;y<=21;y++){
+        gotoxy(19,y);
+        cout<<"|"<<endl;
+        gotoxy(47,y);
+        cout<<"|"<<endl;
+    }
+
+    gotoxy(27,14);
+    cout<<"        ___o     "<<endl;
+    gotoxy(27,15);
+    cout<<"    ___|__     "<<endl;
+    gotoxy(27,16);
+    cout<<"   (    o |    "<<endl;
+    gotoxy(27,17);
+    cout<<"   (_<___(   "<<endl;
+    gotoxy(27,18);
+    cout<<"       v      "<<endl;
+
+    gotoxy(59,12);
+    cout<<"Pez Linterna (Lampanyctodes hectoris)";
+    gotoxy(62,14);
+    cout<<"Familia biologica: Myctophidae";
+    gotoxy(64,15);
+    cout<<"Esperanza de vida: 3-4 anhos";
+    gotoxy(64,16);
+    cout<<"Inactividad reproductiva: 1";
+    gotoxy(67,18);
+    cout<<"Temperatura: 2 C - 8 C";
+    gotoxy(68,19);
+    cout<<"Salinidad: 34-36 ppt";
+    gotoxy(72,20);
+    cout<<"Oxigeno: 3-5";
+}
+
+void pez_vibora(){
+    system("CLS");
+    titulo_wikiwater();
+    gotoxy(19,11);
+    cout<<" ---------------------------";
+    gotoxy(19,21);
+    cout<<" ---------------------------";
+    for(int y=11;y<=21;y++){
+        gotoxy(19,y);
+        cout<<"|"<<endl;
+        gotoxy(47,y);
+        cout<<"|"<<endl;
+    }
+    gotoxy(25,14);
+    cout<<"         /"<<endl;
+    gotoxy(24,15);
+    cout<<"         /"<<endl;
+    gotoxy(24,16);
+    cout<<"  ><((((((((((')"<<endl;
+    gotoxy(24,17);
+    cout<<"          w"<<endl;
+
+    gotoxy(64,12);
+    cout<<"Pez Vibora (Chauliodus sloani)";
+    gotoxy(65,14);
+    cout<<"Familia biologica: Stomiidae";
+    gotoxy(64,15);
+    cout<<"Esperanza de vida: 15-20 anhos";
+    gotoxy(66,16);
+    cout<<"Inactividad reproductiva: 2";
+    gotoxy(67,18);
+    cout<<"Temperatura: 4 C - 5 C";
+    gotoxy(69,19);
+    cout<<"Salinidad: 35-37 ppt";
+    gotoxy(73,20);
+    cout<<"Oxigeno: 2-4";
+}
+
+void medusa_peine(){
+    system("CLS");
+    titulo_wikiwater();
+    gotoxy(19,11);
+    cout<<" ---------------------------";
+    gotoxy(19,21);
+    cout<<" ---------------------------";
+    for(int y=11;y<=21;y++){
+        gotoxy(19,y);
+        cout<<"|"<<endl;
+        gotoxy(47,y);
+        cout<<"|"<<endl;
+    }
+    gotoxy(24,14);
+    cout<<"    __________"<<endl;
+    gotoxy(24,15);
+    cout<<"   ( ---|--|- )"<<endl;
+    gotoxy(24,16);
+    cout<<"    (  --|--|  )"<<endl;
+    gotoxy(24,17);
+    cout<<"   (__________)  "<<endl;
+
+    gotoxy(64,12);
+    cout<<"Medusa Peine (Ctenophora spp.)";
+    gotoxy(65,14);
+    cout<<"Familia biologica: Ctenophora";
+    gotoxy(67,15);
+    cout<<"Esperanza de vida: 3 meses";
+    gotoxy(66,16);
+    cout<<"Inactividad reproductiva: 0";
+    gotoxy(67,18);
+    cout<<"Temperatura: 2 C - 30 C";
+    gotoxy(69,19);
+    cout<<"Salinidad: 32-35 ppt";
+    gotoxy(73,20);
+    cout<<"Oxigeno: 3-5";
+}
 #endif // WIKI_H
