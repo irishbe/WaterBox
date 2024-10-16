@@ -16,7 +16,6 @@ int main() {
     advertencia.append( tituloWaterBox() );
 
     do{
-        
         opcionMenu = seleccionConFlechas( advertencia, opcionesMenu, "vertical", true, 30, 5);
 
         system("cls");
