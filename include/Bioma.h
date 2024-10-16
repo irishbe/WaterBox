@@ -7,7 +7,7 @@ using namespace std;
 
 struct Bioma{
 	string nombre;
-	int diasPasados;
+	//int diasPasados;
 	float nivelSalinidad;
 	float nivelOxigeno;
 	float nivelTemperatura;

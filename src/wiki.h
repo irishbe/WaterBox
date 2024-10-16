@@ -2,8 +2,6 @@
 #define WIKI_H
 
 #include <iostream>
-#include <vector>
-#include "DatosEspecie.h"
 #include "utilidades.h"
 #include "crudDatos.h"
 
@@ -76,7 +74,6 @@ void titulo_wikiwater(){
 //MENÚ BUSCAR ESPECIE
 void wiki_buscar(){
     string tipoEspecie, nombreEspecie;
-    vector<string> tiposEspecies = {"Animal", "Vegetal"};
     
     tipoEspecie = seleccionConFlechas("Seleccione el tipo de especie\n", tiposEspecies, "horizontal");
     if( tipoEspecie == "" ) return;
@@ -122,8 +119,8 @@ void wiki_seleccionarBioma(){
     // Inicializar el vector nombresBioma vacío
     vector<string> nombresEspeciesBioma, nombresAnimales, nombresVegetales;
 
-    nombresAnimales = extraerNombresEspecies("Animal");
-    nombresVegetales = extraerNombresEspecies("Vegetal");
+    nombresAnimales = extraerNombres("Animal");
+    nombresVegetales = extraerNombres("Vegetal");
 
     // Agregar ambos vectores a nombresBioma
     nombresEspeciesBioma.insert(nombresEspeciesBioma.end(), nombresAnimales.begin(), nombresAnimales.end());

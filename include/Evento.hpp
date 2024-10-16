@@ -9,6 +9,7 @@
 #include "Tiempo.h"
 
 using namespace std;
+string obtenerTiempoActual();
 
 // Definición de la estructura del Nodo para la pila
 struct Nodo {
@@ -19,6 +20,12 @@ struct Nodo {
 // Punteros para la pila de eventos del usuario y del administrador
 Nodo* pilaEventosUsuario = nullptr;
 Nodo* pilaEventosAdmin = nullptr;
+
+// Prototipos de función
+void agregarPila(Nodo*& pila, const string& descripcion);
+void registrarEvento(const string& tipo, const string& bioma, Especie* especie1 = nullptr, bool esAdmin = false);
+void mostrarEventos(Nodo* pila);
+void actualizarArchivoEventos(const string& nombreArchivo, Nodo* pila);
 
 // Función para obtener el formato de tiempo actual
 string obtenerTiempoActual() {
