@@ -2,6 +2,7 @@
 #ifndef DATOS_ESPECIE_H
 #define DATOS_ESPECIE_H
 
+#include <string>
 using namespace std;
 
 struct DatosEspecie {

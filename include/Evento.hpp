@@ -5,11 +5,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "Especie.h"
+#include "Especie.hpp"
 #include "Tiempo.h"
 
 using namespace std;
-string obtenerTiempoActual();
 
 // Definición de la estructura del Nodo para la pila
 struct Nodo {
@@ -22,8 +21,9 @@ Nodo* pilaEventosUsuario = nullptr;
 Nodo* pilaEventosAdmin = nullptr;
 
 // Prototipos de función
+string obtenerTiempoActual();
 void agregarPila(Nodo*& pila, const string& descripcion);
-void registrarEvento(const string& tipo, const string& bioma, Especie* especie1 = nullptr, bool esAdmin = false);
+void registrarEvento(const string tipo, const string bioma, Especie* especie1 = nullptr, bool esAdmin = false);
 void mostrarEventos(Nodo* pila);
 void actualizarArchivoEventos(const string& nombreArchivo, Nodo* pila);
 
@@ -41,7 +41,7 @@ void agregarPila(Nodo*& pila, const string& descripcion) {
 }
 
 // Función para registrar un evento en la pila y en el archivo correspondiente
-void registrarEvento(const string& tipo, const string& bioma, Especie* especie1 = nullptr, bool esAdmin = false) {
+void registrarEvento(const string tipo, const string bioma, Especie* especie1, bool esAdmin) {
     string descripcion = obtenerTiempoActual();
 
     // Generación de la descripción del evento según el tipo
@@ -110,7 +110,7 @@ void mostrarEventos(Nodo* pila) {
     }
 
     // Mostramos los eventos en la consola en orden inverso
-    cout << "Historial de eventos:" << endl;
+    cout << "\nHistorial de eventos:" << endl << endl;
     for (auto it = eventos.rbegin(); it != eventos.rend(); ++it) {
         cout << *it << endl;
     }

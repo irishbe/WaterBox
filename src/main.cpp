@@ -1,6 +1,6 @@
 #include <iostream>
-#include "simulador.h"
-#include "wiki.h"
+#include "simulador.hpp"
+#include "wiki.hpp"
 
 using namespace std;
 
@@ -29,8 +29,9 @@ int main() {
         else if( opcionMenu == "CODIGOS"){
             ingresarCodigos();
         }
-        else if( opcionMenu == "SALIR" || ""){
-            
+        else if( opcionMenu == "SALIR" || opcionMenu == ""){
+            cout<<"\nSaliendo...";
+            getch();
         }
         else{
             cout << "Opcion invalida" << endl;
@@ -40,9 +41,6 @@ int main() {
         system("cls");
 
     }while( opcionMenu != "SALIR" && opcionMenu != "");
-
-    // Elimina el archivo para no quedar rastros del proceso anterior
-    remove("catalogo/ColaEventos.txt");
 
     return 0;
 }
