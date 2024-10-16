@@ -18,7 +18,7 @@ void eliminarEspecie();
 
 void generarIDs(){
     Especie *especieActual = listaEspecies;
-    short id = 0;
+    int id = 0;
 
     // Recorremos la lista para asignar los IDs
     while( especieActual != nullptr ){
@@ -100,8 +100,9 @@ void mostrarEspecie(){
     }
 
     Especie *aux = listaEspecies;
-    short idBuscado;
+    int idBuscado;
 
+    fflush(stdin);
     cout << "ID de la especie a mostrar mas informacion ---> "; cin>> idBuscado;
 
     while( aux != nullptr && aux->id != idBuscado){
@@ -136,8 +137,9 @@ void eliminarEspecie(){
     }
 
     Especie *aux = listaEspecies, *anterior = nullptr;
-    short idBuscado;
+    int idBuscado;
 
+    fflush(stdin);
     cout << "ID de la especie a eliminar ---> "; cin >> idBuscado;
 
     while( aux != nullptr && aux->id != idBuscado){

@@ -90,7 +90,6 @@ void wiki_opc_1(){
 		case 13: wiki_buscar();break; //Enter
 		default: wiki_opc_1(); break;
 	}
-
 }
 
 void wiki_opc_2(){
