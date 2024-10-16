@@ -131,76 +131,76 @@ void crearDatosCategoria() {
         escribirArchivo(biomasJson, datosJson);
 
     }else if ( categoria == "Animal" || categoria == "Vegetal" ){
-        DatosEspecie datosEspecie;
+        DatosEspecie *datosEspecie = new DatosEspecie();
         
         cout << "Creando " << categoria << endl;
 
         fflush(stdin);
         cout << "Nombre--> ";
-        getline(cin, datosEspecie.nombreComun);
+        getline(cin, datosEspecie->nombreComun);
 
         fflush(stdin);
         cout << "Nombre Cientifico--> ";
-        getline(cin, datosEspecie.nombreCientifico);
+        getline(cin, datosEspecie->nombreCientifico);
 
         fflush(stdin);
         cout << "Familia Biologica--> ";
-        getline(cin, datosEspecie.familiaBiologica);
+        getline(cin, datosEspecie->familiaBiologica);
 
         fflush(stdin);
         cout << "Bioma nativo--> ";
-        getline(cin, datosEspecie.biomaNativo);
+        getline(cin, datosEspecie->biomaNativo);
 
         fflush(stdin);
         cout << "Esperanza de vida--> ";
-        datosEspecie.esperanzaVida = leerFloat();
+        datosEspecie->esperanzaVida = leerFloat();
 
         fflush(stdin);
         cout << "Taza de reproduccion--> ";
-        datosEspecie.tasaReproduccion = leerFloat();
+        datosEspecie->tasaReproduccion = leerFloat();
 
         fflush(stdin);
         cout << "Inactividad reproductiva--> ";
-        datosEspecie.inactividadReproductiva = leerFloat();
+        datosEspecie->inactividadReproductiva = leerFloat();
 
         // Para el rango de salinidad
         fflush(stdin);
         cout << "Rango salinidad maximo--> ";
-        datosEspecie.salinidadMax = leerFloat();
+        datosEspecie->salinidadMax = leerFloat();
 
         fflush(stdin);
         cout << "Rango salinidad minimo--> ";
-        datosEspecie.salinidadMin = leerFloat();
+        datosEspecie->salinidadMin = leerFloat();
 
         // Para el rango de oxigeno
         fflush(stdin);
         cout << "Rango oxigeno maximo--> ";
-        datosEspecie.oxigenoMax = leerFloat();
+        datosEspecie->oxigenoMax = leerFloat();
 
         fflush(stdin);
         cout << "Rango oxigeno minimo--> ";
-        datosEspecie.oxigenoMin = leerFloat();
+        datosEspecie->oxigenoMin = leerFloat();
 
         // Para el rango de temperatura
         fflush(stdin);
         cout << "Rango temperatura maximo--> ";
-        datosEspecie.temperaturaMax = leerFloat();
+        datosEspecie->temperaturaMax = leerFloat();
 
         fflush(stdin);
         cout << "Rango temperatura minimo--> ";
-        datosEspecie.temperaturaMin = leerFloat();
+        datosEspecie->temperaturaMin = leerFloat();
 
         json especie = {
-            {"nombre comun", datosEspecie.nombreComun},
-            {"nombre cientifico", datosEspecie.nombreCientifico},
-            {"familia biologica", datosEspecie.familiaBiologica},
-            {"bioma nativo", datosEspecie.biomaNativo},
-            {"esperanza de vida", datosEspecie.esperanzaVida},
-            {"tasa de reproduccion", datosEspecie.tasaReproduccion},
-            {"inactividad reproductiva", datosEspecie.inactividadReproductiva},
-            {"rango salinidad", {datosEspecie.salinidadMax , datosEspecie.salinidadMin }}, 
-            {"rango oxigeno", {datosEspecie.oxigenoMax , datosEspecie.oxigenoMin}},       
-            {"rango temperatura", {datosEspecie.temperaturaMax, datosEspecie.temperaturaMin}}        
+            {"nombre comun", datosEspecie->nombreComun},
+            {"nombre cientifico", datosEspecie->nombreCientifico},
+            {"familia biologica", datosEspecie->familiaBiologica},
+            {"bioma nativo", datosEspecie->biomaNativo},
+            {"esperanza de vida", datosEspecie->esperanzaVida},
+            {"tasa de reproduccion", datosEspecie->tasaReproduccion},
+            {"inactividad reproductiva", datosEspecie->inactividadReproductiva},
+            {"rango salinidad", {datosEspecie->salinidadMax , datosEspecie->salinidadMin }}, 
+            {"rango oxigeno", {datosEspecie->oxigenoMax , datosEspecie->oxigenoMin}},       
+            {"rango temperatura", {datosEspecie->temperaturaMax, datosEspecie->temperaturaMin}}        
         };
         
         if ( categoria == "Animal" ) { // Animal
@@ -214,7 +214,11 @@ void crearDatosCategoria() {
             escribirArchivo(vegetalesJson, datosJson);
         }
 
-        registrarEvento("CREAR ESPECIE ADMIN", NULL, nullptr, true);
+        Especie *e = new Especie();
+        e->datosEspecie = datosEspecie;
+
+        registrarEvento("CREAR ESPECIE ADMIN", "", e, true);
+        cout << "\nEspecie creada con exito " << endl;
     }
 
 }
@@ -295,7 +299,7 @@ void modificarDatosCategoria() {
         cout << "Bioma no encontrado.\n";
 
     } else{
-        DatosEspecie datosEspecie;
+        DatosEspecie *datosEspecie = new DatosEspecie();
     
         for (auto& especie : datosJson) {
             if (especie["nombre comun"] == nombreBuscado) {
@@ -315,86 +319,86 @@ void modificarDatosCategoria() {
                 // NOMBRE COMUN
 
                 cout << "Modificar nombre: ";
-                getline(cin, datosEspecie.nombreComun);
+                getline(cin, datosEspecie->nombreComun);
 
-                if ( !datosEspecie.nombreComun.empty()) {
-                    especie["nombre comun"] = datosEspecie.nombreComun;
+                if ( !datosEspecie->nombreComun.empty()) {
+                    especie["nombre comun"] = datosEspecie->nombreComun;
                 }
 
                 // NOMBRE CIENTIFICO
 
                 cout << "Modificar nombre cientifico: ";
-                getline(cin, datosEspecie.nombreCientifico);
+                getline(cin, datosEspecie->nombreCientifico);
 
-                if ( !datosEspecie.nombreCientifico.empty()) {
-                    especie["nombre cientifico"] = datosEspecie.nombreCientifico;
+                if ( !datosEspecie->nombreCientifico.empty()) {
+                    especie["nombre cientifico"] = datosEspecie->nombreCientifico;
                 }
 
                 // FAMILIA BIOLOGICA
 
                 cout << "Modificar familia biologica: ";
-                getline(cin, datosEspecie.familiaBiologica);
+                getline(cin, datosEspecie->familiaBiologica);
 
-                if ( !datosEspecie.familiaBiologica.empty() ) {
-                    especie["familia biologica"] = datosEspecie.familiaBiologica;
+                if ( !datosEspecie->familiaBiologica.empty() ) {
+                    especie["familia biologica"] = datosEspecie->familiaBiologica;
                 }
 
                 // BIOMA NATIVO
 
                 cout << "Modificar bioma nativo: ";
-                getline(cin, datosEspecie.biomaNativo);
+                getline(cin, datosEspecie->biomaNativo);
 
-                if ( !datosEspecie.biomaNativo.empty() ) {
-                    especie["bioma nativo"] = datosEspecie.biomaNativo;
+                if ( !datosEspecie->biomaNativo.empty() ) {
+                    especie["bioma nativo"] = datosEspecie->biomaNativo;
                 }
 
                 // DATOS DE TIEMPO (float)
                 // ESPERANZA DE VIDA
 
                 cout << "Modificar esperanza de vida: ";
-                datosEspecie.esperanzaVida = leerFloat();
-                especie["esperanza de vida"] = datosEspecie.esperanzaVida;
+                datosEspecie->esperanzaVida = leerFloat();
+                especie["esperanza de vida"] = datosEspecie->esperanzaVida;
 
                 // TASA DE REPRODUCCION
 
                 cout << "Modificar tasa de reproduccion: ";
-                datosEspecie.tasaReproduccion = leerFloat();
-                especie["tasa de reproduccion"] = datosEspecie.tasaReproduccion;
+                datosEspecie->tasaReproduccion = leerFloat();
+                especie["tasa de reproduccion"] = datosEspecie->tasaReproduccion;
 
                 // INACTIVIDAD REPRODUCTIVA
 
                 cout << "Modificar inactividad reproductiva: ";
-                datosEspecie.inactividadReproductiva = leerFloat();
-                especie["inactividad reproductiva"] = datosEspecie.inactividadReproductiva;
+                datosEspecie->inactividadReproductiva = leerFloat();
+                especie["inactividad reproductiva"] = datosEspecie->inactividadReproductiva;
 
                 // RANGO DE NIVELES
                 // SALINIDAD
 
                 cout << "Modificar rango salinidad (maximo): ";
-                datosEspecie.salinidadMax = leerFloat();
+                datosEspecie->salinidadMax = leerFloat();
 
                 cout << "Modificar rango salinidad (minimo): ";
-                datosEspecie.salinidadMin = leerFloat();
+                datosEspecie->salinidadMin = leerFloat();
 
-                especie["rango salinidad"] = {datosEspecie.salinidadMax, datosEspecie.salinidadMin};
+                especie["rango salinidad"] = {datosEspecie->salinidadMax, datosEspecie->salinidadMin};
 
                 // OXIGENO
                 cout << "Modificar rango oxigeno (maximo): ";
-                datosEspecie.oxigenoMax = leerFloat();
+                datosEspecie->oxigenoMax = leerFloat();
 
                 cout << "Modificar rango oxigeno (minimo): ";
-                datosEspecie.oxigenoMin = leerFloat();
+                datosEspecie->oxigenoMin = leerFloat();
                 
-                especie["rango oxigeno"] = {datosEspecie.oxigenoMax, datosEspecie.oxigenoMin};
+                especie["rango oxigeno"] = {datosEspecie->oxigenoMax, datosEspecie->oxigenoMin};
 
                 // TEMPERATURA
                 cout << "Modificar rango temperatura (maximo): ";
-                datosEspecie.temperaturaMax = leerFloat();
+                datosEspecie->temperaturaMax = leerFloat();
 
                 cout << "Modificar rango temperatura (minimo): ";
-                datosEspecie.temperaturaMin = leerFloat();
+                datosEspecie->temperaturaMin = leerFloat();
 
-                especie["rango temperatura"] = {datosEspecie.temperaturaMax, datosEspecie.temperaturaMin};
+                especie["rango temperatura"] = {datosEspecie->temperaturaMax, datosEspecie->temperaturaMin};
 
                 if ( categoria == "Animal" ) {
                     escribirArchivo(animalesJson, datosJson);
@@ -402,10 +406,13 @@ void modificarDatosCategoria() {
                 } else{ // Vegetal
                     escribirArchivo(vegetalesJson, datosJson);
                 }
-                
-                cout << "Especie actualizada correctamente.\n";
 
-                registrarEvento("MODIFICAR ESPECIE ADMIN", NULL, nullptr, true);
+                Especie *e = new Especie();
+                e->datosEspecie = datosEspecie;
+
+                registrarEvento("MODIFICAR ESPECIE ADMIN", "", e, true);
+                cout << "\nEspecie actualizada correctamente.\n";
+
                 return;
             }
         }
@@ -668,8 +675,13 @@ void eliminarDatosCategoria() {
                     escribirArchivo(vegetalesJson, datosJson);
                 }
 
-                cout << "Especie eliminada exitosamente." << endl;
-                registrarEvento("ELIMINAR ESPECIE ADMIN", NULL, nullptr, true);
+                Especie *e = new Especie();
+                e->datosEspecie = new DatosEspecie();
+                e->datosEspecie->nombreComun = nombre;
+
+                cout << "\nEspecie eliminada exitosamente." << endl;
+                registrarEvento("ELIMINAR ESPECIE ADMIN", "", e, true);
+                
                 return;
             }
         }

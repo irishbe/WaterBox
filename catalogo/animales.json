@@ -105,27 +105,6 @@
         "tasa de reproduccion": 13.0
     },
     {
-        "bioma nativo": "a",
-        "esperanza de vida": 1.0,
-        "familia biologica": "a",
-        "inactividad reproductiva": 1.0,
-        "nombre cientifico": "a",
-        "nombre comun": "Pez globo",
-        "rango oxigeno": [
-            1.0,
-            1.0
-        ],
-        "rango salinidad": [
-            1.0,
-            1.0
-        ],
-        "rango temperatura": [
-            1.0,
-            1.0
-        ],
-        "tasa de reproduccion": 1.0
-    },
-    {
         "bioma nativo": "Oceano profundo",
         "esperanza de vida": 3.0,
         "familia biologica": "Myctophidae",
