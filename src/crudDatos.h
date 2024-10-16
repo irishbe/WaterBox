@@ -16,7 +16,7 @@ const string animalesJson = "catalogo/animales.json";
 const string vegetalesJson = "catalogo/vegetal.json";
 const string biomasJson = "catalogo/bioma.json";
 
-const vector<string> categorias = {"Animales", "Vegetales", "Biomas"};
+const vector<string> categorias = {"Animal", "Vegetal", "Bioma"};
 const vector<string> tiposEspecies = {"Animal", "Vegetal"};
     
 
