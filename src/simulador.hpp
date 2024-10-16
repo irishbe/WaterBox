@@ -120,47 +120,44 @@ void imprimirPoblaciones() {
 
 void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float &contaminacion) {
     string opcion, titulo = "MENU DE OPCIONES\n";
-    vector<string> opciones = {"Oxígeno", "Salinidad", "Temperatura", "Contaminación", "CANCELAR", "SALIR"};
+    vector<string> opciones = {"Oxígeno", "Salinidad", "Temperatura", "Contaminación", "SALIR"};
 
     do {
         opcion = seleccionConFlechas(titulo, opciones, "horizontal");
 
         system("cls");
 
-        if (opcion == "Oxígeno (Mín. 0 / Máx. 14)") {
-            cout << "Ingrese el nivel de oxígeno (mg/L): ";
+        if ( opcion == "Oxígeno" ) {
+            cout << "Ingrese el nivel de oxígeno (Mín. 0 / Máx. 14 mg/L): ";
             cin >> oxigeno;
             if (oxigeno < oxigenoMin || oxigeno > oxigenoMax) {
                 cout << "Valor fuera de rango. Debe estar entre " << oxigenoMin << " y " << oxigenoMax << " mg/L." << endl;
                 getch();
             }
         }
-        else if (opcion == "Salinidad (Mín. 0 / Máx. 330)") {
-            cout << "Ingrese el nivel de salinidad (ups): ";
+        else if ( opcion == "Salinidad" ) {
+            cout << "Ingrese el nivel de salinidad (Mín. 0 / Máx. 330 ups): ";
             cin >> salinidad;
             if (salinidad < salinidadMin || salinidad > salinidadMax) {
                 cout << "Valor fuera de rango. Debe estar entre " << salinidadMin << " y " << salinidadMax << " ups." << endl;
                 getch();
             }
         }
-        else if (opcion == "Temperatura (Mín. 0 / Máx. 40)") {
-            cout << "Ingrese la temperatura (°C): ";
+        else if ( opcion == "Temperatura" ) {
+            cout << "Ingrese la temperatura (Mín. 0 / Máx. 40 °C): ";
             cin >> temperatura;
             if (temperatura < temperaturaMin || temperatura > temperaturaMax) {
                 cout << "Valor fuera de rango. Debe estar entre " << temperaturaMin << " y " << temperaturaMax << " °C." << endl;
                 getch();
             }
         }
-        else if (opcion == "Contaminación (Mín. 0 / Máx. 100)") {
-            cout << "Ingrese el nivel de contaminación (%): ";
+        else if ( opcion == "Contaminación" ) {
+            cout << "Ingrese el nivel de contaminación (Mín. 0 / Máx. 100 %): ";
             cin >> contaminacion;
             if (contaminacion < contaminacionMin || contaminacion > contaminacionMax) {
                 cout << "Valor fuera de rango. Debe estar entre " << contaminacionMin << " y " << contaminacionMax << " %." << endl;
                 getch();
             }
-        }
-        else if (opcion == "CANCELAR") {
-            continue;
         }
         else if (opcion == "SALIR" || opcion == "") {
             break;
@@ -170,6 +167,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
             getch();
         }
 
+        system("cls");
         mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
         mostrarEventos(pilaEventosUsuario);
         getch();

@@ -1,7 +1,7 @@
 #ifndef ESPECIE_H
 #define ESPECIE_H
 
-#include "DatosEspecie.h"
+#include "DatosEspecie.hpp"
 
 using namespace std;
 
