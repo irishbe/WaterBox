@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "utilidades.h"
-#include "crudDatos.h"
+#include "crudDatos.hpp"
 
 using namespace std;
 
@@ -127,19 +127,25 @@ void wiki_especies(string nombreEspecie){
 }
 
 void wiki_seleccionarBioma(){
-    vector<string> biomas = {"Arrecifes de coral", "Oceano profundo"}; // Agregar "Oceano profundo"
-    string bioma = seleccionConFlechas("Seleccione el bioma", biomas, "vertical");
+    string bioma, especieSeleccionada;
 
-    if (bioma == "Arrecifes de coral") {
-        vector<string> nombresEspeciesBioma = {"Tiburon de arrecife", "Pez payaso", "Langosta comun", "Pez mariposa", "Camaron Limpiador", "Algas coralinas"};
-        string especieSeleccionada = seleccionConFlechas("Seleccione la especie", nombresEspeciesBioma, "vertical");
-        wiki_especies(especieSeleccionada);
+    vector<string> biomas = {"Arrecifes de coral", "Oceano profundo"}; // Agregar "Oceano profundo"
+    vector<string> especiesArrecifeCoral = {"Tiburon de arrecife", "Pez payaso", "Langosta comun", "Pez mariposa", "Camaron Limpiador", "Algas coralinas"}; 
+    vector<string> especiesOceanoProfundo = {"Pez Linterna", "Pez Vibora", "Medusa Peine"};
+
+    bioma = seleccionConFlechas("Seleccione el bioma", biomas, "vertical");
+
+    if ( bioma == "Arrecifes de coral" ) {
+        especieSeleccionada = seleccionConFlechas("Seleccione la especie", especiesArrecifeCoral, "vertical");
+        
+    } else if ( bioma == "Oceano profundo" ) {
+        especieSeleccionada = seleccionConFlechas("Seleccione la especie", especiesOceanoProfundo, "vertical");
+
+    }else{
+        return;
     }
-    else if (bioma == "Oceano profundo") {
-        vector<string> nombresEspeciesBioma = {"Pez Linterna", "Pez Vibora", "Medusa Peine"};
-        string especieSeleccionada = seleccionConFlechas("Seleccione la especie", nombresEspeciesBioma, "vertical");
-        wiki_especies(especieSeleccionada);
-    }
+
+    wiki_especies(especieSeleccionada);
 }
 
 //LISTA DE TODAS LAS ESPECIES
@@ -185,6 +191,7 @@ void tiburon_arrecife(){
     gotoxy(73,20);
     cout<<"Oxigeno: 4-6";
 }
+
 void pez_payaso(){
     system("CLS");
     titulo_wikiwater();
@@ -218,6 +225,7 @@ void pez_payaso(){
     gotoxy(73,20);
     cout<<"Oxigeno: 5";
 }
+
 void langosta_comun(){
     system("CLS");
     titulo_wikiwater();
@@ -255,6 +263,7 @@ void langosta_comun(){
     gotoxy(73,20);
     cout<<"Oxigeno: 4";
 }
+
 void pez_mariposa(){
     system("CLS");
     titulo_wikiwater();
@@ -292,6 +301,7 @@ void pez_mariposa(){
     gotoxy(73,20);
     cout<<"Oxigeno: 4";
 }
+
 void camaron_limpiador(){
     system("CLS");
     titulo_wikiwater();
@@ -328,6 +338,7 @@ void camaron_limpiador(){
     gotoxy(73,20);
     cout<<"Oxigeno: 4";
 }
+
 void algas_coralinas(){
     system("CLS");
     titulo_wikiwater();
@@ -481,4 +492,5 @@ void medusa_peine(){
     gotoxy(73,20);
     cout<<"Oxigeno: 3-5";
 }
+
 #endif // WIKI_H

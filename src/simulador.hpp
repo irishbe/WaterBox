@@ -1,8 +1,9 @@
 #ifndef SIMULADOR_H
 #define SIMULADOR_H
 
-#include "crudEspecies.h"
+#include "crudEspecies.hpp"
 #include "recursosASCII.h"
+#include "Evento.hpp"
 
 using namespace std;
 
@@ -12,8 +13,8 @@ float temperaturaMin = 0, temperaturaMax = 40;
 float contaminacionMin = 0, contaminacionMax = 100;
 
 void mostrarTodosCuadros(float oxigeno, float salinidad, float temperatura, float contaminacion);
-void mostrarConsolaEventos();
 void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float &contaminacion);
+void imprimirPoblaciones();
 
 void iniciarSimulador() {
     string opcion, titulo = "MENU DE OPCIONES\n";
@@ -26,7 +27,7 @@ void iniciarSimulador() {
     do {
         if( desplegarCuadros ){
             mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-            mostrarConsolaEventos();
+            mostrarEventos(pilaEventosUsuario);
             getch();
         }
 
@@ -44,7 +45,7 @@ void iniciarSimulador() {
             getch();
         } 
         else if (opcion == "Mostrar datos especie") {
-            mostrarEspecie();
+            buscarEspecie();
             desplegarCuadros = false;
             getch();
         } 
@@ -90,44 +91,31 @@ void mostrarTodosCuadros(float oxigeno, float salinidad, float temperatura, floa
     imprimirBarra("Temperatura", porcentajeTemperatura); cout << "\t";
     imprimirBarra("Contaminación", porcentajeContaminacion); cout << endl;
 
-    // Mostrar cuadros con datos de ejemplo
-    imprimirCuadro2("Animaaal", 5, 21, 15, 5);
-    imprimirCuadro2("Animaaal", 5, 21, 38, 5);
-    imprimirCuadro2("Animaaal", 5, 21, 61, 5);
-    imprimirCuadro2("Animaaal", 5, 21, 84, 5);
-    imprimirCuadro2("Animaaal", 5, 21, 107, 5);
-    imprimirCuadro2("Animaaal", 5, 21, 130, 5);
-
-    imprimirCuadro2("Animaaal", 7, 21, 15, 11);
-    imprimirCuadro2("Animaaal", 7, 21, 38, 11);
-    imprimirCuadro2("Animaaal", 7, 21, 61, 11);
-    imprimirCuadro2("Animaaal", 7, 21, 84, 11);
-    imprimirCuadro2("Animaaal", 7, 21, 107, 11);
-    imprimirCuadro2("Animaaal", 7, 21, 130, 11);
-
-    imprimirCuadro2("Animaaal", 9, 33, 15, 19);
-    imprimirCuadro2("Animaaal", 9, 33, 49, 19);
-    imprimirCuadro2("Animaaal", 9, 33, 84, 19);
-    imprimirCuadro2("Animaaal", 9, 33, 118, 19);
+    imprimirPoblaciones();
 }
 
-void mostrarConsolaEventos() {
-    string linea;
-    ifstream archivo("catalogo/ColaEventos.txt");
+void imprimirPoblaciones() {
+    Poblacion* poblacionActual = listaPoblaciones;
+    
+    // Variables locales para las posiciones
+    int posXLocal = 15;
+    int posYLocal = 5;
+    
+    while ( poblacionActual != nullptr ) {
+        // Imprimir la población actual en la posición actual
+        imprimirPoblacion(poblacionActual, obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", posXLocal, posYLocal);
 
-    if ( !archivo.is_open() ) {
-        cout << "\n\nNo se pudo abrir el archivo... " << endl << endl;
-        return;
+        // Actualizar las posiciones
+        if (posXLocal + 23 <= 130) {
+            posXLocal += 23;
+        } else {
+            posXLocal = 15;
+            posYLocal += 8;
+        }
+
+        // Avanzar a la siguiente población
+        poblacionActual = poblacionActual->sgtePoblacion;
     }
-
-    cout << "\n\nConsola de Eventos" << endl << endl;
-
-    // Lee el archivo línea por línea
-    while (getline(archivo, linea)) {
-        cout << linea << endl;
-    }
-
-    archivo.close();
 }
 
 void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float &contaminacion) {
@@ -183,7 +171,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
         }
 
         mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-        mostrarConsolaEventos();
+        mostrarEventos(pilaEventosUsuario);
         getch();
 
         system("cls");

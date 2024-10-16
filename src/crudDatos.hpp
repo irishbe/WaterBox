@@ -532,8 +532,8 @@ void extraerDatosCategoria() {
 
 DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
     json especies;
-    DatosEspecie* especieEncontrada;
-    
+    DatosEspecie* especieEncontrada = new DatosEspecie();
+
     if( tipoEspecie == "Animal" ){
         especies = leerArchivo(animalesJson);
     }else if( tipoEspecie == "Vegetal" ){
@@ -542,7 +542,6 @@ DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
 
     for (const auto& especie : especies) {
         if (especie["nombre comun"] == nombreBuscado) {
-            
             // Asignamos los datos a la estructura
             especieEncontrada->nombreComun = especie["nombre comun"];
             especieEncontrada->nombreCientifico = especie["nombre cientifico"];
@@ -557,10 +556,13 @@ DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
             especieEncontrada->oxigenoMin = especie["rango oxigeno"][1];
             especieEncontrada->temperaturaMax = especie["rango temperatura"][0];
             especieEncontrada->temperaturaMin = especie["rango temperatura"][1];
+
+            return especieEncontrada;
         }
     }
 
-    return especieEncontrada;
+    delete especieEncontrada;
+    return nullptr;
 }
 
 Bioma* extraerBioma(string nombreBuscado){

@@ -7,6 +7,7 @@ using namespace std;
 
 struct Especie {
     int id;
+    string tipoEspecie;
     DatosEspecie* datosEspecie;
     int vida = 100;
     //time_t tiempoVida;
