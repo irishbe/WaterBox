@@ -126,7 +126,7 @@ void wiki_especies(string nombreEspecie){
 }
 
 void wiki_seleccionarBioma(){
-    vector<string> biomas = {"Arrecifes de coral"};
+    vector<string> biomas = {"Arrecifes de coral, "Oceano profundo"};
     string bioma = seleccionConFlechas("Seleccione el bioma", biomas, "vertical");
 
     // Inicializar el vector nombresBioma vacío
