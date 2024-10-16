@@ -4,8 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
-#include "DatosEspecie.h"
+#include "DatosEspecie.hpp"
 #include "Bioma.h"
+#include "Evento.hpp"
 #include "utilidades.h"
 #include "json.hpp"
 
@@ -213,6 +214,7 @@ void crearDatosCategoria() {
             escribirArchivo(vegetalesJson, datosJson);
         }
 
+        registrarEvento("CREAR ESPECIE ADMIN", NULL, nullptr, true);
     }
 
 }
@@ -403,6 +405,7 @@ void modificarDatosCategoria() {
                 
                 cout << "Especie actualizada correctamente.\n";
 
+                registrarEvento("MODIFICAR ESPECIE ADMIN", NULL, nullptr, true);
                 return;
             }
         }
@@ -441,45 +444,19 @@ void extraerDatosCategoria() {
 
         for (auto& biomaEncontrado : datosJson) {
             if (biomaEncontrado["nombre"] == nombreBuscado) {
+            	bioma.nombre = biomaEncontrado["nombre"];
+            	bioma.nivelSalinidad = biomaEncontrado["nivelSalinidad"];
+                bioma.nivelOxigeno = biomaEncontrado["nivelOxigeno"];
+                bioma.nivelTemperatura = biomaEncontrado["nivelTemperatura"];
+                bioma.nivelContaminacion = biomaEncontrado["nivelContaminacion"];
+            	
                 cout << "Bioma encontrado:" << endl;
-                cout << "Nombre: " << biomaEncontrado["nombre"] << endl;
-                cout << "Nivel de salinidad: " << biomaEncontrado["nivelSalinidad"] << endl;
-                cout << "Nivel de oxígeno: " << biomaEncontrado["nivelOxigeno"] << endl;
-                cout << "Nivel de temperatura: " << biomaEncontrado["nivelTemperatura"] << endl;
-                cout << "Nivel de contaminación: " << biomaEncontrado["nivelContaminacion"] << endl << endl;
-
-                // DATOS TEXTUALES
-                // NOMBRE
-                cout << "Modificar nombre: ";
-                getline(cin, bioma.nombre);
-                if (!bioma.nombre.empty()) {
-                    biomaEncontrado["nombre"] = bioma.nombre;
-                }
-
-                // NIVELES (FLOAT)
-                // SALINIDAD
-                cout << "Modificar nivel de salinidad: ";
-                bioma.nivelSalinidad = leerFloat();
-                biomaEncontrado["nivelSalinidad"] = bioma.nivelSalinidad;
-
-                // OXÍGENO
-                cout << "Modificar nivel de oxígeno: ";
-                bioma.nivelOxigeno = leerFloat();
-                biomaEncontrado["nivelOxigeno"] = bioma.nivelOxigeno;
-
-                // TEMPERATURA
-                cout << "Modificar nivel de temperatura: ";
-                bioma.nivelTemperatura = leerFloat();
-                biomaEncontrado["nivelTemperatura"] = bioma.nivelTemperatura;
-
-                // CONTAMINACIÓN
-                cout << "Modificar nivel de contaminación: ";
-                bioma.nivelContaminacion = leerFloat();
-                biomaEncontrado["nivelContaminacion"] = bioma.nivelContaminacion;
-
-                escribirArchivo(biomasJson, datosJson);
-
-                cout << "Bioma actualizado correctamente.\n";
+                cout << "Nombre: " << bioma.nombre << endl;
+                cout << "Nivel de salinidad: " << bioma.nivelSalinidad << endl;
+                cout << "Nivel de oxígeno: " << bioma.nivelOxigeno << endl;
+                cout << "Nivel de temperatura: " << bioma.nivelTemperatura << endl;
+                cout << "Nivel de contaminación: " << bioma.nivelContaminacion << endl << endl;
+                
                 return;
             }
         }
@@ -520,6 +497,7 @@ void extraerDatosCategoria() {
                 cout << "Rango oxigeno: [" << especieEncontrada.oxigenoMax << ", " << especieEncontrada.oxigenoMin << "]"<<endl;
                 cout << "Rango temperatura: [" << especieEncontrada.temperaturaMax << ", " << especieEncontrada.temperaturaMin << "]"<<endl;
                 
+                return;
             }
         }
 
@@ -691,6 +669,7 @@ void eliminarDatosCategoria() {
                 }
 
                 cout << "Especie eliminada exitosamente." << endl;
+                registrarEvento("ELIMINAR ESPECIE ADMIN", NULL, nullptr, true);
                 return;
             }
         }

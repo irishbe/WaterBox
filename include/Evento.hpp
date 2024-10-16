@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "Especie.hpp"
-#include "Tiempo.h"
+#include "Tiempo.hpp"
 
 using namespace std;
 
