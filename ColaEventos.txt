@@ -1,0 +1,7 @@
+[2024-10-16 05:43:35] Agregaste una especie Algas coralinas con ID (0) al bioma Arrecifes de coral
+[2024-10-16 05:43:38] Agregaste una especie Algas coralinas con ID (1) al bioma Arrecifes de coral
+[2024-10-16 05:43:40] Agregaste una especie Algas coralinas con ID (2) al bioma Arrecifes de coral
+[2024-10-16 05:43:43] Agregaste una especie Algas coralinas con ID (3) al bioma Arrecifes de coral
+[2024-10-16 05:43:52] Eliminaste un Algas coralinas con ID (0) del bioma Arrecifes de Coral
+[2024-10-16 05:44:17] Agregaste una especie Camaron Limpiador con ID (0) al bioma Arrecifes de coral
+[2024-10-16 05:44:22] Agregaste una especie Medusa Peine con ID (0) al bioma Arrecifes de coral
