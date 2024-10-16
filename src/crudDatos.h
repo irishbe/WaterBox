@@ -47,22 +47,28 @@ void iniciarCrudJson() {
         switch (opcion) {
             case 1:
                 crearDatosCategoria();
+                system("pause");
                 break;
             case 2:
                 modificarDatosCategoria();
+                system("pause");
                 break;
             case 3:
                 eliminarDatosCategoria();
+                system("pause");
                 break;
             case 4:
                 extraerDatosCategoria();
+                system("pause");
+                break;
+            case 0:
                 break;
             default:
                 cout << "Saliendo..." << endl;
+                system("pause");
                 break;
         }
 
-        system("pause");
         system("cls");
 
     } while (opcion != 0);
@@ -74,8 +80,7 @@ void menu() {
     cout << "1. Crear datos de una categoria" << endl;
     cout << "2. Modificar datos de una categoria" << endl;
     cout << "3. Eliminar datos de una categoria" << endl;
-    cout << "4. Extraer datos de especie" << endl;
-    cout << "5. Extraer datos de bioma" << endl;
+    cout << "4. Extraer datos de una categoria" << endl;
     cout << "0. SALIR" << endl;
     
     cout << "\nElige tu opcion--> ";
@@ -85,7 +90,7 @@ void menu() {
 
 void crearDatosCategoria() {
     json datosJson;
-    string categoria = seleccionConFlechas("Seleccione la categoria: ", categorias, "horizontal");
+    string categoria = seleccionConFlechas("Seleccione la categoria: \n", categorias, "horizontal");
 
     if ( categoria == "Bioma" ){
         Bioma bioma;
@@ -98,19 +103,19 @@ void crearDatosCategoria() {
         
         fflush(stdin);
         cout<<"Nivel Salinidad--> ";
-        cin>>bioma.nivelSalinidad;
+        bioma.nivelSalinidad = leerFloat();
         
         fflush(stdin);
         cout<<"Nivel Oxigeno--> ";
-        cin>>bioma.nivelOxigeno;
+        bioma.nivelOxigeno = leerFloat();
         
         fflush(stdin);
         cout<<"Nivel Temperatura--> ";
-        cin>>bioma.nivelTemperatura;
+        bioma.nivelTemperatura = leerFloat();
         
         fflush(stdin);
         cout<<"Nivel Contaminacion--> ";
-        cin>>bioma.nivelContaminacion;
+        bioma.nivelContaminacion = leerFloat();
         
         json datosBioma = {
             {"nombre", bioma.nombre},
@@ -218,7 +223,7 @@ void modificarDatosCategoria() {
     json datosJson;
     string categoria, nombreBuscado;
 
-    categoria = seleccionConFlechas("Seleccione una categoria: ", categorias, "horizontal");
+    categoria = seleccionConFlechas("Seleccione una categoria: \n", categorias, "horizontal");
     
 	if ( categoria == "Animal" ) { // Animal
 	    datosJson = leerArchivo(animalesJson);
@@ -412,7 +417,7 @@ void extraerDatosCategoria() {
     json datosJson;
     string nombreBuscado, categoria;
 
-    categoria = seleccionConFlechas("Seleccione una categoria: ", categorias, "horizontal");
+    categoria = seleccionConFlechas("Seleccione una categoria: \n", categorias, "horizontal");
 
     if ( categoria == "Animal" ) { // Animal
     	datosJson = leerArchivo(animalesJson);
@@ -638,12 +643,12 @@ void eliminarDatosCategoria() {
     json datosJson;
     string nombre, categoria;
 
-    categoria = seleccionConFlechas("Seleccione una categoria: ", categorias, "horizontal");
+    categoria = seleccionConFlechas("Seleccione una categoria: \n", categorias, "horizontal");
 
 	if ( categoria == "Animal" ) {
 	    datosJson = leerArchivo(animalesJson);
 	
-    } else if ( categoria == "Vegetales" ) {
+    } else if ( categoria == "Vegetal" ) {
 	    datosJson = leerArchivo(vegetalesJson);
 	
     } else if ( categoria == "Bioma" ) {
@@ -680,7 +685,7 @@ void eliminarDatosCategoria() {
                 if ( categoria == "Animal" ) {
                     escribirArchivo(animalesJson, datosJson);
                 } else{
-                    escribirArchivo(animalesJson, datosJson);
+                    escribirArchivo(vegetalesJson, datosJson);
                 }
 
                 cout << "Especie eliminada exitosamente." << endl;

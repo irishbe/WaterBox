@@ -1,0 +1,23 @@
+[
+    {
+        "bioma nativo": "Arrecifes de Coral",
+        "esperanza de vida": 100.0,
+        "familia biologica": "Corallinaceae",
+        "inactividad reproductiva": 0.0,
+        "nombre cientifico": "Familia Corallinaceae",
+        "nombre comun": "Algas coralinas",
+        "rango oxigeno": [
+            4.0,
+            4.0
+        ],
+        "rango salinidad": [
+            35.0,
+            30.0
+        ],
+        "rango temperatura": [
+            28.0,
+            22.0
+        ],
+        "tasa de reproduccion": 20.0
+    }
+]
