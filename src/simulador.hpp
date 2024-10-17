@@ -31,7 +31,7 @@ void iniciarSimulador() {
             getch();
         }
 
-        opcion = seleccionConFlechas(titulo, opciones, "horizontal");
+        opcion = seleccionConFlechas(titulo, opciones, "vertical");
 
         system("cls");
 

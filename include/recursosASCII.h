@@ -18,10 +18,20 @@ string tituloWaterBox() {
     "\n|___/    \\___|(___/    \\___)\\__|    \\_______)|__|  \\___)(_______/  \\\"_____/ |___/\\___|";
 }
 
-string obtenerSprite(string nombreEspecie){
-    if ( nombreEspecie == "Pez payaso" ){
-        return  "  m  m\n"
-                "><(((('>";
+string rgb(int r, int g, int b) {
+    return "\033[38;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
+}
+
+string obtenerSprite(string nombreEspecie) {
+    
+    if (nombreEspecie == "Pez payaso") {
+        return  rgb(255,127,0) + " m  m\n" +
+                rgb(255,127,0) + "><" + 
+                rgb(255,255,255) + "(" + 
+                rgb(255,127,0) + "(" +
+                rgb(255,255,255) + "(" +
+                rgb(255,127,0) + "(" +
+                rgb(255,255,255) + "'>";
 
     } else if( nombreEspecie == "Tiburon de arrecife" ){
         return  "\\_____)\\_____\n"
@@ -114,29 +124,44 @@ void imprimirCuadro(int alto, int ancho, int posX, int posY) {
     cout << "+";
 }
 
+int contarCaracteresSinANSI(const string& linea) {
+    int count = 0;
+    bool inEscape = false;
+    for (char c : linea) {
+        if (c == '\033') {
+            inEscape = true;
+        } else if (inEscape && c == 'm') {
+            inEscape = false;
+        } else if (!inEscape) {
+            count++;
+        }
+    }
+    return count;
+}
+
 void insertarSprite(string sprite, int posX, int posY, int anchoCuadro, int altoCuadro) {
-    // Dividir el sprite en lÃ­neas
+    // Dividir el sprite en líneas
     istringstream spriteStream(sprite);
     string linea;
     int lineCount = 0;
 
-    // Contar cuÃ¡ntas lÃ­neas tiene el sprite para centrar en Y
+    // Contar cuántas líneas tiene el sprite para centrar en Y
     int spriteHeight = 0;
     while (getline(spriteStream, linea)) {
         spriteHeight++;
     }
 
-    // Calcular la posiciÃ³n inicial en Y para centrar el sprite verticalmente
+    // Calcular la posición inicial en Y para centrar el sprite verticalmente
     int startY = posY + (altoCuadro - spriteHeight) / 2;
 
     // Volver al inicio del stream
     spriteStream.clear();
     spriteStream.seekg(0, ios::beg);
 
-    // Imprimir cada lÃ­nea del sprite centrada horizontal y verticalmente
+    // Imprimir cada línea del sprite centrada horizontal y verticalmente
     while (getline(spriteStream, linea)) {
-        // Calcular el offset para centrar la lÃ­nea del sprite en X
-        int offsetX = (anchoCuadro - 2 - linea.size()) / 2;
+        int visibleLength = contarCaracteresSinANSI(linea);
+        int offsetX = (anchoCuadro - 2 - visibleLength) / 2;
         moverCursor(posX + 1 + offsetX, startY + lineCount);
         cout << linea;
         lineCount++;
