@@ -20,6 +20,28 @@ void moverCursor(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+void fondoRGB(int r, int g, int b) {
+    // Obtener el tamaño de la consola
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+    int consoleWidth = csbi.dwSize.X;
+    int consoleHeight = csbi.dwSize.Y;
+
+    // Cambiar el color de fondo con ANSI y llenar cada línea con espacios
+    cout << "\033[48;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
+    
+    for (int i = 0; i < consoleHeight; ++i) {
+        cout << string(consoleWidth, ' ');
+    }
+
+    moverCursor(0,0);
+}
+
+string textoRGB(int r, int g, int b) {
+    return "\033[38;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
+}
+
 void ocultarCursor() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
@@ -74,6 +96,10 @@ int imprimirTitulo(string titulo, int x, int y) {
 // Función para imprimir las opciones
 int imprimirOpciones(vector<string> opciones, string sentido, bool centrado, int x, int y, int index) {
     
+    if ( sentido == "horizontal" ){
+        cout << "\n";
+    }
+
     for (int i = 0; i < opciones.size(); i++) {
         
         // Mover el cursor según el sentido
