@@ -1,4 +1,5 @@
 #include <iostream>
+#include "dibujosASCIII.hpp"
 #include "simulador.hpp"
 #include "wiki.hpp"
 

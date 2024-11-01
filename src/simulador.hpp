@@ -2,7 +2,7 @@
 #define SIMULADOR_H
 
 #include "crudEspecies.hpp"
-#include "recursosASCII.h"
+#include "utilidades.h"
 #include "Evento.hpp"
 
 using namespace std;
