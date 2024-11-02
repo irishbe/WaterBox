@@ -6,17 +6,24 @@
 #include <conio.h>
 #include <vector>
 #include <string>
+#include <algorithm>  // Para std::count
 
 using namespace std;
 
 // Constantes
 const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224;
 const int LEFT = 75, RIGHT = 77, UP = 72, DOWN = 80, ZERO = '0';
-const int COLOR_YELLOW = 14;
 
 void pantallaCompleta() {
     HWND consoleWindow = GetConsoleWindow();
     ShowWindow(consoleWindow, SW_MAXIMIZE);
+}
+
+int obtenerAnchoConsola() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+    return csbi.srWindow.Right - csbi.srWindow.Left + 1; // Ancho de la ventana actual
 }
 
 void moverCursor(int x, int y) {
@@ -24,6 +31,14 @@ void moverCursor(int x, int y) {
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+string textoRGB(int r, int g, int b) {
+    return "\033[38;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
+}
+
+string resetearColor(){
+    return "\033[38;2;" + to_string(255) + ";" + to_string(255) + ";" + to_string(255) + "m";
 }
 
 void fondoRGB(int r, int g, int b) {
@@ -41,11 +56,8 @@ void fondoRGB(int r, int g, int b) {
         cout << string(consoleWidth, ' ');
     }
 
-    moverCursor(0,0);
-}
-
-string textoRGB(int r, int g, int b) {
-    return "\033[38;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
+    // Mover el cursor a la posición inicial
+    moverCursor(0, 0);
 }
 
 void ocultarCursor() {
@@ -64,39 +76,57 @@ void mostrarCursor() {
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
+
+//------------------------------------------- SELECCIONAR CON FLECHAS ----------------------------------
+
+
+
 // Función para imprimir el título línea por línea moviendo el cursor
-int imprimirTitulo(string titulo, int x, int y) {
-    string linea;
+int imprimirTitulo(const string& titulo, int x = -1, int y = -1) {
+    vector<string> lineas;
+    size_t pos = 0;
+    size_t siguientePos;
 
-    if ( x < 0 || y < 0 ) {
-        cout << titulo << endl;
-        return y;
+    // Dividir el título en líneas
+    while ((siguientePos = titulo.find('\n', pos)) != string::npos) {
+        lineas.push_back(titulo.substr(pos, siguientePos - pos));
+        pos = siguientePos + 1;
+    }
+    lineas.push_back(titulo.substr(pos)); // Agregar la última línea
+
+    // Obtener el ancho de la consola
+    int anchoConsola = obtenerAnchoConsola();
+
+    // Si no se proporcionan coordenadas
+    if (x < 0 && y < 0) {
+        y = 0; // Usar la primera línea si no se proporciona y
     }
 
-    // Comprobar si el título comienza con un salto de línea
-    if ( !titulo.empty() && titulo[0] == '\n' ) {
-        moverCursor(x, y);
-        cout << endl;
-        y++;
-    }
+    // Imprimir cada línea centrada
+    for (const string& linea : lineas) {
+        string lineaRecortada = linea;
+        lineaRecortada.erase(0, lineaRecortada.find_first_not_of(' ')); // Eliminar espacios al inicio
+        lineaRecortada.erase(lineaRecortada.find_last_not_of(' ') + 1); // Eliminar espacios al final
 
-    for (char c : titulo) {
-        if (c == '\n') {
-            moverCursor(x, y);
-            cout << linea << endl;
-            linea.clear();
+        if (lineaRecortada.empty()) {
+            moverCursor(x >= 0 ? x : 0, y);
+            cout << endl; // Simplemente imprime una línea vacía
             y++;
-        } else {
-            linea += c;
+            continue;
         }
+
+        int longitudLinea = lineaRecortada.length();
+        int espacioIzquierdo = (anchoConsola - longitudLinea) / 2;
+
+        // Asegurarse de que no imprima espacio negativo
+        if (espacioIzquierdo < 0) espacioIzquierdo = 0;
+
+        moverCursor(x >= 0 ? x : espacioIzquierdo, y); // Usar el x calculado o el proporcionado
+        cout << lineaRecortada << endl;
+        y++; // Incrementar y para la siguiente línea
     }
 
-    if ( !linea.empty() ) {
-        moverCursor(x, y);
-        cout << linea << endl;
-    }
-
-    return y + 2;
+    return y; // Retornar la nueva posición y
 }
 
 // Función para imprimir las opciones
@@ -215,80 +245,117 @@ string seleccionConFlechas(string titulo, vector<string> opciones, string sentid
     return "";
 }
 
-// Funcion que imprime un dibujo y su opcion
-void imprimirDibujoConOpcion(const string& dibujo, const string& opcion, int x, int y, bool seleccionado) {
+
+// ------------------------------------------ SELECCIONAR CON DIBUJOS ------------------------------------------
+
+// Función para calcular el número de líneas en un dibujo
+int contarLineas(string dibujo) {
+    return count(dibujo.begin(), dibujo.end(), '\n') + 1;
+}
+
+void imprimirDibujoConOpcion(string& dibujo, const string& opcion, int x, int y, int alturaMax, bool seleccionado) {
     size_t pos = 0;
     string tempDibujo = dibujo;
     int lineaActual = y;
 
-    // Cambiar el color si es la opcion actual
+    // Cambiar el color si es la opción actual
     if (seleccionado) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR_YELLOW); 
+        cout << textoRGB(255,255,0);
     }
 
+    // Dividir el dibujo en líneas y imprimirlas
     while ((pos = tempDibujo.find('\n')) != string::npos) {
-        moverCursor(x, lineaActual);
-        cout << tempDibujo.substr(0, pos); // Imprime la linea del dibujo
-        tempDibujo.erase(0, pos + 1); // Elimina la linea impresa
-        lineaActual++; // Aumenta la linea actual
+        moverCursor(x, lineaActual); // Mover el cursor a la posición x
+        cout << tempDibujo.substr(0, pos); // Imprimir la línea
+        tempDibujo.erase(0, pos + 1);
+        lineaActual++;
     }
+    moverCursor(x, lineaActual); // Mover el cursor a la siguiente línea
+    cout << tempDibujo; // Imprimir la última línea del dibujo
 
-    // Imprimir la opcion debajo del dibujo
-    moverCursor(x, lineaActual + 1);
-    cout << opcion << endl; 
+    // Imprimir la opción en la misma posición x que el dibujo
+    moverCursor(x, lineaActual + 1); // Mover el cursor a la posición especificada
+    cout << opcion;
 
-    // Luego restablecer el color
+    // Restablecer el color si es la opción seleccionada
     if (seleccionado) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); 
+        cout << resetearColor();
     }
 }
 
-// Funcion que imprime todas las opciones y dibujos
-void mostrarOpciones(string titu, const vector<string>& opciones, const vector<string>& dibujos, int indiceSeleccionado) {
-    system("cls"); 
+// Función para mostrar todas las opciones y dibujos de forma uniforme
+void mostrarOpciones(string titulo, string subtitulo, vector<string> opciones, vector<string> dibujos, int indiceSeleccionado) {
+    system("cls");
 
-    moverCursor(30, 3); cout<<titu<<endl;
+    int anchoConsola = obtenerAnchoConsola();
+    int y = 3; // Línea inicial para el título
+    int tituloY = imprimirTitulo(titulo, anchoConsola / 2 - titulo.size() / 2, y); // Centramos el título en la consola
+    
+    
+    moverCursor(anchoConsola/2 - 42/2, tituloY + 1); cout << "------------------------------------------";
+    moverCursor(anchoConsola/2 - subtitulo.size()/2, tituloY + 2); cout << subtitulo;
+    moverCursor(anchoConsola/2 - 42/2, tituloY + 3); cout << "------------------------------------------";
 
-    int y = 6; // Linea inicial 
+    y = tituloY + 7; // Dejar espacio entre el título y las opciones
+
+    // Calcular la altura máxima de los dibujos
+    int alturaMax = 0;
+    for (const auto& dibujo : dibujos) {
+        alturaMax = max(alturaMax, contarLineas(dibujo));
+    }
+
+    // Imprimir dibujos y opciones distribuidos uniformemente
     int numeroOpciones = opciones.size();
+    int espacioEntreDibujos = (anchoConsola - numeroOpciones * 30) / (numeroOpciones + 1);
+    int x = 5 + espacioEntreDibujos;
 
-    // Imprimir dibujos y opciones
     for (int i = 0; i < numeroOpciones; ++i) {
-        imprimirDibujoConOpcion(dibujos[i], opciones[i], 5 + i * 35, y, i == indiceSeleccionado);
-        y = 6; 
+        // Llamar a la función para imprimir cada dibujo y opción
+        imprimirDibujoConOpcion(dibujos[i], opciones[i], x, y, alturaMax, i == indiceSeleccionado);
+        x += 30 + espacioEntreDibujos; // Avanzar según el ancho del dibujo más el espacio
     }
+
+    imprimirCancelar(anchoConsola / 2 - 42 / 2, y + alturaMax + 4);
 }
 
-// Funcion principal
-int mostrarMenu(string titulo, const vector<string>& opciones, const vector<string>& dibujos) {
+// Función de seleccion
+int seleccionarConDibujos(string titulo, string subtitulo, vector<string> opciones, vector<string> dibujos) {
     char tecla;
     int index = 0; 
     int numeroOpciones = opciones.size();
 
-    mostrarOpciones(titulo, opciones, dibujos, index); 
+    // Verificar que el número de opciones coincide con el número de dibujos
+    if (numeroOpciones != dibujos.size()) {
+        cerr << "Error: El número de opciones no coincide con el número de dibujos." << endl;
+        return 0; // Retorna 0 si hay un error de coincidencia
+    }
 
-    while (true) {
+    ocultarCursor();
+
+    do {
+
+        mostrarOpciones(titulo, subtitulo, opciones, dibujos, index); 
+        
         tecla = _getch(); 
 
-        if (tecla == ESC || tecla == ZERO) {
-            return -1; // Regresar 
-        } else if (tecla == TECLA_ESPECIAL) {
+        if (tecla == TECLA_ESPECIAL) {
             tecla = _getch(); 
 
-            switch (tecla) {
-                case LEFT: 
-                    index = (index - 1 + numeroOpciones) % numeroOpciones;
-                    mostrarOpciones(titulo, opciones, dibujos, index);
-                    break;
-                case RIGHT: 
-                    index = (index + 1) % numeroOpciones;
-                    mostrarOpciones(titulo, opciones, dibujos, index);
-                    break;
+            if(tecla == LEFT){
+                index = (index - 1 + numeroOpciones) % numeroOpciones;
+            } else if(tecla == RIGHT){
+                index = (index + 1) % numeroOpciones;
             }
+
         } else if (tecla == ENTER) {
-            return index; // Devuelve la op seleccionada
+            mostrarCursor();
+            return index + 1; // Devuelve la opción seleccionada (1 a n)
         }
-    }
+
+    } while(tecla != ESC && tecla != ZERO);
+
+    mostrarCursor();
+    return 0; // Retorna 0 si se cancela la selección
 }
 
 #endif // UTILIDADES_H
