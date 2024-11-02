@@ -9,13 +9,13 @@ using namespace std;
 
 string tituloWaterBox() {
     return 
-    "\n __   __  ___       __  ___________  _______   _______   _______     ______  ___  ___"
-    "\n|\"  |/  \\|  \"|     /\"\"\\(\"     _   \")/\"     \"| /\"      \\ |   _  \"\\   /    \" \\|\"  \\/\"  |"
-    "\n|\'  /    \\:  |    /    \\\\)_/  \\\\\\\\/(: ______)|:        |(. |_)  :) // __   \\\\\\   \\\\  /  "
-    "\n|: /\'        |   /' /\\  \\  \\\\_ /    \\/    |  |_____/   )|:     \\/ /  /    ) :)\\\\  \\/   "
-    "\n \\//  /\\\'    |  //  __'  \\ |.  |    // ___)_  //      / (|  _  \\\\(: (____/ // /\\.  \\   "
-    "\n /   /  \\\\   | /   /  \\\\  \\\\:  |   (:      \"||:  __   \\ |: |_)  :)\\        / /  \\   \\  "
-    "\n|___/    \\___|(___/    \\___)\\__|    \\_______)|__|  \\___)(_______/  \\\"_____/ |___/\\___|";
+    " __   __  ___       __  ___________  _______   _______   _______     ______  ___  ___\n"
+    "|\"  |/  \\|  \"|     /\"\"\\(\"     _   \")/\"     \"| /\"      \\ |   _  \"\\   /    \" \\|\"  \\/\"  |\n"
+    "|\'  /    \\:  |    /    \\\\)_/  \\\\\\\\/(: ______)|:        |(. |_)  :) // __   \\\\\\   \\\\  /  \n"
+    "|: /\'        |   /' /\\  \\  \\\\_ /    \\/    |  |_____/   )|:     \\/ /  /    ) :)\\\\  \\/   \n"
+    " \\//  /\\\'    |  //  __'  \\ |.  |    // ___)_  //      / (|  _  \\\\(: (____/ // /\\.  \\   \n"
+    " /   /  \\\\   | /   /  \\\\  \\\\:  |   (:      \"||:  __   \\ |: |_)  :)\\        / /  \\   \\  \n"
+    "|___/    \\___|(___/    \\___)\\__|    \\_______)|__|  \\___)(_______/  \\\"_____/ |___/\\___|";
 }
 
 //Dibujos especies
@@ -117,12 +117,33 @@ string ASCIagregarEspecie(){
 }
 
 //Funcion doble uso -> ASCI de "Enlistar Especies" (Opcion de simulación) y de "Por Nombre" (Opción de WikiWater)
-string ASCIenlistarEspecies_PorNombre(){
-        return  textoRGB(255,255,255) + " ><(((('>  ><(((('>  ><(((('>\n" +
-                textoRGB(255,255,255) + "     ><(((('>  ><(((('> \n" +
-                textoRGB(255,255,255) + " ><(((('>  ><(((('>  ><(((('>\n";
+string dibujoArrecife(){
+        return  "><(((('>  ><(((('>  ><(((('>\n"
+                "     ><(((('>  ><(((('> \n"
+                "><(((('>  ><(((('>  ><(((('>\n";
 }
 
+//Funcion doble uso -> ASCI de "Salinidad" (Opcion de "Modificar Factores") y de "Por Bioma" (Opción de WikiWater)
+string dibujoSalinidad(){
+        return  "────▄████▄─────\n"
+                "─▄██▀─▀▀─▀██▄──\n"
+                "███───────███─█\n"
+                "███─█─█───███─▀\n"
+                "─▀██▄─█─▄██▀──▄\n"
+                "───▀████▀─────\n";    
+}
+
+//Funcion de "Por Listado" (Opción de WikiWater)
+string dibujoLista(){
+        return  "█████████████████████\n"
+                "█       LISTA       █\n"
+                "█   █████████████   █\n"
+                "█   █           █   █\n"
+                "█   █  ><((('>  █   █\n"
+                "█   █████████████   █\n"
+                "█                   █\n"
+                "█████████████████████\n";       
+}
 
 string ASCImostrarDatosEspecie(){
         return  textoRGB(255,255,255) + "█████████████████████\n" +
@@ -157,16 +178,6 @@ string ASCIoxigeno(){
                 textoRGB(255,255,255) + "   ○    ○\n";    
  }
 
-//Funcion doble uso -> ASCI de "Salinidad" (Opcion de "Modificar Factores") y de "Por Bioma" (Opción de WikiWater)
-string ASCIsalinidad_PorBioma(){
-        return  textoRGB(255,255,255) + "────▄████▄─────\n" +
-                textoRGB(255,255,255) + "─▄██▀─▀▀─▀██▄──\n" +
-                textoRGB(255,255,255) + "███───────███─█\n" +
-                textoRGB(255,255,255) + "███─█─█───███─▀\n" +
-                textoRGB(255,255,255) + "─▀██▄─█─▄██▀──▄\n" +
-                textoRGB(255,255,255) + "───▀████▀─────\n";    
-}
-
 string ASCItemperatura(){
         return  textoRGB(255,255,255) + " \\ | / \n" +
                 textoRGB(255,255,255) + "-- ☼ -- \n" +
@@ -178,18 +189,6 @@ string ASCIcontaminacion(){
                 textoRGB(255,255,255) + "▀▄▄▀▄▄▀▄▄▀▄▄▀▄▄▀\n" +
                 textoRGB(255,255,255) + "▄▀▀▄▀▀▄▀▀▄▀▀▄▀▀▄\n" +
                 textoRGB(255,255,255) + "▀▄▄▀▄▄▀▄▄▀▄▄▀▄▄▀\n";
-}
-
-//Funcion de "Por Listado" (Opción de WikiWater)
-string ASCIporListado(){
-        return  textoRGB(255,255,255) + "█████████████████████\n" +
-                textoRGB(255,255,255) + "█       LISTA       █\n" +
-                textoRGB(255,255,255) + "█   █████████████   █\n" +
-                textoRGB(255,255,255) + "█   █           █   █\n" +
-                textoRGB(255,255,255) + "█   █  ><((('>  █   █\n" +
-                textoRGB(255,255,255) + "█   █████████████   █\n" +
-                textoRGB(255,255,255) + "█                   █\n" +
-                textoRGB(255,255,255) + "█████████████████████\n";       
 }
 
 //Dibujo Códigos
