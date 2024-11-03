@@ -30,7 +30,6 @@ string tituloSeleccionarBioma(){
     "\n░░░░░░░░░░░  ░░░░░    ░░░░░░░    ░░░░░     ░░░░░ ░░░░░   ░░░░░  ░░░░░░░░░  ";
 }
 
-
 //Dibujos especies
 string pezPayaso(){
         return  textoRGB(255,127,0) + " m  m\n" +
