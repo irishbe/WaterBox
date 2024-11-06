@@ -1,6 +1,6 @@
 // estructura los datos del Bioma
-#ifndef BIOMA_HPP
-#define BIOMA_HPP
+#ifndef DATOS_BIOMA_HPP
+#define DATOS_BIOMA_HPP
 
 #include <string>
 using namespace std;
@@ -16,4 +16,4 @@ struct Bioma{
 };
 
 
-#endif //Bioma.hpp
+#endif //datosBioma.hpp
