@@ -2,6 +2,7 @@
 #define POBLACION_H
 
 #include "Especie.hpp"
+#include "utilidades.hpp"
 using namespace std;
 
 struct Poblacion {

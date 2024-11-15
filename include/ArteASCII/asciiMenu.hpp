@@ -3,17 +3,16 @@
 
 #include <iostream>
 #include <sstream>
-#include "utilidades.h"
 
 using namespace std;
 
 // ------------------------------------------- MENU PRINCIPAL -------------------------------------------
 
-string asciiCodigos() {
+string ASCIICodigos() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:    ______             :"
-    "\n:   |_,.,--\\            :"
+    "\n:   |_,.,--\\           :"
     "\n:     ||                :"
     "\n:     ||     CÓDIGOS    :"
     "\n:     ##                :"
@@ -21,23 +20,23 @@ string asciiCodigos() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiSimulador() {
+string ASCIISimulador() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n: |   .   SIMULADOR . | :"
     "\n: |.  /     .  °  .   | :"
-    "\n: |\\  | |  o    .    .| :"
+    "\n: |\\  | |  o    .   .| :"
     "\n: | | |/   _ °    <>< | :"
-    "\n: |  \\|  ><_>         | :"
+    "\n: |  \\|  ><_>        | :"
     "\n: ∙---!--------;;--;;-∙ :"
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
 // ------------------------------------------- MENU WIKIWATER -------------------------------------------
 
-string asciiBuscarPorNombre() {
+string ASCIIBuscarPorNombre() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:                       :"
     "\n: ><(((('>  ><(((('>    :"
     "\n:                       :"
@@ -45,12 +44,12 @@ string asciiBuscarPorNombre() {
     "\n:                       :"
     "\n:   POR NOMBRE COMÚN    :"
     "\n:     O CIENTÍFICO      :"
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiBuscarPorBioma() {
+string ASCIIBuscarPorBioma() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:               \\ | /   :"
     "\n:              --(_)--  :"
     "\n:               / | \\   :"
@@ -61,9 +60,9 @@ string asciiBuscarPorBioma() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiBuscarPorFamilia() {
+string ASCIIBuscarPorFamilia() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:     \\\\ °   o     o    :"
     "\n: >><(((('> °           :"
     "\n:     //    \\\\\\\\__   o  :"
@@ -76,9 +75,9 @@ string asciiBuscarPorFamilia() {
 
 // ------------------------------------------- MENU SIMULADOR -------------------------------------------
 
-string asciiAgregarEspecie() {
+string ASCIIAgregarEspecie() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:    AGREGAR ESPECIE    :"
     "\n:               .       :"
     "\n:    _    \\_____)\\_____ :"
@@ -88,9 +87,9 @@ string asciiAgregarEspecie() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiEliminarEspecie() {
+string ASCIIEliminarEspecie() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:   ELIMINAR ESPECIE    :"
     "\n:              .        :"
     "\n:        \\_____)\\_____  :"
@@ -100,9 +99,9 @@ string asciiEliminarEspecie() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiModificarFactores() {
+string ASCIIModificarFactores() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:       \\   |   /       :"
     "\n:         .---.         :"
     "\n:    --  /     \\  --    :"
@@ -112,9 +111,9 @@ string asciiModificarFactores() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiEnlistarEspecies() {
+string ASCIIEnlistarEspecies() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n: ,._.-._.-=-._.-=-._., :"
     "\n: |                   | :"
     "\n: | ENLISTAR ESPECIES | :"
@@ -124,9 +123,9 @@ string asciiEnlistarEspecies() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiBuscarWikiwater() {
+string ASCIIBuscarWikiwater() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:   .______________.    :"
     "\n:  / \\             \\   °:"
     "\n: |._|   BUSCAR EN  |°  :"
@@ -138,9 +137,9 @@ string asciiBuscarWikiwater() {
 
 // ---------------------------------------- MENU MODIFICAR FACTORES ----------------------------------------
 
-string asciiSalinidad() {
+string ASCIISalinidad() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:       SALINIDAD       :"
     "\n:         ______        :"
     "\n:      ._/_____/|_.     :"
@@ -150,9 +149,9 @@ string asciiSalinidad() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiOxigeno() {
+string ASCIIOxigeno() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:        OXÍGENO        :"
     "\n:      °             o  :"
     "\n:   ( )   o   °    o    :"
@@ -162,9 +161,9 @@ string asciiOxigeno() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiContaminacion() {
+string ASCIIContaminacion() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:     CONTAMINACIÓN     :"
     "\n:      [!!!!!!!!!]      :"
     "\n:       |  .-.  |       :"
@@ -174,9 +173,9 @@ string asciiContaminacion() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
  
-string asciiTemperatura() {
+string ASCIITemperatura() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:      TEMPERATURA      :"
     "\n:  ∙─────────────────∙  :"
     "\n:  │   .   .   .   ºC│  :"
@@ -186,4 +185,4 @@ string asciiTemperatura() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-#endif // asciiMenu.hpp
+#endif // ASCIIMenu.hpp

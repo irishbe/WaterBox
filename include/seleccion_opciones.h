@@ -11,25 +11,15 @@ using namespace std;
 // Constantes
 const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224;
 const int LEFT = 75, RIGHT = 77, ZERO = '0';
-const int COLOR_YELLOW = 14; //color amarillo
+const int COLOR_YELLOW = 14;
 
 // Prototipos de funciones
-void gotoxy(int x, int y);
-void imprimirDibujoConOpcion(const string& dibujo, const string& opcion, int x, int y, bool seleccionado);
-void mostrarOpciones(const vector<string>& opciones, const vector<string>& dibujos, int indiceSeleccionado);
-int mostrarMenu(const vector<string>& opciones, const vector<string>& dibujos);
-
-
-
-void gotoxy(int x, int y) {
-    COORD coord;  
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+void imprimirDibujoConOpcion(string dibujo, string opcion, int x, int y, bool seleccionado);
+void mostrarOpciones(vector<string> opciones, vector<string> dibujos, int indiceSeleccionado);
+int mostrarMenu(vector<string> opciones, vector<string> dibujos);
 
 // Funcion que imprime un dibujo y su opcion
-void imprimirDibujoConOpcion(const string& dibujo, const string& opcion, int x, int y, bool seleccionado) {
+void imprimirDibujoConOpcion(string dibujo, string opcion, int x, int y, bool seleccionado) {
     size_t pos = 0;
     string tempDibujo = dibujo;
     int lineaActual = y;
@@ -40,14 +30,14 @@ void imprimirDibujoConOpcion(const string& dibujo, const string& opcion, int x, 
     }
 
     while ((pos = tempDibujo.find('\n')) != string::npos) {
-        gotoxy(x, lineaActual);
+        moverCursor(x, lineaActual);
         cout << tempDibujo.substr(0, pos); // Imprime la linea del dibujo
         tempDibujo.erase(0, pos + 1); // Elimina la linea impresa
         lineaActual++; // Aumenta la linea actual
     }
 
     // Imprimir la opcion debajo del dibujo
-    gotoxy(x, lineaActual + 1);
+    moverCursor(x, lineaActual + 1);
     cout << opcion << endl; 
 
     // Luego restablecer el color
@@ -57,10 +47,10 @@ void imprimirDibujoConOpcion(const string& dibujo, const string& opcion, int x, 
 }
 
 // Funcion que imprime todas las opciones y dibujos
-void mostrarOpciones(string titu, const vector<string>& opciones, const vector<string>& dibujos, int indiceSeleccionado) {
+void mostrarOpciones(string titulo, vector<string> opciones, vector<string> dibujos, int indiceSeleccionado) {
     system("cls"); 
 
-    gotoxy(30, 3); cout<<titu<<endl;
+    moverCursor(30, 3); cout<<titulo<<endl;
 
     int y = 6; // Linea inicial 
     int numeroOpciones = opciones.size();
@@ -73,7 +63,7 @@ void mostrarOpciones(string titu, const vector<string>& opciones, const vector<s
 }
 
 // Funcion principal
-int mostrarMenu(string titulo, const vector<string>& opciones, const vector<string>& dibujos) {
+int mostrarMenu(string titulo, vector<string> opciones, vector<string> dibujos) {
     char tecla;
     int index = 0; 
     int numeroOpciones = opciones.size();

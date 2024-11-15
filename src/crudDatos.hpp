@@ -5,10 +5,10 @@
 #include <fstream>
 #include <cctype>
 #include "DatosEspecie.hpp"
-#include "Bioma.h"
+#include "Bioma.hpp"
 #include "Evento.hpp"
-#include "utilidades.h"
-#include "json.hpp"
+#include "utilidades.hpp"
+#include "LibreriasExternas/json.hpp"
 
 using json = nlohmann::json;
 using namespace std;

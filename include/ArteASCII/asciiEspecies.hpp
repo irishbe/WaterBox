@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <sstream>
-#include "utilidades.h"
 
 using namespace std;
 
@@ -16,7 +15,7 @@ string pezPayaso(){
                 textoRGB(255,255,255) + "(" +
                 textoRGB(255,127,0) + "(" +
                 textoRGB(255,255,255) + "'>" +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
  string tiburonDeArrecife(){
@@ -24,7 +23,7 @@ string pezPayaso(){
                 textoRGB(9,12,187) + "/--_____||__`_>\n" + 
                 textoRGB(9,12,187) + "        )/     \n" + 
                 textoRGB(9,12,187) + "        '        " +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
  string langostaComun(){
@@ -32,7 +31,7 @@ string pezPayaso(){
                 textoRGB(187,39,9) + "v  |  |    \n" + 
                 textoRGB(187,39,9) + "<((((())---\n" + 
                 textoRGB(187,39,9) + "v  |  |__    " +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
 string pezMariposa(){
@@ -48,7 +47,7 @@ string pezMariposa(){
                 textoRGB(247,223,71) + "o_" +
                 textoRGB(255,255,255) + "> \n" +
                 textoRGB(0,0,0) + "     v    " +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
 string camaronLimpiador(){
@@ -62,7 +61,7 @@ string algasCoralinas(){
         return  textoRGB(195,50,231) + " vv vv vv   \n" +
                 textoRGB(195,50,231) + "< <<  >>  >>\n" + 
                 textoRGB(195,50,231) + "  vv vv  vv  " + 
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
 string pezLinterna(){
@@ -75,7 +74,7 @@ string pezLinterna(){
                 textoRGB(255,255,255) + "<" +
                 textoRGB(51,21,32) + "___(  \n" +
                 textoRGB(255,255,255) + "    v      " +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
 string pezVibora(){
@@ -84,7 +83,7 @@ string pezVibora(){
                 textoRGB(65,61,122) + "><" + 
                 textoRGB(111,81,117 ) + "((((((((((')\n" +
                 textoRGB(65,61,122) + "        w       " +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255;
 }
 
 string medusaPeine(){

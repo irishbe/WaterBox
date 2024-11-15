@@ -1,7 +1,6 @@
 #include <iostream>
-#include "dibujosASCIII.hpp"
 #include "simulador.hpp"
-#include "wiki.hpp"
+//#include "wiki.hpp"
 
 using namespace std;
 
@@ -11,37 +10,32 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     pantallaCompleta();
 
-    string opcionMenu, advertencia = "EJECUTAR COMO ADMINISTRADOR EN CASO SE DEFORMEN LOS TEXTOS ASCII\n"; 
-    vector<string> opcionesMenu = {"INICIAR", "WIKIWATER", "CODIGOS", "SALIR"};
+    int opcion = -1;
+    string advertencia = "EJECUTAR COMO ADMINISTRADOR EN CASO SE DEFORMEN LOS TEXTOS ASCII\n"; 
+    vector<string> dibujos = {
+        ASCIISimulador(),
+        ASCIIBuscarWikiwater(),
+        ASCIICodigos()
+    };
     
     advertencia.append( tituloWaterBox() );
 
     do{
-        opcionMenu = seleccionConFlechas( advertencia, opcionesMenu, "vertical", true, 30, 5);
+        opcion = seleccionarConDibujos(dibujos, advertencia, "OLA SOY UN SUBTITULO");
 
         system("cls");
 
-        if( opcionMenu == "INICIAR" ){
-            iniciarSimulador();
-        }
-        else if( opcionMenu == "WIKIWATER" ){
-            iniciarWiki();
-        }
-        else if( opcionMenu == "CODIGOS"){
-            ingresarCodigos();
-        }
-        else if( opcionMenu == "SALIR" || opcionMenu == ""){
-            cout<<"\nSaliendo...";
-            getch();
-        }
-        else{
-            cout << "Opcion invalida" << endl;
-            getch();
+        switch(opcion){
+            case 1: iniciarSimulador(); break;
+            case 2: break;
+            case 3: ingresarCodigos(); break;
+            case -1: cout << "\nSaliendo..."; getch(); break;
+            default: cout << "\nOpción no válida. Por favor, seleccione una opción válida."; getch(); break;
         }
 
         system("cls");
 
-    }while( opcionMenu != "SALIR" && opcionMenu != "");
+    }while( opcion != -1);
 
     return 0;
 }
