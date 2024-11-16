@@ -19,31 +19,6 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
 void imprimirPoblaciones();
 int mostrarMenuFactores();
 
-// Función que imprime el menú de factores con dibujos y etiquetas
-int mostrarMenuFactores() {
-    const string subtitulo =
-    "              ---------------\n"
-    "              FACTORES\n"
-    "              ---------------\n";
-
-    // Vector de dibujos representando cada opción
-    vector<string> dibujos = {
-        ASCIIOxigeno(),
-        ASCIISalinidad(),
-        ASCIITemperatura(),
-        ASCIIContaminacion()
-    };
-
-    // Limpiar pantalla y mostrar título
-    cout << tituloWaterBox() << endl;
-
-    // Mostrar subtítulo
-    imprimirTexto(subtitulo, 0, 12, true);
-
-    // Mostrar el menú y devolver la selección
-    return seleccionarConDibujos( dibujos, tituloWaterBox(), subtitulo);
-}
-
 // Función para iniciar el simulador
 void iniciarSimulador() {
     bool desplegarCuadros = true;
@@ -63,11 +38,11 @@ void iniciarSimulador() {
 
         if (desplegarCuadros){
             mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-            mostrarEventos(pilaEventosUsuario);
+            mostrarEventos(pilaEventos, "Pila de eventos");
             getch();
         }
 
-        int opcion = seleccionarConDibujos( dibujos, tituloWaterBox(), "SELECCIONE UNA OPCION");
+        opcion = seleccionarConDibujos( dibujos, tituloWaterBox(), "SELECCIONE UNA OPCION");
 
         switch (opcion){
             case 1: agregarEspecie(); desplegarCuadros = true; break;
@@ -127,16 +102,20 @@ void imprimirPoblaciones() {
 }
 
 void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float &contaminacion) {
+    int opcion = -1;
+    vector<string> dibujos = {
+        ASCIIOxigeno(),
+        ASCIISalinidad(),
+        ASCIITemperatura(),
+        ASCIIContaminacion()
+    };
+    
     do {
-        int seleccion = mostrarMenuFactores();
+        opcion = seleccionarConDibujos(dibujos, tituloWikiWater(), "SELECCIONE EL FACTOR A MODIFICAR");
         system("cls");
 
-        if (seleccion == -1) {
-            break;
-        }
-
-        switch (seleccion) {
-            case 0: // Oxígeno
+        switch (opcion) {
+            case 1: // Oxígeno
                 cout << "Ingrese el nivel de oxígeno (Mín. 0 / Máx. 14 mg/L): ";
                 cin >> oxigeno;
                 if (oxigeno < oxigenoMin || oxigeno > oxigenoMax) {
@@ -144,7 +123,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
                     getch();
                 }
                 break;
-            case 1: // Salinidad
+            case 2: // Salinidad
                 cout << "Ingrese el nivel de salinidad (Mín. 0 / Máx. 330 ups): ";
                 cin >> salinidad;
                 if (salinidad < salinidadMin || salinidad > salinidadMax) {
@@ -152,7 +131,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
                     getch();
                 }
                 break;
-            case 2: // Temperatura
+            case 3: // Temperatura
                 cout << "Ingrese la temperatura (Mín. 0 / Máx. 40 °C): ";
                 cin >> temperatura;
                 if (temperatura < temperaturaMin || temperatura > temperaturaMax) {
@@ -160,7 +139,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
                     getch();
                 }
                 break;
-            case 3: // Contaminación
+            case 4: // Contaminación
                 cout << "Ingrese el nivel de contaminación (Mín. 0 / Máx. 100 %): ";
                 cin >> contaminacion;
                 if (contaminacion < contaminacionMin || contaminacion > contaminacionMax) {
@@ -168,6 +147,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
                     getch();
                 }
                 break;
+            case -1: break;
             default:
                 cout << "Opción inválida..." << endl;
                 getch();
@@ -176,12 +156,11 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
 
         system("cls");
         mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-        mostrarEventos(pilaEventosUsuario);
-        getch();
+        mostrarEventos(pilaEventos, "Pila de eventos");
 
         system("cls");
 
-    } while (true);
+    } while (opcion != -1);
 }
 
 #endif // SIMULADOR_H

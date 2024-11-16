@@ -7,113 +7,229 @@
 #include <vector>
 #include "Especie.hpp"
 #include "Tiempo.hpp"
+#include "Bioma.hpp"
 
 using namespace std;
 
-// Definición de la estructura del Nodo para la pila
-struct Nodo {
-    string descripcion;
-    Nodo* siguiente;
+// Enum para los tipos de eventos
+enum TipoEvento {
+    AGREGAR_ESPECIE,
+    ELIMINAR_ESPECIE,
+    MODIFICAR_BIOMA,
+    REPRODUCCION,
+    DEPREDACION,
+    CAZA,
+    ENFERMEDAD,
+    CREAR_ESPECIE_ADMIN,
+    ELIMINAR_ESPECIE_ADMIN,
+    EDITAR_ESPECIE_ADMIN,
+    CREAR_BIOMA_ADMIN,
+    ELIMINAR_BIOMA_ADMIN,
+    EDITAR_BIOMA_ADMIN
 };
 
-// Punteros para la pila de eventos del usuario y del administrador
-Nodo* pilaEventosUsuario = nullptr;
-Nodo* pilaEventosAdmin = nullptr;
+// Estructura del evento
+struct Evento {
+    TipoEvento tipo;
+    string descripcion;
+    Tiempo tiempo;
+    Bioma* biomaOcurrencia;
+    Especie* especie1;
+    Especie* especie2;
+    Evento* sgteEvento;
+};
 
-// Prototipos de función
-string obtenerTiempoActual();
-void agregarPila(Nodo*& pila, const string& descripcion);
-void registrarEvento(const string tipo, const string bioma, Especie* especie1 = nullptr, bool esAdmin = false);
-void mostrarEventos(Nodo* pila);
-void actualizarArchivoEventos(const string& nombreArchivo, Nodo* pila);
+// Listas globales para la pila y las colas
+Evento* pilaEventos = nullptr;
+Evento* colaEventos = nullptr;
 
-// Función para obtener el formato de tiempo actual
-string obtenerTiempoActual() {
-    return formatearTiempo(getTiempoActual()); // Función de "Tiempo.h" para formatear el tiempo
+// Función para agregar evento a la pila
+void push(Evento*& pilaEventos, Evento* nuevoEvento) {
+    nuevoEvento->sgteEvento = pilaEventos;
+    pilaEventos = nuevoEvento;
 }
 
-// Función para agregar un evento a la pila
-void agregarPila(Nodo*& pila, const string& descripcion) {
-    Nodo* nuevo_nodo = new Nodo();
-    nuevo_nodo->descripcion = descripcion;
-    nuevo_nodo->siguiente = pila;
-    pila = nuevo_nodo;
+// Función para remover el último evento de la pila
+Evento* pop(Evento*& pilaEventos) {
+    if (!pilaEventos) return nullptr;
+    Evento* eventoEliminado = pilaEventos;
+    pilaEventos = pilaEventos->sgteEvento;
+    eventoEliminado->sgteEvento = nullptr;
+    return eventoEliminado;
 }
 
-// Función para registrar un evento en la pila y en el archivo correspondiente
-void registrarEvento(const string tipo, const string bioma, Especie* especie1, bool esAdmin) {
-    string descripcion = obtenerTiempoActual();
-
-    // Generación de la descripción del evento según el tipo
-    if (tipo == "AGREGAR ESPECIE") {
-        descripcion += " Agregaste una especie " + (especie1 ? (especie1->datosEspecie->nombreComun) : "") +
-                       " con ID (" + to_string(especie1->id) + ") al bioma " + bioma;
-    } else if (tipo == "ELIMINAR ESPECIE") {
-        descripcion += " Eliminaste un " + (especie1 ? (especie1->datosEspecie->nombreComun) : "") +
-                       " con ID (" + to_string(especie1->id) + ") del bioma " + bioma;
-    } else if (tipo == "MOSTRAR DATOS ESPECIE") {
-        descripcion += " Se han mostrado los datos de la especie " + (especie1 ? (especie1->datosEspecie->nombreComun) : "") +
-                       " con ID (" + to_string(especie1->id) + ")";
-    } else if (tipo == "CREAR ESPECIE ADMIN") {
-        descripcion += " Creaste una nueva especie " + (especie1 ? (especie1->datosEspecie->nombreComun) : "");
-    } else if (tipo == "MODIFICAR ESPECIE ADMIN") {
-        descripcion += " Modificaste la especie " + (especie1 ? (especie1->datosEspecie->nombreComun) : "");
-    } else if (tipo == "ELIMINAR ESPECIE ADMIN") {
-        descripcion += " Eliminaste la especie " + (especie1 ? (especie1->datosEspecie->nombreComun) : "");
-    } else if (tipo == "EXTRAER DATOS ESPECIE ADMIN") {
-        descripcion += " Extrajiste los datos de la especie " + (especie1 ? (especie1->datosEspecie->nombreComun) : "");
-    }
-
-    // Agregar el evento a la pila correspondiente
-    if (esAdmin) {
-        agregarPila(pilaEventosAdmin, descripcion);
-        actualizarArchivoEventos("ColaEventosAdmin.txt", pilaEventosAdmin);
+// Función para agregar evento al final de la cola
+void enqueue(Evento*& colaEventos, Evento* nuevoEvento) {
+    if (!colaEventos) {
+        colaEventos = nuevoEvento;
     } else {
-        agregarPila(pilaEventosUsuario, descripcion);
-        actualizarArchivoEventos("ColaEventos.txt", pilaEventosUsuario);
+        Evento* temp = colaEventos;
+        while (temp->sgteEvento) {
+            temp = temp->sgteEvento;
+        }
+        temp->sgteEvento = nuevoEvento;
     }
 }
 
-// Función para actualizar el archivo de eventos, guardando todos los eventos en orden inverso
-void actualizarArchivoEventos(const string& nombreArchivo, Nodo* pila) {
+
+
+// Guardar eventos en el archivo especificado
+void registrarEventosEnArchivo(Evento* eventos, const string& nombreArchivo) {
     ofstream archivo(nombreArchivo);
-    if (archivo.is_open()) {
-        vector<string> eventos; // Usamos un vector para almacenar los eventos temporalmente
-
-        // Recorremos la pila y almacenamos las descripciones en el vector
-        Nodo* aux = pila;
-        while (aux != nullptr) {
-            eventos.push_back(aux->descripcion);
-            aux = aux->siguiente;
-        }
-
-        // Escribimos los eventos en el archivo en orden inverso
-        for (auto it = eventos.rbegin(); it != eventos.rend(); ++it) {
-            archivo << *it << endl;
-        }
-
-        archivo.close();
-    } else {
-        cout << "No se pudo acceder al archivo " << nombreArchivo << endl;
+    if (!archivo) {
+        cerr << "Error al abrir el archivo" << endl;
+        return;
     }
+    Evento* temp = eventos;
+    while (temp) {
+        archivo << "Tipo de Evento: " << temp->tipo << endl;
+        archivo << "Descripción: " << temp->descripcion << endl;
+        archivo << "Bioma de Ocurrencia: " << temp->biomaOcurrencia->nombre << endl;
+        if (temp->especie1) archivo << "Especie 1: " << temp->especie1->datosEspecie->nombreComun << endl;
+        if (temp->especie2) archivo << "Especie 2: " << temp->especie2->datosEspecie->nombreComun << endl;
+        archivo << "-----------------------" << endl;
+        temp = temp->sgteEvento;
+    }
+    archivo.close();
 }
 
-// Función para mostrar todos los eventos en la consola
-void mostrarEventos(Nodo* pila) {
-    vector<string> eventos; // Usamos un vector para almacenar los eventos temporalmente
+// Crear y escribir en "descripcionEventos.txt"
+void guardarDescripcionEventos(const string& nombreArchivo) {
+    ofstream archivo(nombreArchivo);
+    if (!archivo) {
+        cerr << "Error al abrir el archivo" << endl;
+        return;
+    }
 
-    // Recorremos la pila y almacenamos las descripciones en el vector
-    Nodo* aux = pila;
+    // Escribir eventos de la cola
+    archivo << "Eventos en la Cola:" << endl;
+    Evento* temp = colaEventos;
+    while (temp) {
+        archivo << "Tipo de Evento: " << temp->tipo << endl;
+        archivo << "Descripción: " << temp->descripcion << endl;
+        archivo << "Bioma de Ocurrencia: " << temp->biomaOcurrencia->nombre << endl;
+        if (temp->especie1) archivo << "Especie 1: " << temp->especie1->datosEspecie->nombreComun << endl;
+        if (temp->especie2) archivo << "Especie 2: " << temp->especie2->datosEspecie->nombreComun << endl;
+        archivo << "-----------------------" << endl;
+        temp = temp->sgteEvento;
+    }
+
+    // Escribir eventos de la pila
+    archivo << "\nEventos en la Pila:" << endl;
+    temp = pilaEventos;
+    while (temp) {
+        archivo << "Tipo de Evento: " << temp->tipo << endl;
+        archivo << "Descripción: " << temp->descripcion << endl;
+        archivo << "Bioma de Ocurrencia: " << temp->biomaOcurrencia->nombre << endl;
+        if (temp->especie1) archivo << "Especie 1: " << temp->especie1->datosEspecie->nombreComun << endl;
+        if (temp->especie2) archivo << "Especie 2: " << temp->especie2->datosEspecie->nombreComun << endl;
+        archivo << "-----------------------" << endl;
+        temp = temp->sgteEvento;
+    }
+    archivo.close();
+}
+
+// Crear y escribir en "conteoTiposEventos.txt"
+void guardarConteoTiposEventos(const string& nombreArchivo) {
+    ofstream archivo(nombreArchivo);
+    if (!archivo) {
+        cerr << "Error al abrir el archivo" << endl;
+        return;
+    }
+
+    int conteoEventos[13] = {0}; // Array para contar cada tipo de evento
+    Evento* temp = pilaEventos;
+
+    // Contar eventos en la pila
+    while (temp) {
+        conteoEventos[temp->tipo]++;
+        temp = temp->sgteEvento;
+    }
+
+    // Contar eventos en la cola
+    temp = colaEventos;
+    while (temp) {
+        conteoEventos[temp->tipo]++;
+        temp = temp->sgteEvento;
+    }
+
+    // Guardar el conteo en el archivo
+    archivo << "Conteo de Tipos de Eventos:" << endl;
+    for (int i = 0; i < 13; ++i) {
+        archivo << "Tipo de Evento " << i << ": " << conteoEventos[i] << endl;
+    }
+    archivo.close();
+}
+
+// Función para mostrar los eventos registrados en pantalla
+void mostrarEventos(Evento* estructura, const string& nombreEstructura) {
+    cout << "\nHistorial de eventos en " << nombreEstructura << ":" << endl << endl;
+
+    vector<string> eventos;
+    Evento* aux = estructura;
+
+    // Recorremos la estructura y almacenamos las descripciones en el vector
     while (aux != nullptr) {
         eventos.push_back(aux->descripcion);
-        aux = aux->siguiente;
+        aux = aux->sgteEvento;
     }
 
-    // Mostramos los eventos en la consola en orden inverso
-    cout << "\nHistorial de eventos:" << endl << endl;
+    // Mostramos los eventos en el orden adecuado
     for (auto it = eventos.rbegin(); it != eventos.rend(); ++it) {
         cout << *it << endl;
     }
+}
+
+void registrarEvento(TipoEvento tipo, Bioma* bioma = nullptr, Especie* especie1 = nullptr, Especie* especie2 = nullptr) {
+    Evento* nuevoEvento = new Evento;
+    string descripcion = formatearTiempo( getTiempoActual() );
+
+    // Generar la descripción del evento según el tipo
+    switch (tipo) {
+        case AGREGAR_ESPECIE:
+            descripcion += " Agregaste una especie " + (especie1 ? especie1->datosEspecie->nombreComun : "") +
+                           " al bioma " + bioma->nombre;
+            break;
+        case ELIMINAR_ESPECIE:
+            descripcion += " Eliminaste una especie " + (especie1 ? especie1->datosEspecie->nombreComun : "") +
+                           " del bioma " + bioma->nombre;
+            break;
+        case CREAR_ESPECIE_ADMIN:
+            descripcion += " Creaste una nueva especie " + (especie1 ? especie1->datosEspecie->nombreComun : "");
+            break;
+        case EDITAR_ESPECIE_ADMIN:
+            descripcion += " Editaste la especie " + (especie1 ? especie1->datosEspecie->nombreComun : "");
+            break;
+        case ELIMINAR_ESPECIE_ADMIN:
+            descripcion += " Eliminaste la especie " + (especie1 ? especie1->datosEspecie->nombreComun : "");
+            break;
+        case CREAR_BIOMA_ADMIN:
+            descripcion += " Creaste un nuevo bioma " + bioma->nombre;
+            break;
+        case EDITAR_BIOMA_ADMIN:
+            descripcion += " Editaste el bioma " + bioma->nombre;
+            break;
+        case ELIMINAR_BIOMA_ADMIN:
+            descripcion += " Eliminaste el bioma " + bioma->nombre;
+            break;
+        default:
+            descripcion += " Evento ??? registrado.";
+            break;
+    }
+
+    // Configurar el evento
+    nuevoEvento->tipo = tipo;
+    nuevoEvento->descripcion = descripcion;
+    nuevoEvento->biomaOcurrencia = bioma;
+    nuevoEvento->especie1 = especie1;
+    nuevoEvento->especie2 = especie2;
+    nuevoEvento->sgteEvento = nullptr;
+
+    
+    enqueue(colaEventos, nuevoEvento);
+    registrarEventosEnArchivo(colaEventos, "ColaEventos.txt");
+    mostrarEventos(colaEventos, "la Cola de Eventos Generales");
+
 }
 
 #endif // EVENTO_H

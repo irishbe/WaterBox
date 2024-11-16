@@ -1,5 +1,5 @@
-#ifndef CRUD_ESPECIES_H
-#define CRUD_ESPECIES_H
+#ifndef CRUD_ESPECIES_HPP
+#define CRUD_ESPECIES_HPP
 
 #include <iostream>
 #include "crudPoblaciones.hpp"
@@ -14,6 +14,7 @@ void buscarEspecie();
 void eliminarEspecie();
 
 Especie* extraerListaEspecies();
+
 
 void agregarEspecie(){
     string tipoEspecie, nombreEspecie;
@@ -55,8 +56,14 @@ void agregarEspecie(){
     nuevaEspecie->datosEspecie = datos;
     nuevaEspecie->sgteEspecie = nullptr;
 
+    /*
+        Solucion temporal
+    */
+    Bioma *bioma = new Bioma();
+    bioma->nombre = "Bioma temporal";
+
     insertarEspecie(nuevaEspecie);
-    registrarEvento("AGREGAR ESPECIE", "Arrecifes de coral", nuevaEspecie);
+    registrarEvento(AGREGAR_ESPECIE, bioma, nuevaEspecie);
 }
 
 void enlistarEspecies(){
@@ -212,7 +219,7 @@ void eliminarEspecie() {
     }
 
 
-    registrarEvento("ELIMINAR ESPECIE", especieEncontrada->datosEspecie->biomaNativo, especieEncontrada);
+    registrarEvento(ELIMINAR_ESPECIE, nullptr, especieEncontrada);
 }
 
 Especie* extraerListaEspecies(){

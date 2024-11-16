@@ -94,41 +94,44 @@ void crearDatosCategoria() {
     string categoria = seleccionConFlechas("Seleccione la categoria: \n", categorias, "horizontal");
 
     if ( categoria == "Bioma" ){
-        Bioma bioma;
+        Bioma *bioma;
         
         cout << "Creando " << categoria << endl;
 
         fflush(stdin);
         cout<<"Nombre--> ";
-        getline(cin, bioma.nombre);
+        getline(cin, bioma->nombre);
         
         fflush(stdin);
         cout<<"Nivel Salinidad--> ";
-        bioma.nivelSalinidad = leerFloat();
+        bioma->nivelSalinidad = leerFloat();
         
         fflush(stdin);
         cout<<"Nivel Oxigeno--> ";
-        bioma.nivelOxigeno = leerFloat();
+        bioma->nivelOxigeno = leerFloat();
         
         fflush(stdin);
         cout<<"Nivel Temperatura--> ";
-        bioma.nivelTemperatura = leerFloat();
+        bioma->nivelTemperatura = leerFloat();
         
         fflush(stdin);
         cout<<"Nivel Contaminacion--> ";
-        bioma.nivelContaminacion = leerFloat();
+        bioma->nivelContaminacion = leerFloat();
         
         json datosBioma = {
-            {"nombre", bioma.nombre},
-            {"nivelSalinidad", bioma.nivelSalinidad},
-            {"nivelOxigeno", bioma.nivelOxigeno},
-            {"nivelTemperatura", bioma.nivelTemperatura},
-            {"nivelContaminacion", bioma.nivelContaminacion}
+            {"nombre", bioma->nombre},
+            {"nivelSalinidad", bioma->nivelSalinidad},
+            {"nivelOxigeno", bioma->nivelOxigeno},
+            {"nivelTemperatura", bioma->nivelTemperatura},
+            {"nivelContaminacion", bioma->nivelContaminacion}
         };
 
         datosJson = leerArchivo(biomasJson);
         datosJson.push_back(datosBioma);
         escribirArchivo(biomasJson, datosJson);
+
+        registrarEvento(CREAR_BIOMA_ADMIN, bioma);
+        cout << "\nBioma creado con exito " << endl;
 
     }else if ( categoria == "Animal" || categoria == "Vegetal" ){
         DatosEspecie *datosEspecie = new DatosEspecie();
@@ -217,7 +220,7 @@ void crearDatosCategoria() {
         Especie *e = new Especie();
         e->datosEspecie = datosEspecie;
 
-        registrarEvento("CREAR ESPECIE ADMIN", "", e, true);
+        registrarEvento(CREAR_ESPECIE_ADMIN, nullptr, e);
         cout << "\nEspecie creada con exito " << endl;
     }
 
@@ -249,7 +252,7 @@ void modificarDatosCategoria() {
     getline(cin, nombreBuscado);
 
     if ( categoria == "Bioma" ){
-        Bioma bioma;
+        Bioma *bioma;
 
         for (auto& biomaEncontrado : datosJson) {
             if (biomaEncontrado["nombre"] == nombreBuscado) {
@@ -263,34 +266,35 @@ void modificarDatosCategoria() {
                 // DATOS TEXTUALES
                 // NOMBRE
                 cout << "Modificar nombre: ";
-                getline(cin, bioma.nombre);
-                if (!bioma.nombre.empty()) {
-                    biomaEncontrado["nombre"] = bioma.nombre;
+                getline(cin, bioma->nombre);
+                if (!bioma->nombre.empty()) {
+                    biomaEncontrado["nombre"] = bioma->nombre;
                 }
 
                 // NIVELES (FLOAT)
                 // SALINIDAD
                 cout << "Modificar nivel de salinidad: ";
-                bioma.nivelSalinidad = leerFloat();
-                biomaEncontrado["nivelSalinidad"] = bioma.nivelSalinidad;
+                bioma->nivelSalinidad = leerFloat();
+                biomaEncontrado["nivelSalinidad"] = bioma->nivelSalinidad;
 
                 // OXÍGENO
                 cout << "Modificar nivel de oxígeno: ";
-                bioma.nivelOxigeno = leerFloat();
-                biomaEncontrado["nivelOxigeno"] = bioma.nivelOxigeno;
+                bioma->nivelOxigeno = leerFloat();
+                biomaEncontrado["nivelOxigeno"] = bioma->nivelOxigeno;
 
                 // TEMPERATURA
                 cout << "Modificar nivel de temperatura: ";
-                bioma.nivelTemperatura = leerFloat();
-                biomaEncontrado["nivelTemperatura"] = bioma.nivelTemperatura;
+                bioma->nivelTemperatura = leerFloat();
+                biomaEncontrado["nivelTemperatura"] = bioma->nivelTemperatura;
 
                 // CONTAMINACIÓN
                 cout << "Modificar nivel de contaminación: ";
-                bioma.nivelContaminacion = leerFloat();
-                biomaEncontrado["nivelContaminacion"] = bioma.nivelContaminacion;
+                bioma->nivelContaminacion = leerFloat();
+                biomaEncontrado["nivelContaminacion"] = bioma->nivelContaminacion;
 
                 escribirArchivo(biomasJson, datosJson);
 
+                registrarEvento(EDITAR_BIOMA_ADMIN, bioma);
                 cout << "Bioma actualizado correctamente.\n";
                 return;
             }
@@ -410,7 +414,7 @@ void modificarDatosCategoria() {
                 Especie *e = new Especie();
                 e->datosEspecie = datosEspecie;
 
-                registrarEvento("MODIFICAR ESPECIE ADMIN", "", e, true);
+                registrarEvento(EDITAR_ESPECIE_ADMIN, nullptr, e);
                 cout << "\nEspecie actualizada correctamente.\n";
 
                 return;
@@ -657,6 +661,10 @@ void eliminarDatosCategoria() {
                 
                 escribirArchivo(biomasJson, datosJson);
 
+                Bioma *bioma;
+                bioma->nombre = nombre;
+
+                registrarEvento(ELIMINAR_BIOMA_ADMIN, bioma);
                 cout << "Bioma eliminado exitosamente." << endl;
                 return;
             }
@@ -679,8 +687,8 @@ void eliminarDatosCategoria() {
                 e->datosEspecie = new DatosEspecie();
                 e->datosEspecie->nombreComun = nombre;
 
+                registrarEvento(ELIMINAR_ESPECIE_ADMIN, nullptr, e);
                 cout << "\nEspecie eliminada exitosamente." << endl;
-                registrarEvento("ELIMINAR ESPECIE ADMIN", "", e, true);
                 
                 return;
             }

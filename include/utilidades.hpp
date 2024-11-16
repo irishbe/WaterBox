@@ -269,6 +269,12 @@ void imprimirDibujo(string dibujo, int x, int y, bool seleccionado) {
         lineaActual++; // Aumenta la línea actual
     }
 
+    // Imprimir cualquier contenido restante (última línea sin '\n')
+    if (!tempDibujo.empty()) {
+        moverCursor(x, lineaActual);
+        cout << tempDibujo;
+    }
+
     // Restablecer el color
     if (seleccionado) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
@@ -370,7 +376,7 @@ void mostrarOpciones(string titulo, string subtitulo, vector<string> dibujos, bo
 }
 
 // Función principal mejorada
-int seleccionarConDibujos(const vector<string>& dibujos, const string& titulo, const string& subtitulo = "", bool centrar = true) {
+int seleccionarConDibujos(vector<string> dibujos, string titulo, string subtitulo = "", bool centrar = true) {
     ocultarCursor();
     
     char tecla;
@@ -409,7 +415,7 @@ int seleccionarConDibujos(const vector<string>& dibujos, const string& titulo, c
         // Manejo de la tecla Enter
         if (tecla == ENTER) {
             mostrarCursor();
-            return opcionSeleccionada;  // Devuelve la opción seleccionada
+            return opcionSeleccionada + 1;  // Devuelve la opción seleccionada
         }
     }
 }

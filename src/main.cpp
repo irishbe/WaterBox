@@ -1,6 +1,5 @@
-#include <iostream>
 #include "simulador.hpp"
-//#include "wiki.hpp"
+#include "wiki.hpp"
 
 using namespace std;
 
@@ -21,16 +20,15 @@ int main() {
     advertencia.append( tituloWaterBox() );
 
     do{
-        opcion = seleccionarConDibujos(dibujos, advertencia, "OLA SOY UN SUBTITULO");
+        opcion = seleccionarConDibujos(dibujos, advertencia);
 
         system("cls");
 
         switch(opcion){
             case 1: iniciarSimulador(); break;
-            case 2: break;
+            case 2: iniciarWiki(); break;
             case 3: ingresarCodigos(); break;
             case -1: cout << "\nSaliendo..."; getch(); break;
-            default: cout << "\nOpción no válida. Por favor, seleccione una opción válida."; getch(); break;
         }
 
         system("cls");
@@ -55,4 +53,5 @@ void ingresarCodigos(){
         cout << "\n\nERROR..." << endl << endl;
         getch();
     }
+
 }
