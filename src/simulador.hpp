@@ -1,5 +1,5 @@
-#ifndef SIMULADOR_H
-#define SIMULADOR_H
+#ifndef SIMULADOR_HPP
+#define SIMULADOR_HPP
 
 #include "crudEspecies.hpp"
 #include "utilidades.hpp"
@@ -38,11 +38,13 @@ void iniciarSimulador() {
 
         if (desplegarCuadros){
             mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-            mostrarEventos(pilaEventos, "Pila de eventos");
+            mostrarEventos();
             getch();
         }
 
         opcion = seleccionarConDibujos( dibujos, tituloWaterBox(), "SELECCIONE UNA OPCION");
+        
+        system("cls");
 
         switch (opcion){
             case 1: agregarEspecie(); desplegarCuadros = true; break;
@@ -79,14 +81,13 @@ void mostrarTodosCuadros(float oxigeno, float salinidad, float temperatura, floa
 
 void imprimirPoblaciones() {
     Poblacion* poblacionActual = listaPoblaciones;
-
     // Variables locales para las posiciones
     int posXLocal = 15;
     int posYLocal = 5;
 
     while (poblacionActual != nullptr) {
         // Imprimir la población actual en la posición actual
-        // ERROR imprimirPoblacion(poblacionActual, obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", posXLocal, posYLocal);
+        imprimirPoblacion(poblacionActual, obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", posXLocal, posYLocal);
 
         // Actualizar las posiciones
         if (posXLocal + 23 <= 130) {
@@ -156,7 +157,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
 
         system("cls");
         mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-        mostrarEventos(pilaEventos, "Pila de eventos");
+        mostrarEventos();
 
         system("cls");
 

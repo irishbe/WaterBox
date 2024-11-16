@@ -1,5 +1,5 @@
-#ifndef POBLACION_H
-#define POBLACION_H
+#ifndef POBLACION_HPP
+#define POBLACION_HPP
 
 #include "Especie.hpp"
 #include "utilidades.hpp"
@@ -20,7 +20,6 @@ struct Poblacion {
 
 
 // Funciones de impresion
-
 void imprimirBarra(string nombre, float porcentaje) {
     const int totalBloques = 10;
     int bloquesLlenos = (porcentaje * totalBloques) / 100;
@@ -115,7 +114,7 @@ void imprimirPoblacion(Poblacion* poblacion, string sprite, string tamanio, int 
         ancho = 20; // Ancho para cuadro pequeÃ±o
     } else if (tamanio == "MEDIANO") {
         alto = 8;   // Altura para cuadro mediano
-        ancho = 28; // Ancho para cuadro mediano
+        ancho = 30; // Ancho para cuadro mediano
     } else if (tamanio == "GRANDE") {
         alto = 9;  // Altura para cuadro grande
         ancho = 40; // Ancho para cuadro grande
@@ -128,6 +127,9 @@ void imprimirPoblacion(Poblacion* poblacion, string sprite, string tamanio, int 
     // Imprimir el cuadro
     imprimirCuadro(alto, ancho, posX, posY);
 
+    // Insertar el sprite centrado en el cuadro
+    insertarSprite(sprite, posX, posY, ancho, alto);
+
     // Imprimir nombre especie
     moverCursor(posX + 1, posY + 1);
     cout << poblacion->nombreEspecie;
@@ -135,9 +137,6 @@ void imprimirPoblacion(Poblacion* poblacion, string sprite, string tamanio, int 
     // Imprimir contador especies
     moverCursor(posX + ancho - 2, posY + 1);
     cout << poblacion->contadorEspecies;
-
-    // Insertar el sprite centrado en el cuadro
-    insertarSprite(sprite, posX, posY, ancho, alto);
 
     // Mover el cursor debajo del cuadro
     moverCursor(posX, posY + alto + 1);

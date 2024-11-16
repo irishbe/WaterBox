@@ -80,7 +80,7 @@ void crearPoblacion(Especie* nuevaEspecie){
     nuevaPoblacion->listaEspecies = nuevaEspecie;
     nuevaPoblacion->tipoEspecie = nuevaEspecie->tipoEspecie;
     nuevaPoblacion->nombreEspecie = nuevaEspecie->datosEspecie->nombreComun;
-    nuevaPoblacion->contadorEspecies = 0;
+    nuevaPoblacion->contadorEspecies = 1;
 
     generarIDEspecie(nuevaPoblacion);
 

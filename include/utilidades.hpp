@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 
+#include <ArteASCII/asciiEspecies.hpp>
 #include <ArteASCII/asciiMenu.hpp>
 #include <ArteASCII/asciiTitulos.hpp>
 
@@ -33,14 +34,6 @@ void moverCursor(int x, int y) {
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
-string textoRGB(int r, int g, int b) {
-    return "\033[38;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
-}
-
-string resetearColor(){
-    return "\033[38;2;" + to_string(255) + ";" + to_string(255) + ";" + to_string(255) + "m";
 }
 
 void fondoRGB(int r, int g, int b) {
@@ -258,7 +251,7 @@ void imprimirDibujo(string dibujo, int x, int y, bool seleccionado) {
 
     // Cambiar el color si es la opción seleccionada
     if (seleccionado) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+        cout << textoRGB(255,255,0);
     }
 
     // Imprimir el dibujo línea por línea
@@ -277,7 +270,7 @@ void imprimirDibujo(string dibujo, int x, int y, bool seleccionado) {
 
     // Restablecer el color
     if (seleccionado) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+        cout << textoRGB(255,255,255);
     }
 }
 
@@ -357,7 +350,7 @@ void mostrarOpciones(string titulo, string subtitulo, vector<string> dibujos, bo
         y += imprimirTexto(titulo, 0, y, centrar) + 3;
         y += imprimirTexto(subtitulo, 0, y, centrar, true) + 3;
     }else{
-        y += imprimirTexto(titulo, 0, y, centrar) + 4;
+        y += imprimirTexto(titulo, 0, y, centrar) + 5;
     }
 
     int numeroOpciones = dibujos.size();
@@ -377,6 +370,7 @@ void mostrarOpciones(string titulo, string subtitulo, vector<string> dibujos, bo
 
 // Función principal mejorada
 int seleccionarConDibujos(vector<string> dibujos, string titulo, string subtitulo = "", bool centrar = true) {
+    cout << textoRGB(255,255,255);
     ocultarCursor();
     
     char tecla;

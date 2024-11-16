@@ -15,7 +15,7 @@ using namespace std;
 enum TipoEvento {
     AGREGAR_ESPECIE,
     ELIMINAR_ESPECIE,
-    MODIFICAR_BIOMA,
+    MODIFICAR_FACTORES,
     REPRODUCCION,
     DEPREDACION,
     CAZA,
@@ -71,10 +71,8 @@ void enqueue(Evento*& colaEventos, Evento* nuevoEvento) {
     }
 }
 
-
-
 // Guardar eventos en el archivo especificado
-void registrarEventosEnArchivo(Evento* eventos, const string& nombreArchivo) {
+void registrarEventosEnArchivo(Evento* eventos, string nombreArchivo) {
     ofstream archivo(nombreArchivo);
     if (!archivo) {
         cerr << "Error al abrir el archivo" << endl;
@@ -162,20 +160,28 @@ void guardarConteoTiposEventos(const string& nombreArchivo) {
 }
 
 // Función para mostrar los eventos registrados en pantalla
-void mostrarEventos(Evento* estructura, const string& nombreEstructura) {
-    cout << "\nHistorial de eventos en " << nombreEstructura << ":" << endl << endl;
+void mostrarEventos() {
+    cout << "\nHistorial de eventos :" << endl << endl;
 
-    vector<string> eventos;
-    Evento* aux = estructura;
+    vector<string> descripcionEventos;
+    Evento* aux = pilaEventos;
 
-    // Recorremos la estructura y almacenamos las descripciones en el vector
     while (aux != nullptr) {
-        eventos.push_back(aux->descripcion);
+        descripcionEventos.push_back(aux->descripcion);
         aux = aux->sgteEvento;
     }
 
+    aux = colaEventos;
+    
+    while (aux != nullptr) {
+        descripcionEventos.push_back(aux->descripcion);
+        aux = aux->sgteEvento;
+    }
+
+    ordenarEventosPorTiempo(descripcionEventos);
+
     // Mostramos los eventos en el orden adecuado
-    for (auto it = eventos.rbegin(); it != eventos.rend(); ++it) {
+    for (auto it = descripcionEventos.rbegin(); it != descripcionEventos.rend(); ++it) {
         cout << *it << endl;
     }
 }
@@ -193,6 +199,13 @@ void registrarEvento(TipoEvento tipo, Bioma* bioma = nullptr, Especie* especie1 
         case ELIMINAR_ESPECIE:
             descripcion += " Eliminaste una especie " + (especie1 ? especie1->datosEspecie->nombreComun : "") +
                            " del bioma " + bioma->nombre;
+            break;
+        case MODIFICAR_FACTORES:
+            descripcion += " Modificaste los factores del bioma " + bioma->nombre + " " +
+                           "[o:" + to_string(bioma->nivelOxigeno)       + "," +
+                           "s:"  + to_string(bioma->nivelSalinidad)     + "," +
+                           "t:"  + to_string(bioma->nivelTemperatura)   + "," +
+                           "c:"  + to_string(bioma->nivelContaminacion) + "]";
             break;
         case CREAR_ESPECIE_ADMIN:
             descripcion += " Creaste una nueva especie " + (especie1 ? especie1->datosEspecie->nombreComun : "");
@@ -224,12 +237,15 @@ void registrarEvento(TipoEvento tipo, Bioma* bioma = nullptr, Especie* especie1 
     nuevoEvento->especie1 = especie1;
     nuevoEvento->especie2 = especie2;
     nuevoEvento->sgteEvento = nullptr;
-
     
-    enqueue(colaEventos, nuevoEvento);
-    registrarEventosEnArchivo(colaEventos, "ColaEventos.txt");
-    mostrarEventos(colaEventos, "la Cola de Eventos Generales");
+    if( AGREGAR_ESPECIE || ELIMINAR_ESPECIE || MODIFICAR_FACTORES ){
+        
+    }else{
+        enqueue(colaEventos, nuevoEvento);
+    }
 
+    registrarEventosEnArchivo(colaEventos, "ColaEventos.txt");
+    mostrarEventos();
 }
 
 #endif // EVENTO_H

@@ -6,6 +6,10 @@
 
 using namespace std;
 
+string textoRGB(int r, int g, int b) {
+    return "\033[38;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
+}
+
 //Dibujos especies
 string pezPayaso(){
         return  textoRGB(255,127,0) + " m  m\n" +
@@ -54,7 +58,7 @@ string camaronLimpiador(){
         return  textoRGB(255,255,255) + " |    |__\n" +
                 textoRGB(247, 13, 74) + ">((((:<__\n" + 
                 textoRGB(255,255,255) + " |    |  " +
-                textoRGB(0,0,0);
+                textoRGB(255,255,255);
 }
 
 string algasCoralinas(){
@@ -81,9 +85,9 @@ string pezVibora(){
         return  textoRGB(255,255,255) + "       /      \n" +
                 textoRGB(255,255,255) + "       /      \n" +
                 textoRGB(65,61,122) + "><" + 
-                textoRGB(111,81,117 ) + "((((((((((')\n" +
+                textoRGB(111,81,117) + "((((((((((')\n" +
                 textoRGB(65,61,122) + "        w       " +
-                textoRGB(255,255,255;
+                textoRGB(255,255,255);
 }
 
 string medusaPeine(){
