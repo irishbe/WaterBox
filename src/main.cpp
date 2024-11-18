@@ -9,6 +9,8 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     pantallaCompleta();
 
+    fondoRGB(0,0,0);
+
     int opcion = -1;
     string advertencia = "EJECUTAR COMO ADMINISTRADOR EN CASO SE DEFORMEN LOS TEXTOS ASCII\n"; 
     vector<string> dibujos = {

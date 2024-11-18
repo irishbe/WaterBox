@@ -28,8 +28,24 @@ enum TipoEvento {
     EDITAR_BIOMA_ADMIN
 };
 
-// Almacena el conteo de tipos de eventos
-int conteoTiposEvento[13] = {0};
+string TipoEventoToString(TipoEvento tipo) {
+    switch (tipo) {
+        case AGREGAR_ESPECIE: return "AGREGAR_ESPECIE";
+        case ELIMINAR_ESPECIE: return "ELIMINAR_ESPECIE";
+        case MODIFICAR_FACTORES: return "MODIFICAR_FACTORES";
+        case REPRODUCCION: return "REPRODUCCION";
+        case DEPREDACION: return "DEPREDACION";
+        case CAZA: return "CAZA";
+        case ENFERMEDAD: return "ENFERMEDAD";
+        case CREAR_ESPECIE_ADMIN: return "CREAR_ESPECIE_ADMIN";
+        case ELIMINAR_ESPECIE_ADMIN: return "ELIMINAR_ESPECIE_ADMIN";
+        case EDITAR_ESPECIE_ADMIN: return "EDITAR_ESPECIE_ADMIN";
+        case CREAR_BIOMA_ADMIN: return "CREAR_BIOMA_ADMIN";
+        case ELIMINAR_BIOMA_ADMIN: return "ELIMINAR_BIOMA_ADMIN";
+        case EDITAR_BIOMA_ADMIN: return "EDITAR_BIOMA_ADMIN";
+        default: return "DESCONOCIDO";
+    }
+}
 
 // Estructura del evento
 struct Evento {
@@ -59,9 +75,11 @@ void push(Evento*& pilaEventos, Evento* nuevoEvento) {
 // Función para remover el último evento de la pila
 Evento* pop(Evento*& pilaEventos) {
     if (!pilaEventos) return nullptr;
+
     Evento* eventoEliminado = pilaEventos;
     pilaEventos = pilaEventos->sgteEvento;
     eventoEliminado->sgteEvento = nullptr;
+
     return eventoEliminado;
 }
 
@@ -118,49 +136,74 @@ vector<Evento> eventosPilaCola(){
     return eventos;
 }
 
-// Crear y escribir en "estadisticasSimulador.txt"
-void actualizarConteoEventos(Evento *evento) {
-    ifstream archivoLectura(ARCHIVO_CONTEO_EVENTOS);
+void actualizarConteoEventos(Evento *nuevoEvento) {
+    ifstream archivoEventos(ARCHIVO_EVENTOS_HOY);
+    string linea;
+    int contadorEvento = 0;
 
-    if (archivoLectura) {
-        string linea;
-        int index = 0;
-        while (getline(archivoLectura, linea) && index < 13) {
-            size_t pos = linea.find("=");
-            if (pos != string::npos) {
-                conteoTiposEvento[index] = stoi(linea.substr(pos + 1));
-            }
-            index++;
-        }
-        archivoLectura.close();
-    }
-
-    if (evento->tipo >= 0 && evento->tipo < 13) {
-        conteoTiposEvento[evento->tipo]++;
-    }
-
-    ofstream archivoEscritura(ARCHIVO_CONTEO_EVENTOS);
-    if (!archivoEscritura) {
-        cerr << "Error al abrir el archivo." << endl;
+    if (!archivoEventos) {
+        cerr << "No se pudo abrir el archivo " << archivoEventos << endl;
         return;
     }
 
-    archivoEscritura << "Conteo de Tipos de Eventos:" << endl;
-    archivoEscritura << "1. AGREGAR_ESPECIE = " << conteoTiposEvento[AGREGAR_ESPECIE] << endl;
-    archivoEscritura << "2. ELIMINAR_ESPECIE = " << conteoTiposEvento[ELIMINAR_ESPECIE] << endl;
-    archivoEscritura << "3. MODIFICAR_FACTORES = " << conteoTiposEvento[MODIFICAR_FACTORES] << endl;
-    archivoEscritura << "4. REPRODUCCION = " << conteoTiposEvento[REPRODUCCION] << endl;
-    archivoEscritura << "5. DEPREDACION = " << conteoTiposEvento[DEPREDACION] << endl;
-    archivoEscritura << "6. CAZA = " << conteoTiposEvento[CAZA] << endl;
-    archivoEscritura << "7. ENFERMEDAD = " << conteoTiposEvento[ENFERMEDAD] << endl;
-    archivoEscritura << "8. CREAR_ESPECIE_ADMIN = " << conteoTiposEvento[CREAR_ESPECIE_ADMIN] << endl;
-    archivoEscritura << "9. ELIMINAR_ESPECIE_ADMIN = " << conteoTiposEvento[ELIMINAR_ESPECIE_ADMIN] << endl;
-    archivoEscritura << "10. EDITAR_ESPECIE_ADMIN = " << conteoTiposEvento[EDITAR_ESPECIE_ADMIN] << endl;
-    archivoEscritura << "11. CREAR_BIOMA_ADMIN = " << conteoTiposEvento[CREAR_BIOMA_ADMIN] << endl;
-    archivoEscritura << "12. ELIMINAR_BIOMA_ADMIN = " << conteoTiposEvento[ELIMINAR_BIOMA_ADMIN] << endl;
-    archivoEscritura << "13. EDITAR_BIOMA_ADMIN = " << conteoTiposEvento[EDITAR_BIOMA_ADMIN] << endl;
+    while( getline(archivoEventos, linea) ){
+        size_t pos = linea.find("Tipo de Evento: " + TipoEventoToString(nuevoEvento->tipo) );
 
-    archivoEscritura.close();
+        if(pos != string::npos){
+            contadorEvento++;
+        }
+    }
+
+    archivoEventos.close();
+
+    ifstream archivoConteo(ARCHIVO_CONTEO_EVENTOS);
+    ofstream archivoSalida(ARCHIVO_CONTEO_EVENTOS, ios::app); // Abrir en modo append para agregar si no existe
+
+    bool eventoEncontrado = false;
+    
+    // Revisar si el archivo existe
+    if (!archivoConteo) {
+        // Si el archivo no existe, lo creamos y escribimos los valores iniciales
+        archivoSalida << "Conteo de Tipos de Eventos" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(AGREGAR_ESPECIE) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(ELIMINAR_ESPECIE) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(MODIFICAR_FACTORES) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(REPRODUCCION) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(DEPREDACION) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(CAZA) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(ENFERMEDAD) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(CREAR_ESPECIE_ADMIN) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(ELIMINAR_ESPECIE_ADMIN) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(EDITAR_ESPECIE_ADMIN) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(CREAR_BIOMA_ADMIN) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(ELIMINAR_BIOMA_ADMIN) << " = 0" << endl;
+        archivoSalida << "Tipo de Evento " << TipoEventoToString(EDITAR_BIOMA_ADMIN) << " = 0" << endl;
+    } else {
+        // Si el archivo ya existe, leer el contenido y buscar el evento
+        string contenido;
+        while (getline(archivoConteo, linea)) {
+            if (linea.find("Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo)) != string::npos) {
+                contenido += "Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo) + " = " + to_string(contadorEvento) + "\n";
+                eventoEncontrado = true;
+            } else {
+                contenido += linea + "\n";
+            }
+        }
+        
+        // Si no se encontró el evento, agregarlo al final
+        if (!eventoEncontrado) {
+            contenido += "Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo) + " = " + to_string(contadorEvento) + "\n";
+        }
+        
+        // Escribir el contenido actualizado en el archivo
+        archivoConteo.close();  // Cerrar el archivo de lectura
+        archivoSalida.close();  // Cerrar el archivo de escritura
+        
+        // Volver a abrir el archivo en modo escritura para reemplazar el contenido
+        ofstream archivoFinal(ARCHIVO_CONTEO_EVENTOS);
+        archivoFinal << contenido;
+    }
+
 }
 
 // Crear y escribir en "eventos[FECHA].txt"
@@ -171,7 +214,7 @@ void guardarEventoArchivo(Evento* nuevoEvento) {
         return;
     }
 
-    archivo << "Tipo de Evento: " << nuevoEvento->tipo << endl;
+    archivo << "Tipo de Evento: " << TipoEventoToString(nuevoEvento->tipo) << endl;
     archivo << "Descripción: " << nuevoEvento->descripcion << endl;
     archivo << "Bioma de Ocurrencia: " << nuevoEvento->biomaOcurrencia->nombre << endl;
     if (nuevoEvento->especie1) archivo << "Especie 1: " << nuevoEvento->especie1->datosEspecie->nombreComun << endl;
@@ -235,7 +278,7 @@ void registrarEvento(TipoEvento tipo, Bioma* bioma = nullptr, Especie* especie1 
     nuevoEvento->especie2 = especie2;
     nuevoEvento->sgteEvento = nullptr;
     
-    if( AGREGAR_ESPECIE || ELIMINAR_ESPECIE || MODIFICAR_FACTORES ){
+    if( nuevoEvento->tipo == AGREGAR_ESPECIE || nuevoEvento->tipo == ELIMINAR_ESPECIE || nuevoEvento->tipo == MODIFICAR_FACTORES ){
         push(pilaEventos, nuevoEvento);
     }else{
         enqueue(colaEventos, nuevoEvento);

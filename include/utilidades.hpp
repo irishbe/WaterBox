@@ -17,9 +17,24 @@ using namespace std;
 const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224;
 const int LEFT = 75, RIGHT = 77, UP = 72, DOWN = 80, ZERO = '0';
 
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
 void pantallaCompleta() {
     HWND consoleWindow = GetConsoleWindow();
     ShowWindow(consoleWindow, SW_MAXIMIZE);
+}
+
+void habilitarASCII() {
+    // Obtener el manejador de la consola
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    
+    // Habilitar el procesamiento de secuencias ANSI
+    DWORD modoConsola;
+    GetConsoleMode(hConsole, &modoConsola);
+    modoConsola |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hConsole, modoConsola);
 }
 
 int obtenerAnchoConsola() {
@@ -39,10 +54,8 @@ void moverCursor(int x, int y) {
 void fondoRGB(int r, int g, int b) {
     // Obtener el tamaño de la consola
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(hConsole, &csbi);
-    int consoleWidth = csbi.dwSize.X;
-    int consoleHeight = csbi.dwSize.Y;
+    int consoleWidth = obtenerAnchoConsola();
+    int consoleHeight = 20;
 
     // Cambiar el color de fondo con ANSI y llenar cada línea con espacios
     cout << "\033[48;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
@@ -53,6 +66,7 @@ void fondoRGB(int r, int g, int b) {
 
     // Mover el cursor a la posición inicial
     moverCursor(0, 0);
+    system("cls");
 }
 
 void ocultarCursor() {
@@ -300,8 +314,6 @@ string seleccionConFlechas(vector<string> opciones, string titulo, string subtit
 
     while (true) {
 
-        system("cls");
-
         // Mostrar las opciones inicialmente
         imprimirOpcionesFlechas(titulo, subtitulo, opciones, centrar, index);
 
@@ -325,10 +337,8 @@ string seleccionConFlechas(vector<string> opciones, string titulo, string subtit
                     index = (index + 1) % numeroOpciones;
                     break;
             }
-        } 
-
-        system("cls");
-
+        }
+        
         // Manejo de la tecla Enter
         if (tecla == ENTER) {
             mostrarCursor();
