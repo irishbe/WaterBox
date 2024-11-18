@@ -30,6 +30,7 @@ enum TipoEvento {
 
 string TipoEventoToString(TipoEvento tipo) {
     switch (tipo) {
+        case ELIMINAR_ESPECIE_ADMIN: return "ELIMINAR_ESPECIE_ADMIN";
         case AGREGAR_ESPECIE: return "AGREGAR_ESPECIE";
         case ELIMINAR_ESPECIE: return "ELIMINAR_ESPECIE";
         case MODIFICAR_FACTORES: return "MODIFICAR_FACTORES";
@@ -38,7 +39,6 @@ string TipoEventoToString(TipoEvento tipo) {
         case CAZA: return "CAZA";
         case ENFERMEDAD: return "ENFERMEDAD";
         case CREAR_ESPECIE_ADMIN: return "CREAR_ESPECIE_ADMIN";
-        case ELIMINAR_ESPECIE_ADMIN: return "ELIMINAR_ESPECIE_ADMIN";
         case EDITAR_ESPECIE_ADMIN: return "EDITAR_ESPECIE_ADMIN";
         case CREAR_BIOMA_ADMIN: return "CREAR_BIOMA_ADMIN";
         case ELIMINAR_BIOMA_ADMIN: return "ELIMINAR_BIOMA_ADMIN";
@@ -138,72 +138,80 @@ vector<Evento> eventosPilaCola(){
 
 void actualizarConteoEventos(Evento *nuevoEvento) {
     ifstream archivoEventos(ARCHIVO_EVENTOS_HOY);
+    string tipoEventoStr1 = "Tipo de Evento: " + TipoEventoToString(nuevoEvento->tipo); 
     string linea;
     int contadorEvento = 0;
 
+    // Verificar si se pudo abrir el archivo de eventos
     if (!archivoEventos) {
-        cerr << "No se pudo abrir el archivo " << archivoEventos << endl;
+        cerr << "No se pudo abrir el archivo " << ARCHIVO_EVENTOS_HOY << endl;
         return;
     }
 
-    while( getline(archivoEventos, linea) ){
-        size_t pos = linea.find("Tipo de Evento: " + TipoEventoToString(nuevoEvento->tipo) );
-
-        if(pos != string::npos){
+    // Contar el número de eventos del tipo especificado
+    while (getline(archivoEventos, linea)) {
+        if (linea.substr(0, tipoEventoStr1.length()) == tipoEventoStr1) {
             contadorEvento++;
         }
     }
 
     archivoEventos.close();
 
-    ifstream archivoConteo(ARCHIVO_CONTEO_EVENTOS);
-    ofstream archivoSalida(ARCHIVO_CONTEO_EVENTOS, ios::app); // Abrir en modo append para agregar si no existe
+    // Verificar si el archivo de conteo existe
+    ifstream archivoConteoLectura(ARCHIVO_CONTEO_EVENTOS);
+    bool archivoExistente = archivoConteoLectura.good();
+    archivoConteoLectura.close();
 
-    bool eventoEncontrado = false;
-    
-    // Revisar si el archivo existe
-    if (!archivoConteo) {
+    if (!archivoExistente) {
         // Si el archivo no existe, lo creamos y escribimos los valores iniciales
-        archivoSalida << "Conteo de Tipos de Eventos" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(AGREGAR_ESPECIE) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(ELIMINAR_ESPECIE) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(MODIFICAR_FACTORES) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(REPRODUCCION) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(DEPREDACION) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(CAZA) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(ENFERMEDAD) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(CREAR_ESPECIE_ADMIN) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(ELIMINAR_ESPECIE_ADMIN) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(EDITAR_ESPECIE_ADMIN) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(CREAR_BIOMA_ADMIN) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(ELIMINAR_BIOMA_ADMIN) << " = 0" << endl;
-        archivoSalida << "Tipo de Evento " << TipoEventoToString(EDITAR_BIOMA_ADMIN) << " = 0" << endl;
-    } else {
-        // Si el archivo ya existe, leer el contenido y buscar el evento
-        string contenido;
-        while (getline(archivoConteo, linea)) {
-            if (linea.find("Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo)) != string::npos) {
-                contenido += "Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo) + " = " + to_string(contadorEvento) + "\n";
-                eventoEncontrado = true;
-            } else {
-                contenido += linea + "\n";
-            }
+        ofstream archivoConteoEscritura(ARCHIVO_CONTEO_EVENTOS);
+        if (!archivoConteoEscritura) {
+            cerr << "No se pudo crear el archivo " << ARCHIVO_CONTEO_EVENTOS << endl;
+            return;
         }
-        
-        // Si no se encontró el evento, agregarlo al final
-        if (!eventoEncontrado) {
-            contenido += "Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo) + " = " + to_string(contadorEvento) + "\n";
-        }
-        
-        // Escribir el contenido actualizado en el archivo
-        archivoConteo.close();  // Cerrar el archivo de lectura
-        archivoSalida.close();  // Cerrar el archivo de escritura
-        
-        // Volver a abrir el archivo en modo escritura para reemplazar el contenido
-        ofstream archivoFinal(ARCHIVO_CONTEO_EVENTOS);
-        archivoFinal << contenido;
+
+        archivoConteoEscritura << "Conteo de Tipos de Eventos" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(AGREGAR_ESPECIE) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(ELIMINAR_ESPECIE) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(MODIFICAR_FACTORES) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(REPRODUCCION) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(DEPREDACION) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(CAZA) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(ENFERMEDAD) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(CREAR_ESPECIE_ADMIN) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(ELIMINAR_ESPECIE_ADMIN) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(EDITAR_ESPECIE_ADMIN) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(CREAR_BIOMA_ADMIN) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(ELIMINAR_BIOMA_ADMIN) << " = 0" << endl;
+        archivoConteoEscritura << "Tipo de Evento " << TipoEventoToString(EDITAR_BIOMA_ADMIN) << " = 0" << endl;
+
+        archivoConteoEscritura.close();
     }
 
+    // Ahora, leemos el archivo existente y actualizamos el conteo
+    ifstream archivoConteoLecturaActualizado(ARCHIVO_CONTEO_EVENTOS);
+    string tipoEventoStr2 = "Tipo de Evento " + TipoEventoToString(nuevoEvento->tipo) + " = ";
+    string contenido;
+
+    while (getline(archivoConteoLecturaActualizado, linea)) {
+        // Si la línea comienza con la cadena exacta
+        if (linea.substr(0, tipoEventoStr2.length()) == tipoEventoStr2) {
+            contenido += tipoEventoStr2 + to_string(contadorEvento) + "\n";
+        } else {
+            contenido += linea + "\n";
+        }
+    }
+
+    archivoConteoLecturaActualizado.close();
+
+    // Escribir el contenido actualizado en el archivo
+    ofstream archivoConteoEscritura(ARCHIVO_CONTEO_EVENTOS);
+    if (!archivoConteoEscritura) {
+        cerr << "No se pudo escribir en el archivo " << ARCHIVO_CONTEO_EVENTOS << endl;
+        return;
+    }
+    archivoConteoEscritura << contenido;
+    archivoConteoEscritura.close();
 }
 
 // Crear y escribir en "eventos[FECHA].txt"
