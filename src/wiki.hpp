@@ -33,7 +33,7 @@ void iniciarWiki() {
 
     do{
         opcion = seleccionarConDibujos(dibujos, tituloWikiWater(), "SELECCIONE UNA TIPO DE BUSQUEDA");
-        
+
         switch (opcion) {
             case 1: // Por nombre
                 wiki_buscar();
@@ -105,6 +105,8 @@ void wiki_especies(string nombreEspecie){
     else if(nombreEspecie == "Medusa Peine") {
         medusa_peine();
     }
+
+    getch();
 }
 
 void wiki_seleccionarBioma(){

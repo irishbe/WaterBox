@@ -555,8 +555,8 @@ DatosEspecie* extraerDatosEspecie(string tipoEspecie, string nombreBuscado) {
 }
 
 Bioma* extraerBioma(string nombreBuscado){
-	json biomas;     			//variable para sacar info total del json
-	Bioma *biomaEncontrado;		//para la info del biomita
+	Bioma *biomaEncontrado = new Bioma();		//para la info del biomita
+	json biomas;     			                //variable para sacar info total del json
 	
 	ifstream archivo(biomasJson);
     if (archivo){
@@ -576,15 +576,6 @@ Bioma* extraerBioma(string nombreBuscado){
             biomaEncontrado->nivelOxigeno = bioma["nivelOxigeno"];
             biomaEncontrado->nivelTemperatura = bioma["nivelTemperatura"];
             biomaEncontrado->nivelContaminacion = bioma["nivelContaminacion"];
-
-            // Mostramos los datos
-            cout << endl;
-            cout << "****DATOS DEL BIOMA****:\n";
-            cout << "Nombre: "<< biomaEncontrado->nombre <<endl;
-            cout << "Nivel Salinidad: "<< biomaEncontrado->nivelSalinidad <<endl;
-            cout << "Nivel Oxigeno: "<< biomaEncontrado->nivelOxigeno <<endl;
-            cout << "Nivel Temperatura: "<< biomaEncontrado->nivelTemperatura <<endl;
-            cout << "Nivel Contaminacion: "<< biomaEncontrado->nivelContaminacion <<endl;
 
             return biomaEncontrado; // Retornamos el bioma con los datos
         }

@@ -15,5 +15,7 @@ struct Bioma{
 	//Especie* listaEspecies;
 };
 
+// Declaración de variables globales
+Bioma* biomaSimulador = nullptr;
 
 #endif //Bioma.hpp

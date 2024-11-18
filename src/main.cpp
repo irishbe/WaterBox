@@ -22,13 +22,11 @@ int main() {
     do{
         opcion = seleccionarConDibujos(dibujos, advertencia);
 
-        system("cls");
-
         switch(opcion){
             case 1: iniciarSimulador(); break;
             case 2: iniciarWiki(); break;
             case 3: ingresarCodigos(); break;
-            case -1: cout << "\nSaliendo..."; getch(); break;
+            case -1: break;
         }
 
         system("cls");

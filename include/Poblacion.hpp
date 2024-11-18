@@ -88,7 +88,8 @@ void insertarSprite(string sprite, int posX, int posY, int anchoCuadro, int alto
     }
 
     // Calcular la posición inicial en Y para centrar el sprite verticalmente
-    int startY = posY + (altoCuadro - spriteHeight) / 2;
+    int effectiveHeight = altoCuadro - 1;
+    int startY = posY + 2 + (effectiveHeight - spriteHeight) / 2;
 
     // Volver al inicio del stream
     spriteStream.clear();

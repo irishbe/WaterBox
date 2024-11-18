@@ -7,51 +7,41 @@
 
 using namespace std;
 
-// Declaración de variables globales
-Bioma *biomaSimulador = new Bioma();
-
 const float oxigenoMin = 0, oxigenoMax = 14;
 const float salinidadMin = 0, salinidadMax = 330;
 const float temperaturaMin = 0, temperaturaMax = 40;
 const float contaminacionMin = 0, contaminacionMax = 100;
 
 // Declaraciones de funciones
-void mostrarTodosCuadros(float oxigeno, float salinidad, float temperatura, float contaminacion);
-void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float &contaminacion);
+void mostrarTodosCuadros();
+void modificarFactor();
 void imprimirPoblaciones();
 int mostrarMenuFactores();
 
-// Funcion para seleccionar un bioma
-void seleccionarBioma(){
-    Bioma* biomaSeleccionado = new Bioma();
+// Función para iniciar el simulador
+void iniciarSimulador() {
+    // Seleccion del bioma
     int opcion = -1;
 
-    vector<string> dibujos = {
+    if( biomaSimulador == nullptr ){
+        vector<string> dibujos = {
+            ASCIIBiomaArrecifeCoral(),
+            ASCIIBiomaOceanoProfundo()
+        };
         
-    };
-
-    do{
         opcion = seleccionarConDibujos(dibujos, tituloBiomas(), "SELECCIONE UN BIOMA");
-        
+
         system("cls");
 
         switch(opcion){
-            case 1: biomaSeleccionado = extraerBioma("Arrecifes de coral"); break;
-            case 2: biomaSeleccionado = extraerBioma("Oceano Profundo"); break;
+            case 1: biomaSimulador = extraerBioma("Arrecifes de Coral"); break;
+            case 2: biomaSimulador = extraerBioma("Oceano Profundo"); break;
             case -1: break;
         }
+    }
 
-        system("cls");
-        
-    }while(opcion != -1);
-}
-
-// Función para iniciar el simulador
-void iniciarSimulador() {
     bool desplegarCuadros = true;
-    int opcion = -1;
-    
-    seleccionarBioma();
+    opcion = -1;
 
     vector<string> dibujos = {
         ASCIIAgregarEspecie(),
@@ -60,25 +50,24 @@ void iniciarSimulador() {
         ASCIIEliminarEspecie()
     };
 
-    // Valores iniciales de los factores
-    float oxigeno = 7.0, salinidad = 165.0, temperatura = 20.0, contaminacion = 50.0;
-
     do {
 
+        system("cls");
+
         if (desplegarCuadros){
-            mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
+            mostrarTodosCuadros();
             mostrarEventos();
             getch();
         }
 
         opcion = seleccionarConDibujos( dibujos, tituloWaterBox(), "SELECCIONE UNA OPCION");
-        
+
         system("cls");
 
         switch (opcion){
             case 1: agregarEspecie(); desplegarCuadros = true; break;
             case 2: enlistarEspecies(); desplegarCuadros = false; getch(); break;
-            case 3: modificarFactor(oxigeno, salinidad, temperatura, contaminacion); desplegarCuadros = true; break;
+            case 3: modificarFactor(); desplegarCuadros = true; break;
             case 4: eliminarEspecie(); desplegarCuadros = true; break;
             case -1: break;
         }
@@ -88,14 +77,14 @@ void iniciarSimulador() {
     } while (opcion != -1);
 }
 
-void mostrarTodosCuadros(float oxigeno, float salinidad, float temperatura, float contaminacion) {
-    cout << endl << endl;
+void mostrarTodosCuadros() {
+    cout << "Bioma: " << biomaSimulador->nombre << endl << endl;
 
     // Cálculo de los porcentajes según los valores ingresados
-    int porcentajeOxigeno = (oxigeno - oxigenoMin) * 100 / (oxigenoMax - oxigenoMin);
-    int porcentajeSalinidad = (salinidad - salinidadMin) * 100 / (salinidadMax - salinidadMin);
-    int porcentajeTemperatura = (temperatura - temperaturaMin) * 100 / (temperaturaMax - temperaturaMin);
-    int porcentajeContaminacion = (contaminacion - contaminacionMin) * 100 / (contaminacionMax - contaminacionMin);
+    int porcentajeOxigeno = (biomaSimulador->nivelOxigeno - oxigenoMin) * 100 / (oxigenoMax - oxigenoMin);
+    int porcentajeSalinidad = (biomaSimulador->nivelSalinidad - salinidadMin) * 100 / (salinidadMax - salinidadMin);
+    int porcentajeTemperatura = (biomaSimulador->nivelTemperatura - temperaturaMin) * 100 / (temperaturaMax - temperaturaMin);
+    int porcentajeContaminacion = (biomaSimulador->nivelTemperatura - contaminacionMin) * 100 / (contaminacionMax - contaminacionMin);
 
     // Mostrar barras de progreso
     imprimirBarra("Oxígeno", porcentajeOxigeno); cout << "\t";
@@ -129,7 +118,7 @@ void imprimirPoblaciones() {
     }
 }
 
-void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float &contaminacion) {
+void modificarFactor() {
     int opcion = -1;
     vector<string> dibujos = {
         ASCIIOxigeno(),
@@ -145,32 +134,32 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
         switch (opcion) {
             case 1: // Oxígeno
                 cout << "Ingrese el nivel de oxígeno (Mín. 0 / Máx. 14 mg/L): ";
-                cin >> oxigeno;
-                if (oxigeno < oxigenoMin || oxigeno > oxigenoMax) {
+                cin >> biomaSimulador->nivelOxigeno;
+                if (biomaSimulador->nivelOxigeno < oxigenoMin || biomaSimulador->nivelOxigeno > oxigenoMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << oxigenoMin << " y " << oxigenoMax << " mg/L." << endl;
                     getch();
                 }
                 break;
             case 2: // Salinidad
                 cout << "Ingrese el nivel de salinidad (Mín. 0 / Máx. 330 ups): ";
-                cin >> salinidad;
-                if (salinidad < salinidadMin || salinidad > salinidadMax) {
+                cin >> biomaSimulador->nivelSalinidad;
+                if (biomaSimulador->nivelSalinidad < salinidadMin || biomaSimulador->nivelSalinidad > salinidadMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << salinidadMin << " y " << salinidadMax << " ups." << endl;
                     getch();
                 }
                 break;
             case 3: // Temperatura
                 cout << "Ingrese la temperatura (Mín. 0 / Máx. 40 °C): ";
-                cin >> temperatura;
-                if (temperatura < temperaturaMin || temperatura > temperaturaMax) {
+                cin >> biomaSimulador->nivelTemperatura;
+                if (biomaSimulador->nivelTemperatura < temperaturaMin || biomaSimulador->nivelTemperatura > temperaturaMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << temperaturaMin << " y " << temperaturaMax << " °C." << endl;
                     getch();
                 }
                 break;
             case 4: // Contaminación
                 cout << "Ingrese el nivel de contaminación (Mín. 0 / Máx. 100 %): ";
-                cin >> contaminacion;
-                if (contaminacion < contaminacionMin || contaminacion > contaminacionMax) {
+                cin >> biomaSimulador->nivelContaminacion;
+                if (biomaSimulador->nivelContaminacion < contaminacionMin || biomaSimulador->nivelContaminacion > contaminacionMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << contaminacionMin << " y " << contaminacionMax << " %." << endl;
                     getch();
                 }

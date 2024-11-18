@@ -1,8 +1,8 @@
 #ifndef CRUD_ESPECIES_HPP
 #define CRUD_ESPECIES_HPP
 
-#include <iostream>
 #include "crudPoblaciones.hpp"
+#include "Bioma.hpp"
 #include "Evento.hpp"
 
 using namespace std;
@@ -56,14 +56,8 @@ void agregarEspecie(){
     nuevaEspecie->datosEspecie = datos;
     nuevaEspecie->sgteEspecie = nullptr;
 
-    /*
-        Solucion temporal
-    */
-    Bioma *bioma = new Bioma();
-    bioma->nombre = "Bioma temporal";
-
     insertarEspecie(nuevaEspecie);
-    registrarEvento(AGREGAR_ESPECIE, bioma, nuevaEspecie);
+    registrarEvento(AGREGAR_ESPECIE, biomaSimulador, nuevaEspecie);
 }
 
 void enlistarEspecies(){
@@ -219,7 +213,7 @@ void eliminarEspecie() {
     }
 
 
-    registrarEvento(ELIMINAR_ESPECIE, nullptr, especieEncontrada);
+    registrarEvento(ELIMINAR_ESPECIE, biomaSimulador, especieEncontrada);
 }
 
 Especie* extraerListaEspecies(){

@@ -199,9 +199,9 @@ string ASCIITemperatura() {
 
 // ---------------------------------------- MENU ESCOGER BIOMA ----------------------------------------
 
-string asciiBiomaArrecifeCoral() {
+string ASCIIBiomaArrecifeCoral() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n: ARRECIFE DE CORAL . ° :"
     "\n:   °  ><>  ><> .  °   .:"
     "\n:  ><>    ><>  °  .  °  :"
@@ -212,9 +212,9 @@ string asciiBiomaArrecifeCoral() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiBiomaOceanoProfundo() {
+string ASCIIBiomaOceanoProfundo() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n: OCÉANO PROFUNDO  ,-~-~:"
     "\n:   ,,         °   ;!-  :"
     "\n: ><(((((((((\'> o  :!;  :"

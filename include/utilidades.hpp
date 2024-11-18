@@ -249,35 +249,15 @@ int seleccionarConDibujos(vector<string> dibujos, string titulo, string subtitul
 // --------------------------------------------------- SELECCIONAR CON FLECHAS -------------------------------------
 
 // Funcion que imprime un dibujo y su opcion
-void imprimirOpcionFlecha(string dibujo, int x, int y, bool seleccionado) {
-    size_t pos = 0;
-    string tempDibujo = dibujo;
-    int lineaActual = y;
-
-    // Cambiar el color si es la opción seleccionada
+void imprimirOpcionFlecha(string opcion, int x, int y, bool seleccionado) {// Cambiar el color si es la opción seleccionada
+    moverCursor(x, y);
+    
     if (seleccionado) {
-        cout << textoRGB(255,255,0);
+        cout << textoRGB(255,255,0) << opcion << textoRGB(255,255,255);
+    }else{
+        cout << opcion;
     }
 
-    // Imprimir el dibujo línea por línea
-    while ((pos = tempDibujo.find('\n')) != string::npos) {
-        moverCursor(x, lineaActual);
-        cout << tempDibujo.substr(0, pos); // Imprime la línea del dibujo
-        tempDibujo.erase(0, pos + 1); // Elimina la línea impresa
-        lineaActual++; // Aumenta la línea actual
-    }
-
-    // Imprimir cualquier contenido restante (última línea sin '\n')
-    if (!tempDibujo.empty()) {
-        moverCursor(x, lineaActual);
-        cout << tempDibujo;
-        lineaActual++;
-    }
-
-    // Restablecer el color
-    if (seleccionado) {
-        cout << textoRGB(255,255,255);
-    }
 }
 
 void imprimirOpcionesFlechas(string titulo, string subtitulo, vector<string> opciones, bool centrar, int indiceSeleccionado) {
@@ -287,9 +267,9 @@ void imprimirOpcionesFlechas(string titulo, string subtitulo, vector<string> opc
     
     if ( subtitulo != "" ){
         y += imprimirTexto(titulo, x, y, centrar) + 3;
-        y += imprimirTexto(subtitulo, x, y, centrar, true) + 5;
+        y += imprimirTexto(subtitulo, x, y, centrar, true) + 3;
     }else{
-        y += imprimirTexto(titulo, x, y, centrar) + 7;
+        y += imprimirTexto(titulo, x, y, centrar) + 5;
     }
 
     int numeroOpciones = opciones.size();
@@ -302,7 +282,7 @@ void imprimirOpcionesFlechas(string titulo, string subtitulo, vector<string> opc
     x = margenIzquierda;
 
     for (int i = 0; i < numeroOpciones; ++i) {
-        imprimirOpcionFlecha(opciones[i], x, y, i == indiceSeleccionado);
+        imprimirOpcionFlecha(opciones[i], x, y + i, i == indiceSeleccionado);
     }
 
     moverCursor(x, y + numeroOpciones + 5);
@@ -310,7 +290,7 @@ void imprimirOpcionesFlechas(string titulo, string subtitulo, vector<string> opc
 }
 
 // Función para la selección con flechas
-string seleccionConFlechas(vector<string> opciones, string titulo, string subtitulo = "", bool centrar = false) {
+string seleccionConFlechas(vector<string> opciones, string titulo, string subtitulo = "", bool centrar = true) {
     char tecla;
     int index = 0;
     int numeroOpciones = opciones.size(); // Obtiene el tamaño del vector
@@ -319,6 +299,8 @@ string seleccionConFlechas(vector<string> opciones, string titulo, string subtit
     ocultarCursor();
 
     while (true) {
+
+        system("cls");
 
         // Mostrar las opciones inicialmente
         imprimirOpcionesFlechas(titulo, subtitulo, opciones, centrar, index);
@@ -336,14 +318,16 @@ string seleccionConFlechas(vector<string> opciones, string titulo, string subtit
             tecla = _getch(); 
 
             switch (tecla) {
-                case LEFT: 
+                case UP: 
                     index = (index - 1 + numeroOpciones) % numeroOpciones;
                     break;
-                case RIGHT: 
+                case DOWN: 
                     index = (index + 1) % numeroOpciones;
                     break;
             }
         } 
+
+        system("cls");
 
         // Manejo de la tecla Enter
         if (tecla == ENTER) {
