@@ -1,5 +1,5 @@
-#ifndef EVENTO_H
-#define EVENTO_H
+#ifndef EVENTO_HPP
+#define EVENTO_HPP
 
 #include <iostream>
 #include <fstream>
@@ -28,6 +28,9 @@ enum TipoEvento {
     EDITAR_BIOMA_ADMIN
 };
 
+// Almacena el conteo de tipos de eventos
+int conteoTiposEvento[13] = {0};
+
 // Estructura del evento
 struct Evento {
     TipoEvento tipo;
@@ -42,6 +45,10 @@ struct Evento {
 // Listas globales para la pila y las colas
 Evento* pilaEventos = nullptr;
 Evento* colaEventos = nullptr;
+
+// Archivo de eventos .txt
+const string ARCHIVO_EVENTOS_HOY = "eventos[" + formatearFecha( getTiempoActual() ) + "].txt";
+const string ARCHIVO_CONTEO_EVENTOS = "contadorEventos.txt";
 
 // Función para agregar evento a la pila
 void push(Evento*& pilaEventos, Evento* nuevoEvento) {
@@ -71,119 +78,109 @@ void enqueue(Evento*& colaEventos, Evento* nuevoEvento) {
     }
 }
 
-// Guardar eventos en el archivo especificado
-void registrarEventosEnArchivo(Evento* eventos, string nombreArchivo) {
-    ofstream archivo(nombreArchivo);
-    if (!archivo) {
-        cerr << "Error al abrir el archivo" << endl;
-        return;
+// Funcion para ordenar los eventos por fecha
+void ordenarEventosPorTiempo(vector<Evento>& eventos) {
+    int n = eventos.size();
+    
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (!compararFecha(eventos[j].descripcion, eventos[j + 1].descripcion)) {
+                Evento temp = eventos[j];
+                eventos[j] = eventos[j + 1];
+                eventos[j + 1] = temp;
+            }
+        }
     }
-    Evento* temp = eventos;
-    while (temp) {
-        archivo << "Tipo de Evento: " << temp->tipo << endl;
-        archivo << "Descripción: " << temp->descripcion << endl;
-        archivo << "Bioma de Ocurrencia: " << temp->biomaOcurrencia->nombre << endl;
-        if (temp->especie1) archivo << "Especie 1: " << temp->especie1->datosEspecie->nombreComun << endl;
-        if (temp->especie2) archivo << "Especie 2: " << temp->especie2->datosEspecie->nombreComun << endl;
-        archivo << "-----------------------" << endl;
-        temp = temp->sgteEvento;
-    }
-    archivo.close();
 }
 
-// Crear y escribir en "descripcionEventos.txt"
-void guardarDescripcionEventos(const string& nombreArchivo) {
-    ofstream archivo(nombreArchivo);
-    if (!archivo) {
-        cerr << "Error al abrir el archivo" << endl;
-        return;
-    }
+// Juntar y extrer todos los eventos de la cola y la pila ordenados por tiempo
+vector<Evento> eventosPilaCola(){
+    vector<Evento> eventos;
 
-    // Escribir eventos de la cola
-    archivo << "Eventos en la Cola:" << endl;
-    Evento* temp = colaEventos;
-    while (temp) {
-        archivo << "Tipo de Evento: " << temp->tipo << endl;
-        archivo << "Descripción: " << temp->descripcion << endl;
-        archivo << "Bioma de Ocurrencia: " << temp->biomaOcurrencia->nombre << endl;
-        if (temp->especie1) archivo << "Especie 1: " << temp->especie1->datosEspecie->nombreComun << endl;
-        if (temp->especie2) archivo << "Especie 2: " << temp->especie2->datosEspecie->nombreComun << endl;
-        archivo << "-----------------------" << endl;
-        temp = temp->sgteEvento;
-    }
-
-    // Escribir eventos de la pila
-    archivo << "\nEventos en la Pila:" << endl;
-    temp = pilaEventos;
-    while (temp) {
-        archivo << "Tipo de Evento: " << temp->tipo << endl;
-        archivo << "Descripción: " << temp->descripcion << endl;
-        archivo << "Bioma de Ocurrencia: " << temp->biomaOcurrencia->nombre << endl;
-        if (temp->especie1) archivo << "Especie 1: " << temp->especie1->datosEspecie->nombreComun << endl;
-        if (temp->especie2) archivo << "Especie 2: " << temp->especie2->datosEspecie->nombreComun << endl;
-        archivo << "-----------------------" << endl;
-        temp = temp->sgteEvento;
-    }
-    archivo.close();
-}
-
-// Crear y escribir en "conteoTiposEventos.txt"
-void guardarConteoTiposEventos(const string& nombreArchivo) {
-    ofstream archivo(nombreArchivo);
-    if (!archivo) {
-        cerr << "Error al abrir el archivo" << endl;
-        return;
-    }
-
-    int conteoEventos[13] = {0}; // Array para contar cada tipo de evento
+    // Agregar eventos de la pila al vector
     Evento* temp = pilaEventos;
 
-    // Contar eventos en la pila
-    while (temp) {
-        conteoEventos[temp->tipo]++;
+    while (temp != nullptr) {
+        eventos.push_back(*temp);
         temp = temp->sgteEvento;
     }
 
-    // Contar eventos en la cola
+    // Agregar eventos de la cola al vector
     temp = colaEventos;
-    while (temp) {
-        conteoEventos[temp->tipo]++;
+    
+    while (temp != nullptr) {
+        eventos.push_back(*temp);
         temp = temp->sgteEvento;
     }
 
-    // Guardar el conteo en el archivo
-    archivo << "Conteo de Tipos de Eventos:" << endl;
-    for (int i = 0; i < 13; ++i) {
-        archivo << "Tipo de Evento " << i << ": " << conteoEventos[i] << endl;
-    }
-    archivo.close();
+    ordenarEventosPorTiempo(eventos);
+
+    return eventos;
 }
 
-// Función para mostrar los eventos registrados en pantalla
-void mostrarEventos() {
-    cout << "\nHistorial de eventos :" << endl << endl;
+// Crear y escribir en "estadisticasSimulador.txt"
+void actualizarConteoEventos(Evento *evento) {
+    ifstream archivoLectura(ARCHIVO_CONTEO_EVENTOS);
 
-    vector<string> descripcionEventos;
-    Evento* aux = pilaEventos;
-
-    while (aux != nullptr) {
-        descripcionEventos.push_back(aux->descripcion);
-        aux = aux->sgteEvento;
+    if (archivoLectura) {
+        string linea;
+        int index = 0;
+        while (getline(archivoLectura, linea) && index < 13) {
+            size_t pos = linea.find("=");
+            if (pos != string::npos) {
+                conteoTiposEvento[index] = stoi(linea.substr(pos + 1));
+            }
+            index++;
+        }
+        archivoLectura.close();
     }
 
-    aux = colaEventos;
-    
-    while (aux != nullptr) {
-        descripcionEventos.push_back(aux->descripcion);
-        aux = aux->sgteEvento;
+    if (evento->tipo >= 0 && evento->tipo < 13) {
+        conteoTiposEvento[evento->tipo]++;
     }
 
-    ordenarEventosPorTiempo(descripcionEventos);
-
-    // Mostramos los eventos en el orden adecuado
-    for (auto it = descripcionEventos.rbegin(); it != descripcionEventos.rend(); ++it) {
-        cout << *it << endl;
+    ofstream archivoEscritura(ARCHIVO_CONTEO_EVENTOS);
+    if (!archivoEscritura) {
+        cerr << "Error al abrir el archivo." << endl;
+        return;
     }
+
+    archivoEscritura << "Conteo de Tipos de Eventos:" << endl;
+    archivoEscritura << "1. AGREGAR_ESPECIE = " << conteoTiposEvento[AGREGAR_ESPECIE] << endl;
+    archivoEscritura << "2. ELIMINAR_ESPECIE = " << conteoTiposEvento[ELIMINAR_ESPECIE] << endl;
+    archivoEscritura << "3. MODIFICAR_FACTORES = " << conteoTiposEvento[MODIFICAR_FACTORES] << endl;
+    archivoEscritura << "4. REPRODUCCION = " << conteoTiposEvento[REPRODUCCION] << endl;
+    archivoEscritura << "5. DEPREDACION = " << conteoTiposEvento[DEPREDACION] << endl;
+    archivoEscritura << "6. CAZA = " << conteoTiposEvento[CAZA] << endl;
+    archivoEscritura << "7. ENFERMEDAD = " << conteoTiposEvento[ENFERMEDAD] << endl;
+    archivoEscritura << "8. CREAR_ESPECIE_ADMIN = " << conteoTiposEvento[CREAR_ESPECIE_ADMIN] << endl;
+    archivoEscritura << "9. ELIMINAR_ESPECIE_ADMIN = " << conteoTiposEvento[ELIMINAR_ESPECIE_ADMIN] << endl;
+    archivoEscritura << "10. EDITAR_ESPECIE_ADMIN = " << conteoTiposEvento[EDITAR_ESPECIE_ADMIN] << endl;
+    archivoEscritura << "11. CREAR_BIOMA_ADMIN = " << conteoTiposEvento[CREAR_BIOMA_ADMIN] << endl;
+    archivoEscritura << "12. ELIMINAR_BIOMA_ADMIN = " << conteoTiposEvento[ELIMINAR_BIOMA_ADMIN] << endl;
+    archivoEscritura << "13. EDITAR_BIOMA_ADMIN = " << conteoTiposEvento[EDITAR_BIOMA_ADMIN] << endl;
+
+    archivoEscritura.close();
+}
+
+// Crear y escribir en "eventos[FECHA].txt"
+void guardarEventoArchivo(Evento* nuevoEvento) {
+    ofstream archivo(ARCHIVO_EVENTOS_HOY, ios::app);
+    if (!archivo) {
+        cerr << "Error al abrir el archivo" << endl;
+        return;
+    }
+
+    archivo << "Tipo de Evento: " << nuevoEvento->tipo << endl;
+    archivo << "Descripción: " << nuevoEvento->descripcion << endl;
+    archivo << "Bioma de Ocurrencia: " << nuevoEvento->biomaOcurrencia->nombre << endl;
+    if (nuevoEvento->especie1) archivo << "Especie 1: " << nuevoEvento->especie1->datosEspecie->nombreComun << endl;
+    if (nuevoEvento->especie2) archivo << "Especie 2: " << nuevoEvento->especie2->datosEspecie->nombreComun << endl;
+    archivo << "-----------------------" << endl;
+
+    archivo.close();
+
+    actualizarConteoEventos(nuevoEvento);
 }
 
 void registrarEvento(TipoEvento tipo, Bioma* bioma = nullptr, Especie* especie1 = nullptr, Especie* especie2 = nullptr) {
@@ -239,13 +236,23 @@ void registrarEvento(TipoEvento tipo, Bioma* bioma = nullptr, Especie* especie1 
     nuevoEvento->sgteEvento = nullptr;
     
     if( AGREGAR_ESPECIE || ELIMINAR_ESPECIE || MODIFICAR_FACTORES ){
-        
+        push(pilaEventos, nuevoEvento);
     }else{
         enqueue(colaEventos, nuevoEvento);
     }
 
-    registrarEventosEnArchivo(colaEventos, "ColaEventos.txt");
-    mostrarEventos();
+    guardarEventoArchivo(nuevoEvento);
 }
 
-#endif // EVENTO_H
+// Función para mostrar los eventos registrados en pantalla
+void mostrarEventos() {
+    cout << "\nHistorial de eventos :" << endl << endl;
+
+    // Mostramos los eventos en el orden adecuado
+    vector<Evento> eventos = eventosPilaCola();
+    for(int i=0; i < eventos.size(); i++) {
+        cout << eventos[i].descripcion << endl;
+    }
+}
+
+#endif // EVENTO_HPP

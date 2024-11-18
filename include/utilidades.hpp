@@ -71,180 +71,10 @@ void mostrarCursor() {
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
-
-//------------------------------------------- SELECCIONAR CON FLECHAS ----------------------------------
-
-
-
-// Función para imprimir el título línea por línea moviendo el cursor
-int imprimirTitulo(const string& titulo, int x = -1, int y = -1) {
-    vector<string> lineas;
-    size_t pos = 0;
-    size_t siguientePos;
-
-    // Dividir el título en líneas
-    while ((siguientePos = titulo.find('\n', pos)) != string::npos) {
-        lineas.push_back(titulo.substr(pos, siguientePos - pos));
-        pos = siguientePos + 1;
-    }
-    lineas.push_back(titulo.substr(pos)); // Agregar la última línea
-
-    // Obtener el ancho de la consola
-    int anchoConsola = obtenerAnchoConsola();
-
-    // Si no se proporcionan coordenadas
-    if (x < 0 && y < 0) {
-        y = 0; // Usar la primera línea si no se proporciona y
-    }
-
-    // Imprimir cada línea centrada
-    for (const string& linea : lineas) {
-        string lineaRecortada = linea;
-        lineaRecortada.erase(0, lineaRecortada.find_first_not_of(' ')); // Eliminar espacios al inicio
-        lineaRecortada.erase(lineaRecortada.find_last_not_of(' ') + 1); // Eliminar espacios al final
-
-        if (lineaRecortada.empty()) {
-            moverCursor(x >= 0 ? x : 0, y);
-            cout << endl; // Simplemente imprime una línea vacía
-            y++;
-            continue;
-        }
-
-        int longitudLinea = lineaRecortada.length();
-        int espacioIzquierdo = (anchoConsola - longitudLinea) / 2;
-
-        // Asegurarse de que no imprima espacio negativo
-        if (espacioIzquierdo < 0) espacioIzquierdo = 0;
-
-        moverCursor(x >= 0 ? x : espacioIzquierdo, y); // Usar el x calculado o el proporcionado
-        cout << lineaRecortada << endl;
-        y++; // Incrementar y para la siguiente línea
-    }
-
-    return y; // Retornar la nueva posición y
-}
-
-// Función para imprimir las opciones
-int imprimirOpciones(vector<string> opciones, string sentido, bool centrado, int x, int y, int index) {
-    
-    if ( sentido == "horizontal" ){
-        cout << "\n";
-    }
-
-    for (int i = 0; i < opciones.size(); i++) {
-        
-        // Mover el cursor según el sentido
-        if (sentido == "vertical") {
-            
-            if( x >= 0 && y >= 0 ){
-                moverCursor(x, y + (i + 1));
-            }else{
-                cout << endl;
-            }
-
-            if (centrado) {
-                cout << "\t\t\t";
-            }
-
-        } else if( sentido == "horizontal" ){  // Horizontal
-
-            if( x >= 0 && y >= 0 ){
-                moverCursor(x + (i * 15), y);
-            }else{
-                cout << "   ";
-            }
-            
-            if (centrado) {
-                cout << "\t\t\t";
-            }
-        }
-
-        // Imprimir la opción
-        if (i == index) {
-            cout << "> " << opciones[i];
-        } else {
-            cout << "  " << opciones[i];
-        }
-    }
-
-    return y + opciones.size() + 3;
-}
-
-void imprimirCancelar(int x, int y){
-    if( x >= 0 && y >= 0 ){
-        moverCursor(x,y);
-        cout << "Presione ESC o 0 para cancelar la seleccion." << endl;
-    }else{
-        cout << "\n\nPresione ESC o 0 para cancelar la seleccion." << endl;
-    }
-}
-
-// Función para la selección con flechas
-string seleccionConFlechas(string titulo, vector<string> opciones, string sentido, bool centrado = false, int posX = -1, int posY = -1) {
-    char tecla;
-    int index = 0, tituloY, opcionesY; // Inicializa el índice en 0
-    int numeroOpciones = opciones.size(); // Obtiene el tamaño del vector
-
-    if( sentido != "vertical" && sentido != "horizontal" ) return "";
-
-    ocultarCursor();
-
-    do {
-        system("cls");
-        tituloY = imprimirTitulo(titulo, posX, posY); // Actualizar posY según la altura del título
-
-        // Imprime las opciones en la posición Y que sigue al título
-        opcionesY = imprimirOpciones(opciones, sentido, centrado, posX, tituloY, index); // Dejar espacio para el título
-
-        imprimirCancelar(posX, opcionesY);
-
-        tecla = _getch();
-
-        if (tecla == TECLA_ESPECIAL) {
-            tecla = _getch(); // Capturar el código de la tecla de flecha
-
-
-            if (sentido == "vertical") {
-
-                switch (tecla) {
-                    case UP:
-                        index = (index - 1 + numeroOpciones) % numeroOpciones; // Mover hacia arriba en vertical
-                        break;
-                    case DOWN:
-                        index = (index + 1) % numeroOpciones; // Mover hacia abajo en vertical
-                        break;
-                }
-
-            }else if(sentido == "horizontal"){
-
-                switch (tecla) {
-                    case LEFT:
-                        index = (index - 1 + numeroOpciones) % numeroOpciones; // Mover hacia la izquierda en horizontal
-                        break;
-                    case RIGHT:
-                        index = (index + 1) % numeroOpciones; // Mover hacia la derecha en horizontal
-                        break;
-                }
-
-            }
-        }
-
-        if (tecla == ENTER) {
-            mostrarCursor();
-            return opciones[index];
-        }
-
-    } while (tecla != ESC && tecla != ZERO);
-
-    mostrarCursor();
-    return "";
-}
-
-
 // ------------------------------------------ SELECCIONAR CON DIBUJOS ------------------------------------------
 
 // Funcion que imprime un dibujo y su opcion
-void imprimirDibujo(string dibujo, int x, int y, bool seleccionado) {
+void imprimirOpcionDibujo(string dibujo, int x, int &y, bool seleccionado) {
     size_t pos = 0;
     string tempDibujo = dibujo;
     int lineaActual = y;
@@ -266,6 +96,7 @@ void imprimirDibujo(string dibujo, int x, int y, bool seleccionado) {
     if (!tempDibujo.empty()) {
         moverCursor(x, lineaActual);
         cout << tempDibujo;
+        lineaActual++;
     }
 
     // Restablecer el color
@@ -299,6 +130,7 @@ int imprimirTexto(string texto, int x, int y, bool centrar, bool isSubtitulo = f
         cout << borde;
         lineaActual++;
         altura++;
+
     } else {
         // Procesar el texto línea por línea, considerando los saltos de línea '\n'
         while ((pos = texto.find('\n', inicio)) != string::npos) {
@@ -341,16 +173,16 @@ int imprimirTexto(string texto, int x, int y, bool centrar, bool isSubtitulo = f
     return altura;
 }
 
-void mostrarOpciones(string titulo, string subtitulo, vector<string> dibujos, bool centrar, int indiceSeleccionado) {
+void imprimirOpcionesDibujos(string titulo, string subtitulo, vector<string> dibujos, bool centrar, int indiceSeleccionado) {
     system("cls"); 
 
-    int y = 3;
+    int y = 3, x = 0;
     
     if ( subtitulo != "" ){
-        y += imprimirTexto(titulo, 0, y, centrar) + 3;
-        y += imprimirTexto(subtitulo, 0, y, centrar, true) + 3;
+        y += imprimirTexto(titulo, x, y, centrar) + 3;
+        y += imprimirTexto(subtitulo, x, y, centrar, true) + 3;
     }else{
-        y += imprimirTexto(titulo, 0, y, centrar) + 5;
+        y += imprimirTexto(titulo, x, y, centrar) + 5;
     }
 
     int numeroOpciones = dibujos.size();
@@ -363,24 +195,27 @@ void mostrarOpciones(string titulo, string subtitulo, vector<string> dibujos, bo
     int xOffset = margenIzquierda;
 
     for (int i = 0; i < numeroOpciones; ++i) {
-        int xPos = xOffset + i * espacioEntreDibujos;
-        imprimirDibujo(dibujos[i], xPos, y, i == indiceSeleccionado);
+        x = xOffset + i * espacioEntreDibujos;
+        imprimirOpcionDibujo(dibujos[i], x, y, i == indiceSeleccionado);
     }
+
+    moverCursor(margenIzquierda, y + 13);
+    cout << "Presione ESC o 0 para cancelar" << endl;
 }
 
 // Función principal mejorada
 int seleccionarConDibujos(vector<string> dibujos, string titulo, string subtitulo = "", bool centrar = true) {
-    cout << textoRGB(255,255,255);
-    ocultarCursor();
-    
     char tecla;
     int opcionSeleccionada = 0;
     int numeroOpciones = dibujos.size();
 
-    // Mostrar las opciones inicialmente
-    mostrarOpciones(titulo, subtitulo, dibujos, centrar, opcionSeleccionada);
+    cout << textoRGB(255,255,255);
+    ocultarCursor();
 
     while (true) {
+        // Mostrar las opciones inicialmente
+        imprimirOpcionesDibujos(titulo, subtitulo, dibujos, centrar, opcionSeleccionada);
+
         tecla = _getch(); 
 
         // Manejo de la tecla especial (ESC o '0' para regresar)
@@ -401,15 +236,119 @@ int seleccionarConDibujos(vector<string> dibujos, string titulo, string subtitul
                     opcionSeleccionada = (opcionSeleccionada + 1) % numeroOpciones;
                     break;
             }
-
-            // Actualizar la visualización después del cambio de opción
-            mostrarOpciones(titulo, subtitulo, dibujos, centrar, opcionSeleccionada);
         } 
 
         // Manejo de la tecla Enter
         if (tecla == ENTER) {
             mostrarCursor();
             return opcionSeleccionada + 1;  // Devuelve la opción seleccionada
+        }
+    }
+}
+
+// --------------------------------------------------- SELECCIONAR CON FLECHAS -------------------------------------
+
+// Funcion que imprime un dibujo y su opcion
+void imprimirOpcionFlecha(string dibujo, int x, int y, bool seleccionado) {
+    size_t pos = 0;
+    string tempDibujo = dibujo;
+    int lineaActual = y;
+
+    // Cambiar el color si es la opción seleccionada
+    if (seleccionado) {
+        cout << textoRGB(255,255,0);
+    }
+
+    // Imprimir el dibujo línea por línea
+    while ((pos = tempDibujo.find('\n')) != string::npos) {
+        moverCursor(x, lineaActual);
+        cout << tempDibujo.substr(0, pos); // Imprime la línea del dibujo
+        tempDibujo.erase(0, pos + 1); // Elimina la línea impresa
+        lineaActual++; // Aumenta la línea actual
+    }
+
+    // Imprimir cualquier contenido restante (última línea sin '\n')
+    if (!tempDibujo.empty()) {
+        moverCursor(x, lineaActual);
+        cout << tempDibujo;
+        lineaActual++;
+    }
+
+    // Restablecer el color
+    if (seleccionado) {
+        cout << textoRGB(255,255,255);
+    }
+}
+
+void imprimirOpcionesFlechas(string titulo, string subtitulo, vector<string> opciones, bool centrar, int indiceSeleccionado) {
+    system("cls"); 
+
+    int y = 3, x = 0;
+    
+    if ( subtitulo != "" ){
+        y += imprimirTexto(titulo, x, y, centrar) + 3;
+        y += imprimirTexto(subtitulo, x, y, centrar, true) + 5;
+    }else{
+        y += imprimirTexto(titulo, x, y, centrar) + 7;
+    }
+
+    int numeroOpciones = opciones.size();
+
+    int margenIzquierda = 10;
+    int espacioDisponible = obtenerAnchoConsola() - margenIzquierda;
+    int espacioEntreDibujos = espacioDisponible / numeroOpciones;
+
+    int espacioRestante = espacioDisponible - (espacioEntreDibujos * numeroOpciones);
+    x = margenIzquierda;
+
+    for (int i = 0; i < numeroOpciones; ++i) {
+        imprimirOpcionFlecha(opciones[i], x, y, i == indiceSeleccionado);
+    }
+
+    moverCursor(x, y + numeroOpciones + 5);
+    cout << "Presione ESC o 0 para cancelar" << endl;
+}
+
+// Función para la selección con flechas
+string seleccionConFlechas(vector<string> opciones, string titulo, string subtitulo = "", bool centrar = false) {
+    char tecla;
+    int index = 0;
+    int numeroOpciones = opciones.size(); // Obtiene el tamaño del vector
+
+    cout << textoRGB(255,255,255);
+    ocultarCursor();
+
+    while (true) {
+
+        // Mostrar las opciones inicialmente
+        imprimirOpcionesFlechas(titulo, subtitulo, opciones, centrar, index);
+
+        tecla = _getch(); 
+
+        // Manejo de la tecla especial (ESC o '0' para regresar)
+        if (tecla == ESC || tecla == ZERO) {
+            mostrarCursor();
+            return "";  // Regresar si se presiona ESC o '0'
+        }
+
+        // Manejo de las teclas de flecha
+        if (tecla == TECLA_ESPECIAL) {
+            tecla = _getch(); 
+
+            switch (tecla) {
+                case LEFT: 
+                    index = (index - 1 + numeroOpciones) % numeroOpciones;
+                    break;
+                case RIGHT: 
+                    index = (index + 1) % numeroOpciones;
+                    break;
+            }
+        } 
+
+        // Manejo de la tecla Enter
+        if (tecla == ENTER) {
+            mostrarCursor();
+            return opciones[index];  // Devuelve la opción seleccionada
         }
     }
 }

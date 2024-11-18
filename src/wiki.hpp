@@ -60,7 +60,7 @@ void iniciarWiki() {
 void wiki_buscar(){
     string tipoEspecie, nombreEspecie;
     
-    tipoEspecie = seleccionConFlechas("Seleccione el tipo de especie\n", tiposEspecies, "horizontal");
+    tipoEspecie = seleccionConFlechas(categorias, tituloWikiWater(), "SELECCIONE EL TIPO DE ESPECIE A BUSCAR");
     if( tipoEspecie == "" ) return;
 
     cout << "\n\tIngresa el nombre de la especie: "; 
@@ -114,12 +114,12 @@ void wiki_seleccionarBioma(){
     vector<string> especiesArrecifeCoral = {"Tiburon de arrecife", "Pez payaso", "Langosta comun", "Pez mariposa", "Camaron Limpiador", "Algas coralinas"};
     vector<string> especiesOceanoProfundo = {"Pez Linterna", "Pez Vibora", "Medusa Peine"};
 
-    bioma = seleccionConFlechas("Seleccione el bioma", biomas, "vertical");
+    bioma = seleccionConFlechas(biomas, tituloWikiWater(), "SELECCIONE UN BIOMA");
 
     if (bioma == "Arrecifes de coral") {
-        especieSeleccionada = seleccionConFlechas("Seleccione la especie", especiesArrecifeCoral, "vertical");
+        especieSeleccionada = seleccionConFlechas(especiesArrecifeCoral, tituloWikiWater(), "ESPECIES EN ARRECIFES DE CORAL");
     } else if (bioma == "Oceano profundo") {
-        especieSeleccionada = seleccionConFlechas("Seleccione la especie", especiesOceanoProfundo, "vertical");
+        especieSeleccionada = seleccionConFlechas(especiesOceanoProfundo, tituloWaterBox(), "ESPECIES EN OCEANO PROFUNDO");
     } else {
         return;
     }

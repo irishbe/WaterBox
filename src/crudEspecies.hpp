@@ -21,7 +21,7 @@ void agregarEspecie(){
     Especie *nuevaEspecie = new Especie();
 
     // SELECCIONAR EL TIPO DE ESPECIE A AGREGAR
-    tipoEspecie = seleccionConFlechas("Tipo de especie\n", tiposEspecies, "horizontal");
+    tipoEspecie = seleccionConFlechas(tiposEspecies, tituloAgregarEspecie(), "SELECCIONE UN TIPO DE ESPECIE");
     
     if( tipoEspecie.empty() ){
         return;
@@ -36,7 +36,7 @@ void agregarEspecie(){
     }
 
     // SELECCIONAR EL NOMBRE DE LA ESPECIE A AGREGAR
-    nombreEspecie = seleccionConFlechas("Seleccione el nombre de la especie", nombresEspecies, "vertical");
+    nombreEspecie = seleccionConFlechas(nombresEspecies, tituloAgregarEspecie(), "SELECCIONE EL NOMBRE DE LA ESPECIE PARA AGREGAR");
     
     if( nombreEspecie.empty() ){
         return;

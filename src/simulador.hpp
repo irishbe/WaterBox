@@ -8,6 +8,8 @@
 using namespace std;
 
 // Declaración de variables globales
+Bioma *biomaSimulador = new Bioma();
+
 const float oxigenoMin = 0, oxigenoMax = 14;
 const float salinidadMin = 0, salinidadMax = 330;
 const float temperaturaMin = 0, temperaturaMax = 40;
@@ -19,11 +21,38 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
 void imprimirPoblaciones();
 int mostrarMenuFactores();
 
+// Funcion para seleccionar un bioma
+void seleccionarBioma(){
+    Bioma* biomaSeleccionado = new Bioma();
+    int opcion = -1;
+
+    vector<string> dibujos = {
+        
+    };
+
+    do{
+        opcion = seleccionarConDibujos(dibujos, tituloBiomas(), "SELECCIONE UN BIOMA");
+        
+        system("cls");
+
+        switch(opcion){
+            case 1: biomaSeleccionado = extraerBioma("Arrecifes de coral"); break;
+            case 2: biomaSeleccionado = extraerBioma("Oceano Profundo"); break;
+            case -1: break;
+        }
+
+        system("cls");
+        
+    }while(opcion != -1);
+}
+
 // Función para iniciar el simulador
 void iniciarSimulador() {
     bool desplegarCuadros = true;
     int opcion = -1;
     
+    seleccionarBioma();
+
     vector<string> dibujos = {
         ASCIIAgregarEspecie(),
         ASCIIEnlistarEspecies(),
@@ -49,11 +78,9 @@ void iniciarSimulador() {
         switch (opcion){
             case 1: agregarEspecie(); desplegarCuadros = true; break;
             case 2: enlistarEspecies(); desplegarCuadros = false; getch(); break;
-            case 3: buscarEspecie(); desplegarCuadros = false; break;
-            case 4: modificarFactor(oxigeno, salinidad, temperatura, contaminacion); desplegarCuadros = true; break;
-            case 5: eliminarEspecie(); desplegarCuadros = true; break;
+            case 3: modificarFactor(oxigeno, salinidad, temperatura, contaminacion); desplegarCuadros = true; break;
+            case 4: eliminarEspecie(); desplegarCuadros = true; break;
             case -1: break;
-            default: cout << "Opción inválida..." << endl; desplegarCuadros = false; getch(); break;
         }
 
         system("cls");
@@ -149,15 +176,7 @@ void modificarFactor(float &oxigeno, float &salinidad, float &temperatura, float
                 }
                 break;
             case -1: break;
-            default:
-                cout << "Opción inválida..." << endl;
-                getch();
-                break;
         }
-
-        system("cls");
-        mostrarTodosCuadros(oxigeno, salinidad, temperatura, contaminacion);
-        mostrarEventos();
 
         system("cls");
 

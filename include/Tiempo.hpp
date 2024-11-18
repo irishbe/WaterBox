@@ -43,22 +43,23 @@ string formatearTiempo(Tiempo tiempo) {
     return resultado;
 }
 
-bool compararFecha(string evento1, string evento2) {
-    return evento1.substr(0, 20) > evento2.substr(0, 20);
+string formatearFecha(Tiempo tiempo) {
+    string resultado = to_string(tiempo.anio) + "-"
+                       + (tiempo.mes < 10 ? "0" : "") + to_string(tiempo.mes) + "-"
+                       + (tiempo.dia < 10 ? "0" : "") + to_string(tiempo.dia);
+    return resultado;
 }
 
-void ordenarEventosPorTiempo(vector<string>& descripcionEventos) {
-    int n = descripcionEventos.size();
-    
-    for (int i = 0; i < n - 1; ++i) {
-        for (int j = 0; j < n - i - 1; ++j) {
-            if (!compararFecha(descripcionEventos[j], descripcionEventos[j + 1])) {
-                string temp = descripcionEventos[j];
-                descripcionEventos[j] = descripcionEventos[j + 1];
-                descripcionEventos[j + 1] = temp;
-            }
-        }
-    }
+string formatearHora(Tiempo tiempo) {
+    string resultado = (tiempo.hora < 10 ? "0" : "") + to_string(tiempo.hora) + ":"
+                       + (tiempo.minutos < 10 ? "0" : "") + to_string(tiempo.minutos) + ":"
+                       + (tiempo.segundos < 10 ? "0" : "") + to_string(tiempo.segundos);
+    return resultado;
+}
+
+// Función para comparar fechas en formato "[YYYY-MM-DD HH:MM:SS]"
+bool compararFecha(string descripcion1, string descripcion2) {
+    return descripcion1.substr(0, 20) < descripcion2.substr(0, 20);
 }
 
 #endif // TIME_HPP

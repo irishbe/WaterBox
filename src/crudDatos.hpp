@@ -91,7 +91,7 @@ void menu() {
 
 void crearDatosCategoria() {
     json datosJson;
-    string categoria = seleccionConFlechas("Seleccione la categoria: \n", categorias, "horizontal");
+    string categoria = seleccionConFlechas(categorias, tituloWaterBox(), "SELECCIONE UNA CATEGORIA A CREAR");
 
     if ( categoria == "Bioma" ){
         Bioma *bioma;
@@ -232,7 +232,7 @@ void modificarDatosCategoria() {
     json datosJson;
     string categoria, nombreBuscado;
 
-    categoria = seleccionConFlechas("Seleccione una categoria: \n", categorias, "horizontal");
+    categoria = seleccionConFlechas(categorias, tituloWaterBox(), "SELECCIONE UNA CATEGORIA");
     
 	if ( categoria == "Animal" ) { // Animal
 	    datosJson = leerArchivo(animalesJson);
@@ -431,7 +431,7 @@ void extraerDatosCategoria() {
     json datosJson;
     string nombreBuscado, categoria;
 
-    categoria = seleccionConFlechas("Seleccione una categoria: \n", categorias, "horizontal");
+    categoria = seleccionConFlechas(categorias, tituloWaterBox(), "SELECCIONE UNA CATEGORIA");
 
     if ( categoria == "Animal" ) { // Animal
     	datosJson = leerArchivo(animalesJson);
@@ -634,7 +634,7 @@ void eliminarDatosCategoria() {
     json datosJson;
     string nombre, categoria;
 
-    categoria = seleccionConFlechas("Seleccione una categoria: \n", categorias, "horizontal");
+    categoria = seleccionConFlechas(categorias, tituloWaterBox(), "SELECCIONE UNA CATEGORIA");
 
 	if ( categoria == "Animal" ) {
 	    datosJson = leerArchivo(animalesJson);
