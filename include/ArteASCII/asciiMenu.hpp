@@ -32,6 +32,18 @@ string ASCIISimulador() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
+string asciiWikiWater() {
+    return
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n: ° .° .___. .___.  °  .:"
+    "\n:. ° _/     Y     \\_ ° o:"
+    "\n:o .// >WIKI|WATER \\\\ o :"
+    "\n: o// ~ ~~~ | ~~~ ~~\\\\.o:"
+    "\n: //_______.|._______\\\\ :"
+    "\n:`---------`-'---------':"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
 // ------------------------------------------- MENU WIKIWATER -------------------------------------------
 
 string ASCIIBuscarPorNombre() {
@@ -185,4 +197,32 @@ string ASCIITemperatura() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-#endif // ASCIIMenu.hpp
+// ---------------------------------------- MENU ESCOGER BIOMA ----------------------------------------
+
+string asciiBiomaArrecifeCoral() {
+    return
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n: ARRECIFE DE CORAL . ° :"
+    "\n:   °  ><>  ><> .  °   .:"
+    "\n:  ><>    ><>  °  .  °  :"
+    "\n: , , , ><> ° . °  <><  :"
+    "\n:\'{ { }\'         o  ; ; :"
+    "\n: \'} {}\'      ><> {.^;^}:"
+    "\n:~\'{ }\'.~.~.~..~.{<^;^>}:"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
+string asciiBiomaOceanoProfundo() {
+    return
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n: OCÉANO PROFUNDO  ,-~-~:"
+    "\n:   ,,         °   ;!-  :"
+    "\n: ><(((((((((\'> o  :!;  :"
+    "\n:    ^       °     !|!: :"
+    "\n:      ;-¬   ; ,  .|\':| :"
+    "\n:  {><_\'c   ;m;n; \'|:\'| :"
+    "\n: --..-..-..-W.M-\'~-~\':!:"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
+#endif // asciiMenu.hpp
