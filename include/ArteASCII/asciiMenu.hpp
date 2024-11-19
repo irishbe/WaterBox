@@ -11,36 +11,42 @@ using namespace std;
 string ASCIICodigos() {
     return
     ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
     "\n:    ______             :"
-    "\n:   |_,.,--\\           :"
+    "\n:   |_,.,--\\            :"
     "\n:     ||                :"
     "\n:     ||     CÓDIGOS    :"
     "\n:     ##                :"
     "\n:     ##                :"
+    "\n:                       :"
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
 string ASCIISimulador() {
     return
     ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
     "\n: |   .   SIMULADOR . | :"
     "\n: |.  /     .  °  .   | :"
-    "\n: |\\  | |  o    .   .| :"
+    "\n: |\\  | |  o    .   . | :"
     "\n: | | |/   _ °    <>< | :"
-    "\n: |  \\|  ><_>        | :"
+    "\n: |  \\|  ><_>         | :"
     "\n: ∙---!--------;;--;;-∙ :"
+    "\n:                       :"
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string asciiWikiWater() {
+string ASCIIWikiWater() {
     return
-    "\n.oOo.oOo.oOo.oOo.oOo.oOo."
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
     "\n: ° .° .___. .___.  °  .:"
     "\n:. ° _/     Y     \\_ ° o:"
     "\n:o .// >WIKI|WATER \\\\ o :"
     "\n: o// ~ ~~~ | ~~~ ~~\\\\.o:"
     "\n: //_______.|._______\\\\ :"
     "\n:`---------`-'---------':"
+    "\n:                       :"
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 

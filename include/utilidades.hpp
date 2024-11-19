@@ -52,20 +52,24 @@ void moverCursor(int x, int y) {
 }
 
 void fondoRGB(int r, int g, int b) {
-    // Obtener el tamaño de la consola
+    // Obtener el handle de la consola
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    int consoleWidth = obtenerAnchoConsola();
-    int consoleHeight = 20;
-
-    // Cambiar el color de fondo con ANSI y llenar cada línea con espacios
-    cout << "\033[48;2;" + to_string(r) + ";" + to_string(g) + ";" + to_string(b) + "m";
     
-    for (int i = 0; i < consoleHeight; ++i) {
-        cout << string(consoleWidth, ' ');
-    }
+    // Crear un color basado en los valores RGB
+    COLORREF color = RGB(r, g, b);
+    
+    // Obtener la estructura de la consola
+    CONSOLE_SCREEN_BUFFER_INFOEX csbi;
+    csbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
+    GetConsoleScreenBufferInfoEx(hConsole, &csbi);
 
-    // Mover el cursor a la posición inicial
-    moverCursor(0, 0);
+    // Cambiar el color de fondo usando el color RGB creado
+    csbi.ColorTable[0] = color; // Cambia el primer color de la tabla (0 es el fondo)
+    SetConsoleScreenBufferInfoEx(hConsole, &csbi);
+
+    // Establecer el fondo como el color de la tabla que cambiamos
+    SetConsoleTextAttribute(hConsole, 0);
+
     system("cls");
 }
 
@@ -313,7 +317,6 @@ string seleccionConFlechas(vector<string> opciones, string titulo, string subtit
     ocultarCursor();
 
     while (true) {
-
         // Mostrar las opciones inicialmente
         imprimirOpcionesFlechas(titulo, subtitulo, opciones, centrar, index);
 

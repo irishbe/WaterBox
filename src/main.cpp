@@ -9,13 +9,13 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     pantallaCompleta();
 
-    fondoRGB(0,0,0);
-
+    fondoRGB(7, 25, 82);
+    
     int opcion = -1;
     string advertencia = "EJECUTAR COMO ADMINISTRADOR EN CASO SE DEFORMEN LOS TEXTOS ASCII\n"; 
     vector<string> dibujos = {
         ASCIISimulador(),
-        ASCIIBuscarWikiwater(),
+        ASCIIWikiWater(),
         ASCIICodigos()
     };
     
