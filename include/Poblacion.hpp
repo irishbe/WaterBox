@@ -88,8 +88,7 @@ void insertarSprite(string sprite, int posX, int posY, int anchoCuadro, int alto
     }
 
     // Calcular la posición inicial en Y para centrar el sprite verticalmente
-    int effectiveHeight = altoCuadro - 1;
-    int startY = posY + 2 + (effectiveHeight - spriteHeight) / 2;
+    int startY = posY + (altoCuadro - spriteHeight) / 2;
 
     // Volver al inicio del stream
     spriteStream.clear();
@@ -105,7 +104,7 @@ void insertarSprite(string sprite, int posX, int posY, int anchoCuadro, int alto
     }
 }
 
-void imprimirPoblacion(Poblacion* poblacion, string sprite, string tamanio, int posX, int posY) {
+void imprimirPoblacion(string sprite, string tamanio, int posX, int posY, Poblacion* poblacion = nullptr) {
     int alto = 0;
     int ancho = 0;
 
@@ -131,13 +130,15 @@ void imprimirPoblacion(Poblacion* poblacion, string sprite, string tamanio, int 
     // Insertar el sprite centrado en el cuadro
     insertarSprite(sprite, posX, posY, ancho, alto);
 
-    // Imprimir nombre especie
-    moverCursor(posX + 1, posY + 1);
-    cout << poblacion->nombreEspecie;
+    if ( poblacion != nullptr ) {
+        // Imprimir nombre especie
+        moverCursor(posX + 1, posY + 1);
+        cout << poblacion->nombreEspecie;
 
-    // Imprimir contador especies
-    moverCursor(posX + ancho - 2, posY + 1);
-    cout << poblacion->contadorEspecies;
+        // Imprimir contador especies
+        moverCursor(posX + ancho - 2, posY + 1);
+        cout << poblacion->contadorEspecies;
+    }
 
     // Mover el cursor debajo del cuadro
     moverCursor(posX, posY + alto + 1);

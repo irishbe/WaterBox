@@ -99,13 +99,14 @@ void mostrarTodosCuadros() {
 
 void imprimirPoblaciones() {
     Poblacion* poblacionActual = listaPoblaciones;
+    
     // Variables locales para las posiciones
     int posXLocal = 15;
     int posYLocal = 5;
 
     while (poblacionActual != nullptr) {
         // Imprimir la población actual en la posición actual
-        imprimirPoblacion(poblacionActual, obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", posXLocal, posYLocal);
+        imprimirPoblacion(obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", posXLocal, posYLocal, poblacionActual);
 
         // Actualizar las posiciones
         if (posXLocal + 23 <= 130) {
