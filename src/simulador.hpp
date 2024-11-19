@@ -130,7 +130,7 @@ void modificarFactor() {
     };
     
     do {
-        opcion = seleccionarConDibujos(dibujos, tituloWikiWater(), "SELECCIONE EL FACTOR A MODIFICAR");
+        opcion = seleccionarConDibujos(dibujos, tituloModificarFactores(), "SELECCIONE EL FACTOR A MODIFICAR");
         system("cls");
 
         switch (opcion) {

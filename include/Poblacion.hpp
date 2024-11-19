@@ -6,7 +6,7 @@
 using namespace std;
 
 struct Poblacion {
-    int id;
+    string id;
     string tipoEspecie;
     string nombreEspecie;
     int anchoCuadro;

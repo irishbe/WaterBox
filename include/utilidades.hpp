@@ -94,40 +94,6 @@ void mostrarCursor() {
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
-// ------------------------------------------ SELECCIONAR CON DIBUJOS ------------------------------------------
-
-// Funcion que imprime un dibujo y su opcion
-void imprimirOpcionDibujo(string dibujo, int x, int &y, bool seleccionado) {
-    size_t pos = 0;
-    string tempDibujo = dibujo;
-    int lineaActual = y;
-
-    // Cambiar el color si es la opción seleccionada
-    if (seleccionado) {
-        cout << textoRGB(255,255,0);
-    }
-
-    // Imprimir el dibujo línea por línea
-    while ((pos = tempDibujo.find('\n')) != string::npos) {
-        moverCursor(x, lineaActual);
-        cout << tempDibujo.substr(0, pos); // Imprime la línea del dibujo
-        tempDibujo.erase(0, pos + 1); // Elimina la línea impresa
-        lineaActual++; // Aumenta la línea actual
-    }
-
-    // Imprimir cualquier contenido restante (última línea sin '\n')
-    if (!tempDibujo.empty()) {
-        moverCursor(x, lineaActual);
-        cout << tempDibujo;
-        lineaActual++;
-    }
-
-    // Restablecer el color
-    if (seleccionado) {
-        cout << textoRGB(255,255,255);
-    }
-}
-
 int imprimirTexto(string texto, int x, int y, bool centrar, bool isSubtitulo = false) {
     int lineaActual = y;
     int altura = 0;
@@ -196,33 +162,84 @@ int imprimirTexto(string texto, int x, int y, bool centrar, bool isSubtitulo = f
     return altura;
 }
 
+// ------------------------------------------ SELECCIONAR CON DIBUJOS ------------------------------------------
+
+void imprimirOpcionDibujo(string dibujo, int x, int &y, bool seleccionado) {
+    size_t pos = 0;
+    string tempDibujo = dibujo;
+    int lineaActual = y;
+
+    // Cambiar el color si es la opción seleccionada
+    if (seleccionado) {
+        cout << textoRGB(255, 255, 0);
+    }
+
+    // Imprimir el dibujo línea por línea
+    while ((pos = tempDibujo.find('\n')) != string::npos) {
+        moverCursor(x, lineaActual);
+        cout << tempDibujo.substr(0, pos); // Imprime la línea del dibujo
+        tempDibujo.erase(0, pos + 1); // Elimina la línea impresa
+        lineaActual++; // Aumenta la línea actual
+    }
+
+    // Imprimir cualquier contenido restante (última línea sin '\n')
+    if (!tempDibujo.empty()) {
+        moverCursor(x, lineaActual);
+        cout << tempDibujo;
+        lineaActual++;
+    }
+
+    // Restablecer el color
+    if (seleccionado) {
+        cout << textoRGB(255, 255, 255);
+    }
+}
+
 void imprimirOpcionesDibujos(string titulo, string subtitulo, vector<string> dibujos, bool centrar, int indiceSeleccionado) {
-    system("cls"); 
+    system("cls");
 
     int y = 3, x = 0;
-    
-    if ( subtitulo != "" ){
+
+    if (subtitulo != "") {
         y += imprimirTexto(titulo, x, y, centrar) + 3;
         y += imprimirTexto(subtitulo, x, y, centrar, true) + 3;
-    }else{
+    } else {
         y += imprimirTexto(titulo, x, y, centrar) + 5;
     }
 
     int numeroOpciones = dibujos.size();
 
-    int margenIzquierda = 10;
-    int espacioDisponible = obtenerAnchoConsola() - margenIzquierda;
-    int espacioEntreDibujos = espacioDisponible / numeroOpciones;
+    int espacioDisponible = obtenerAnchoConsola(); // Usamos todo el ancho disponible
 
-    int espacioRestante = espacioDisponible - (espacioEntreDibujos * numeroOpciones);
-    int xOffset = margenIzquierda;
-
-    for (int i = 0; i < numeroOpciones; ++i) {
-        x = xOffset + i * espacioEntreDibujos;
-        imprimirOpcionDibujo(dibujos[i], x, y, i == indiceSeleccionado);
+    // Calcular el ancho máximo de los dibujos
+    int maxAnchoDibujo = 0;
+    for (const string& dibujo : dibujos) {
+        string tempDibujo = dibujo; // Crear una copia del dibujo
+        size_t pos = 0;
+        int anchoDibujo = 0;
+        while ((pos = tempDibujo.find('\n')) != string::npos) {
+            anchoDibujo = max(anchoDibujo, (int)pos);
+            tempDibujo.erase(0, pos + 1); // Eliminar la línea impresa
+        }
+        // Añadir el largo de la última línea
+        anchoDibujo = max(anchoDibujo, (int)tempDibujo.size());
+        maxAnchoDibujo = max(maxAnchoDibujo, anchoDibujo);
     }
 
-    moverCursor(margenIzquierda, y + 13);
+    // Calcular el espacio entre dibujos considerando el ancho de los mismos
+    int espacioEntreDibujos = (espacioDisponible - maxAnchoDibujo * numeroOpciones) / (numeroOpciones + 1);
+
+    // Ajustar la posición X para centrar el grupo de dibujos en la consola
+    int xOffset = (espacioDisponible - (maxAnchoDibujo * numeroOpciones + espacioEntreDibujos * (numeroOpciones - 1))) / 2;
+
+    // Imprimir los dibujos centrados
+    for (int i = 0; i < numeroOpciones; ++i) {
+        // Centrar cada dibujo en su espacio
+        int xPosicionDibujo = xOffset + i * (maxAnchoDibujo + espacioEntreDibujos);
+        imprimirOpcionDibujo(dibujos[i], xPosicionDibujo, y, i == indiceSeleccionado);
+    }
+
+    moverCursor(0, y + 13);
     cout << "Presione ESC o 0 para cancelar" << endl;
 }
 

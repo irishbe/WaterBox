@@ -5,11 +5,11 @@
 using namespace std;
 
 void insertarEspecie(Especie* nuevaEspecie);
-Poblacion* extraerPoblacion(int id);
+Poblacion* extraerPoblacion(string id);
 
 void crearPoblacion(Especie* nuevaEspecie);
 void mostrarPoblaciones();
-void mostrarEspeciesDePoblacion(int id);
+void mostrarEspeciesDePoblacion(string id);
 
 Poblacion* listaPoblaciones = nullptr;
 
@@ -118,8 +118,8 @@ void mostrarPoblaciones() {
 }
 
 void buscarPoblacion() {
-    int id;
-    cout << "Ingrese el ID de la población a buscar: "; cin >> id;
+    string id;
+    cout << "Ingrese el ID de la población a buscar: "; getline(cin, id);
 
     Poblacion* poblacionBuscada = listaPoblaciones;
 
@@ -143,7 +143,7 @@ void buscarPoblacion() {
     cout << "Población con ID " << id << " no encontrada." << endl;
 }
 
-Poblacion* extraerPoblacion(int id){
+Poblacion* extraerPoblacion(string id){
     Poblacion* poblacionBuscada = listaPoblaciones;
 
     // RECORRE PARA BUSCAR LA POBLACION SEGUN EL ID

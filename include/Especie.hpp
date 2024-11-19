@@ -6,7 +6,7 @@
 using namespace std;
 
 struct Especie {
-    int id;
+    string id;
     string tipoEspecie;
     DatosEspecie* datosEspecie;
     int vida = 100;

@@ -83,7 +83,7 @@ void enlistarEspecies(){
 }
 
 void buscarEspecie() {
-    int idEspecie;
+    string idEspecie;
     Especie *listaEspecies = extraerListaEspecies(), *especieActual = nullptr, *especieEncontrada = nullptr;
 
     if ( listaEspecies == nullptr ){
@@ -137,7 +137,7 @@ void buscarEspecie() {
 }
 
 void eliminarEspecie() {
-    int idEspecie;
+    string idEspecie;
     Especie *listaEspecies = extraerListaEspecies(), *especieActual = nullptr, *especieAnterior = nullptr, *especieEncontrada = nullptr;
 
     if ( listaEspecies == nullptr ){
@@ -160,7 +160,7 @@ void eliminarEspecie() {
     
 
     // BUSCANDO LA ESPECIE EN LA LISTA DE ESPECIES DE LA POBLACION
-    cout << "\nIngrese el ID de la especie que desea ver sus datos: "; cin >> idEspecie;
+    cout << "\nIngrese el ID de la especie que desea ver sus datos: "; getline(cin, idEspecie);
 
     especieActual = listaEspecies;
 
@@ -217,7 +217,7 @@ void eliminarEspecie() {
 }
 
 Especie* extraerListaEspecies(){
-    int idPoblacion;
+    string idPoblacion;
     Poblacion* poblacionSeleccionada;
     Especie* especieActual = nullptr;
 
@@ -227,7 +227,7 @@ Especie* extraerListaEspecies(){
         return nullptr;
     }
     
-    cout << "\nIngrese el ID de la población que desea ver sus especies: "; cin >> idPoblacion;
+    cout << "\nIngrese el ID de la población que desea ver sus especies: "; getline(cin, idPoblacion);
 
     // IMPRIMIENDO LA LISTA DE ESPECIES DE LA POBLACION
     poblacionSeleccionada = extraerPoblacion(idPoblacion);
