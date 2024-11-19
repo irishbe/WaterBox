@@ -55,22 +55,27 @@ void fondoRGB(int r, int g, int b) {
     // Obtener el handle de la consola
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     
-    // Crear un color basado en los valores RGB
-    COLORREF color = RGB(r, g, b);
+    // Crear un color basado en los valores RGB para el fondo
+    COLORREF backgroundColor = RGB(r, g, b);
     
-    // Obtener la estructura de la consola
+    // Configurar la información de la consola
     CONSOLE_SCREEN_BUFFER_INFOEX csbi;
     csbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
     GetConsoleScreenBufferInfoEx(hConsole, &csbi);
 
-    // Cambiar el color de fondo usando el color RGB creado
-    csbi.ColorTable[0] = color; // Cambia el primer color de la tabla (0 es el fondo)
+    // Cambiar el color del fondo (índice 0) al color deseado
+    csbi.ColorTable[0] = backgroundColor;
+
+    // Configurar el color de texto (índice 15) como blanco puro
+    csbi.ColorTable[15] = RGB(255, 255, 255); // Blanco puro
+
+    // Aplicar los cambios
     SetConsoleScreenBufferInfoEx(hConsole, &csbi);
 
-    // Establecer el fondo como el color de la tabla que cambiamos
-    SetConsoleTextAttribute(hConsole, 0);
+    // Establecer el texto como blanco puro y el fondo personalizado
+    SetConsoleTextAttribute(hConsole, 15); // Índice 15 es blanco puro
 
-    system("cls");
+    system("cls"); // Limpiar la pantalla para aplicar el color de fondo
 }
 
 void ocultarCursor() {

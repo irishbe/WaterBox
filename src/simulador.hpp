@@ -34,8 +34,8 @@ void iniciarSimulador() {
         system("cls");
 
         switch(opcion){
-            case 1: biomaSimulador = extraerBioma("Arrecifes de Coral"); break;
-            case 2: biomaSimulador = extraerBioma("Oceano Profundo"); break;
+            case 1: biomaSimulador = extraerBioma("Arrecifes de Coral"); fondoRGB(0, 144, 238); break;
+            case 2: biomaSimulador = extraerBioma("Oceano Profundo"); fondoRGB(2, 4, 37); break;
             case -1: break;
         }
     }
@@ -75,6 +75,8 @@ void iniciarSimulador() {
         system("cls");
 
     } while (opcion != -1);
+
+    fondoRGB(7, 25, 82);
 }
 
 void mostrarTodosCuadros() {
