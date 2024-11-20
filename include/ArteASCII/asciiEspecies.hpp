@@ -98,6 +98,39 @@ string medusaPeine(){
                 textoRGB(255,255,255);
 }
 
+string cangrejoAzul(){
+        return textoRGB(30,144,255) + "    _\\_____/_     \n" +
+               textoRGB(30,144,255) + "   |(o)_(o)|   \n" +
+               textoRGB(30,144,255) + "  / /._____.\\  \\  \n" +
+               textoRGB(30,144,255) + "  | | /     \\|  |  \n" +
+               textoRGB(255,255,255);
+}
+
+string pezArquero(){
+        return textoRGB(100,149,237) + "    /`----.___  \n" +
+               textoRGB(100,149,237) + "  >>| | | |> o)\n" +
+               textoRGB(100,149,237) + "   >>\\________/  \n" +
+               textoRGB(255,255,255);
+}
+
+string estrellaDeMarRoja(){
+        return textoRGB(232,32,32) + "      /\\      \n" +
+               textoRGB(232,32,32) + " ___/  \\___ \n" +
+               textoRGB(232,32,32) + "  \\_      _/ \n" +
+               textoRGB(232,32,32) + "  /  __  \\  \n" +
+               textoRGB(232,32,32) + "   /__/  \\__\\   " +
+               textoRGB(255,255,255);
+}
+
+//planta
+string hierbaMarina(){
+        return textoRGB(38,178,31) + "    | || | | \n" +
+               textoRGB(38,178,31) + "    / | | / |  \n" +
+               textoRGB(38,178,31) + "    | | | | |  \n" +
+               textoRGB(38,178,31) + " _\\|_\\_||_\n" +
+               textoRGB(255,255,255);
+}
+
 //Funcion para seleccionar el dibujo de una especie
 string obtenerSprite(string nombreEspecie) {
     string sprite = "";
@@ -129,7 +162,22 @@ string obtenerSprite(string nombreEspecie) {
     } else if( nombreEspecie == "Medusa Peine" ){
         sprite = medusaPeine();
 
+    } else if( nombreEspecie == "Cangrejo Azul"){
+        sprite = cangrejoAzul();
+
+    } else if( nombreEspecie == "Pez Arquero" ){
+        sprite = pezArquero();
+    } else if( nombreEspecie == "Estrella de Mar Roja" ){
+        sprite = estrellaDeMarRoja();
+
+    }else if( nombreEspecie == "Hiberna Marina"){
+        sprite = hierbaMarina();
+    
+    }else{
+        sprite = "???";
+
     }
+
 
     return sprite;
 }

@@ -35,7 +35,7 @@ float leerFloat();
 // Funcionalidades auxiliares en el simulador
 DatosEspecie* extraerDatosEspecie();
 Bioma* extraerDatosBioma();
-vector<string> extraerNombres(string categoria);
+vector<string> extraerNombres(string categoria, string nombreBioma = "");
 
 void iniciarCrudJson() {
     int opcion;
@@ -585,38 +585,80 @@ Bioma* extraerBioma(string nombreBuscado){
     return biomaEncontrado; //Damos una estruct vacia si no se encuentra
 }
 
-vector<string> extraerNombres(string categoria){
+vector<string> extraerNombres(string categoria, string nombreBioma) {
     json datosJson;
     vector<string> nombres;
     
-    if( categoria == "Animal" ){
+    // CASO 1: EXTRAER NOMBRES DE ESPECIES DE UN BIOMA ESPECIFICO
+    if( nombreBioma != "" ){
         datosJson = leerArchivo(animalesJson);
 
-    }else if( categoria == "Vegetal" ){
+        for (const auto& especie : datosJson) {
+            if (especie.contains("bioma nativo") && especie.contains("nombre comun")) {
+                
+                // Verificar si pertenece al bioma solicitado
+                if (especie["bioma nativo"] == nombreBioma) {
+                    nombres.push_back(especie["nombre comun"]);
+                }
+
+            }
+        }
+
         datosJson = leerArchivo(vegetalesJson);
 
-    }else if( categoria == "Bioma"){
-        datosJson = leerArchivo(biomasJson);
+        for (const auto& especie : datosJson) {
+            if (especie.contains("bioma nativo") && especie.contains("nombre comun")) {
+                
+                // Verificar si pertenece al bioma solicitado
+                if (especie["bioma nativo"] == nombreBioma) {
+                    nombres.push_back(especie["nombre comun"]);
+                }
 
-    }else{
+            }
+        }
+
         return nombres;
     }
 
-    if ( categoria == "Bioma" ){
+    if ( categoria == "Bioma" ) {
+
+       // CASO 2: EXTRAER NOMBRES DE BIOMAS
+        datosJson = leerArchivo(biomasJson);
 
         for (const auto& bioma : datosJson) {
-            nombres.push_back( bioma["nombre"] );
+            if (bioma.contains("nombre")) {
+                nombres.push_back(bioma["nombre"]);
+            }
         }
-
-    } else{
+        return nombres; // Retornar los nombres de los biomas
+    
+    }else if( categoria == "Animales" ){
+        
+        // CASO 3: EXTRAER NOMBRES DE ANIMALES SIN FILTRO DE BIOMA
+        datosJson = leerArchivo(animalesJson);
 
         for (const auto& especie : datosJson) {
-            nombres.push_back(especie["nombre comun"]);
+            if (especie.contains("nombre comun")) {
+                nombres.push_back(especie["nombre comun"]);
+            }
         }
 
-    }
+        return nombres; // Retornar los nombres de animales
 
-    return nombres;
+    }else if( categoria == "Vegetales" ){
+
+        // CASO 4: EXTRAER NOMBRES DE VEGETLAES SIN FILTRO DE BIOMA
+        datosJson = leerArchivo(vegetalesJson);
+
+        for (const auto& especie : datosJson) {
+            if (especie.contains("nombre comun")) {
+                nombres.push_back(especie["nombre comun"]);
+            }
+        }
+
+        return nombres; // Retornar los nombres de los vegetales
+
+    }
 }
 
 //*****************************************************************************************

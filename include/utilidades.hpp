@@ -314,18 +314,16 @@ void imprimirOpcionesFlechas(string titulo, string subtitulo, vector<string> opc
 
     int numeroOpciones = opciones.size();
 
-    int margenIzquierda = 10;
-    int espacioDisponible = obtenerAnchoConsola() - margenIzquierda;
+    int espacioDisponible = obtenerAnchoConsola();
     int espacioEntreDibujos = espacioDisponible / numeroOpciones;
 
     int espacioRestante = espacioDisponible - (espacioEntreDibujos * numeroOpciones);
-    x = margenIzquierda;
-
+    
     for (int i = 0; i < numeroOpciones; ++i) {
         imprimirOpcionFlecha(opciones[i], x, y + i, i == indiceSeleccionado);
     }
 
-    moverCursor(x, y + numeroOpciones + 5);
+    moverCursor(10, y + numeroOpciones + 5);
     cout << "\nPresione ESC o 0 para cancelar" << endl;
 }
 

@@ -126,13 +126,13 @@ void modificarFactor() {
     vector<string> dibujos = {
         ASCIIOxigeno(),
         ASCIISalinidad(),
-        ASCIITemperatura(),
+        ASCIIModificarFactores(),
         ASCIIContaminacion()
     };
     
     do {
-        opcion = seleccionarConDibujos(dibujos, tituloModificarFactores(), "SELECCIONE EL FACTOR A MODIFICAR");
-        system("cls");
+        
+        opcion = seleccionarConDibujos( dibujos, tituloModificarFactores(), "SELECCIONE UN FACTOR A MODIFICAR");
 
         switch (opcion) {
             case 1: // Oxígeno
@@ -170,6 +170,7 @@ void modificarFactor() {
             case -1: break;
         }
 
+        registrarEvento(MODIFICAR_FACTORES, biomaSimulador);
         system("cls");
 
     } while (opcion != -1);

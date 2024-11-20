@@ -103,17 +103,20 @@ void wiki_buscar(){
 void wiki_seleccionarBioma(){
     string bioma, especieSeleccionada;
 
-    vector<string> biomas = {"Arrecifes de coral", "Oceano profundo"};
-    vector<string> especiesArrecifeCoral = {"Tiburon de arrecife", "Pez payaso", "Langosta comun", "Pez mariposa", "Camaron Limpiador", "Algas coralinas"};
-    vector<string> especiesOceanoProfundo = {"Pez Linterna", "Pez Vibora", "Medusa Peine"};
+    vector<string> biomas = extraerNombres("Bioma");
+    vector<string> especiesArrecifeCoral = extraerNombres("", "Arrecifes de coral");
+    vector<string> especiesOceanoProfundo = extraerNombres("", "Oceano Profundo");
+    vector<string> especiesMarismasSalinas = extraerNombres("", "Marismas Salinas");
 
     bioma = seleccionConFlechas(biomas, tituloWikiWater(), "SELECCIONE UN BIOMA");
 
     if (bioma == "Arrecifes de coral") {
         especieSeleccionada = seleccionConFlechas(especiesArrecifeCoral, tituloWikiWater(), "ESPECIES EN ARRECIFES DE CORAL");
     } else if (bioma == "Oceano profundo") {
-        especieSeleccionada = seleccionConFlechas(especiesOceanoProfundo, tituloWaterBox(), "ESPECIES EN OCEANO PROFUNDO");
-    } else {
+        especieSeleccionada = seleccionConFlechas(especiesOceanoProfundo, tituloWikiWater(), "ESPECIES EN OCEANO PROFUNDO");
+    } else if( bioma == "Marismas Salinas"){
+        especieSeleccionada = seleccionConFlechas(especiesMarismasSalinas, tituloWikiWater(), "ESPECIES EN MARISMAS SALINAS");
+    }else{
         return;
     }
 
