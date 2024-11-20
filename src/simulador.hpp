@@ -34,7 +34,7 @@ void iniciarSimulador() {
         system("cls");
 
         switch(opcion){
-            case 1: biomaSimulador = extraerBioma("Arrecifes de Coral"); fondoRGB(0, 144, 238); break;
+            case 1: biomaSimulador = extraerBioma("Arrecifes de Coral"); fondoRGB(0, 109, 198); break;
             case 2: biomaSimulador = extraerBioma("Oceano Profundo"); fondoRGB(2, 4, 37); break;
             case -1: break;
         }
@@ -99,20 +99,23 @@ void mostrarTodosCuadros() {
 
 void imprimirPoblaciones() {
     Poblacion* poblacionActual = listaPoblaciones;
+    
     // Variables locales para las posiciones
-    int posXLocal = 15;
-    int posYLocal = 5;
+    int x = 15, y = 5;  // Posición inicial en Y
+    const int anchoCuadro = 30; // Ancho del cuadro
+    const int limiteX = 130;    // Límite máximo de la pantalla en X
+    const int espacioEntreCuadros = 3; // Espacio adicional entre cuadros
 
     while (poblacionActual != nullptr) {
         // Imprimir la población actual en la posición actual
-        imprimirPoblacion(poblacionActual, obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", posXLocal, posYLocal);
+        imprimirPoblacion( obtenerSprite(poblacionActual->nombreEspecie), "MEDIANO", x, y, poblacionActual);
 
         // Actualizar las posiciones
-        if (posXLocal + 23 <= 130) {
-            posXLocal += 23;
+        if (x + anchoCuadro + espacioEntreCuadros <= limiteX) {
+            x += anchoCuadro + espacioEntreCuadros;
         } else {
-            posXLocal = 15;
-            posYLocal += 8;
+            x = 15;  // Reiniciar a la posición inicial X
+            y += 8;  // Mover hacia abajo para la nueva fila
         }
 
         // Avanzar a la siguiente población
@@ -125,13 +128,13 @@ void modificarFactor() {
     vector<string> dibujos = {
         ASCIIOxigeno(),
         ASCIISalinidad(),
-        ASCIITemperatura(),
+        ASCIIModificarFactores(),
         ASCIIContaminacion()
     };
     
     do {
-        opcion = seleccionarConDibujos(dibujos, tituloModificarFactores(), "SELECCIONE EL FACTOR A MODIFICAR");
-        system("cls");
+        
+        opcion = seleccionarConDibujos( dibujos, tituloModificarFactores(), "SELECCIONE UN FACTOR A MODIFICAR");
 
         switch (opcion) {
             case 1: // Oxígeno
@@ -169,6 +172,7 @@ void modificarFactor() {
             case -1: break;
         }
 
+        registrarEvento(MODIFICAR_FACTORES, biomaSimulador);
         system("cls");
 
     } while (opcion != -1);

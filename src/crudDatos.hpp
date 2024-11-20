@@ -35,7 +35,7 @@ float leerFloat();
 // Funcionalidades auxiliares en el simulador
 DatosEspecie* extraerDatosEspecie();
 Bioma* extraerDatosBioma();
-vector<string> extraerNombres(string categoria);
+vector<string> extraerNombres(string categoria, string nombreBioma = "");
 
 void iniciarCrudJson() {
     int opcion;
@@ -585,39 +585,49 @@ Bioma* extraerBioma(string nombreBuscado){
     return biomaEncontrado; //Damos una estruct vacia si no se encuentra
 }
 
-vector<string> extraerNombres(string categoria){
+vector<string> extraerNombres(string categoria, string nombreBioma) {
     json datosJson;
     vector<string> nombres;
-    
-    if( categoria == "Animal" ){
-        datosJson = leerArchivo(animalesJson);
 
-    }else if( categoria == "Vegetal" ){
-        datosJson = leerArchivo(vegetalesJson);
+    // CASO 1: EXTRAER NOMBRES DE ESPECIES DE UN BIOMA ESPECIFICO
+    if (nombreBioma != "") {
+        vector<json> archivos = {leerArchivo(animalesJson), leerArchivo(vegetalesJson)};
 
-    }else if( categoria == "Bioma"){
-        datosJson = leerArchivo(biomasJson);
+        for (const auto& especies : archivos) {
+            for (const auto& especie : especies) {
+                if (especie["bioma nativo"] == nombreBioma) {
+                    nombres.push_back(especie["nombre comun"]);
+                }
+            }
+        }
 
-    }else{
         return nombres;
     }
 
-    if ( categoria == "Bioma" ){
+    if (categoria == "Bioma") {
+        // CASO 2: EXTRAER NOMBRES DE BIOMAS
+        datosJson = leerArchivo(biomasJson);
 
         for (const auto& bioma : datosJson) {
-            nombres.push_back( bioma["nombre"] );
+            nombres.push_back(bioma["nombre"]);
         }
 
-    } else{
+        return nombres;
+
+    } else if (categoria == "Animal" || categoria == "Vegetal") {
+        // CASO 3 Y 4: EXTRAER NOMBRES DE ANIMALES O VEGETALES SIN FILTRO DE BIOMA
+        datosJson = (categoria == "Animal") ? leerArchivo(animalesJson) : leerArchivo(vegetalesJson);
 
         for (const auto& especie : datosJson) {
             nombres.push_back(especie["nombre comun"]);
         }
 
+        return nombres;
     }
 
-    return nombres;
+    return nombres; // Retorno vacío por defecto
 }
+
 
 //*****************************************************************************************
 

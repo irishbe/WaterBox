@@ -40,5 +40,257 @@
             2.0
         ],
         "tasa de reproduccion": 123.0
+    },
+    {
+        "bioma nativo": "Arrecifes de coral",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Hydrocharitaceae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Thalassia testudinum",
+        "nombre comun": "Hierba Marina",
+        "rango oxigeno": [
+            8.0,
+            4.0
+        ],
+        "rango salinidad": [
+            40.0,
+            25.0
+        ],
+        "rango temperatura": [
+            30.0,
+            25.0
+        ],
+        "tasa de reproduccion": 0.5
+    },
+    {
+        "bioma nativo": "Arrecifes de coral",
+        "esperanza de vida": 7.0,
+        "familia biologica": "Corallinaceae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Corallina officinalis",
+        "nombre comun": "Alga Coralina Roja",
+        "rango oxigeno": [
+            10.0,
+            6.0
+        ],
+        "rango salinidad": [
+            35.0,
+            15.0
+        ],
+        "rango temperatura": [
+            28.0,
+            24.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Zonas costeras",
+        "esperanza de vida": 20.0,
+        "familia biologica": "Rhizophoraceae",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "Rhizophora mangle",
+        "nombre comun": "Mangle Rojo",
+        "rango oxigeno": [
+            9.0,
+            5.0
+        ],
+        "rango salinidad": [
+            30.0,
+            15.0
+        ],
+        "rango temperatura": [
+            35.0,
+            20.0
+        ],
+        "tasa de reproduccion": 2.0
+    },
+    {
+        "bioma nativo": "Zonas costeras",
+        "esperanza de vida": 15.0,
+        "familia biologica": "Laminariaceae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Macrocystis pyrifera",
+        "nombre comun": "Alga Kelp Gigante",
+        "rango oxigeno": [
+            9.0,
+            5.0
+        ],
+        "rango salinidad": [
+            35.0,
+            10.0
+        ],
+        "rango temperatura": [
+            25.0,
+            10.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Agua dulce",
+        "esperanza de vida": 5.0,
+        "familia biologica": "Nymphaeaceae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Nuphar lutea",
+        "nombre comun": "Nenúfar Amarillo",
+        "rango oxigeno": [
+            8.0,
+            4.0
+        ],
+        "rango salinidad": [
+            5.0,
+            0.0
+        ],
+        "rango temperatura": [
+            30.0,
+            15.0
+        ],
+        "tasa de reproduccion": 0.5
+    },
+    {
+        "bioma nativo": "Agua dulce",
+        "esperanza de vida": 3.0,
+        "familia biologica": "Araceae",
+        "inactividad reproductiva": 0.2,
+        "nombre cientifico": "Lemna minor",
+        "nombre comun": "Lenteja de Agua",
+        "rango oxigeno": [
+            7.0,
+            3.0
+        ],
+        "rango salinidad": [
+            5.0,
+            0.0
+        ],
+        "rango temperatura": [
+            28.0,
+            20.0
+        ],
+        "tasa de reproduccion": 0.3
+    },
+    {
+        "bioma nativo": "Agua dulce",
+        "esperanza de vida": 4.0,
+        "familia biologica": "Zygnemataceae",
+        "inactividad reproductiva": 0.2,
+        "nombre cientifico": "Spirogyra sp.",
+        "nombre comun": "Alga Verde Filamentosa",
+        "rango oxigeno": [
+            8.0,
+            4.0
+        ],
+        "rango salinidad": [
+            5.0,
+            0.0
+        ],
+        "rango temperatura": [
+            26.0,
+            18.0
+        ],
+        "tasa de reproduccion": 0.3
+    },
+    {
+        "bioma nativo": "Oceano profundo",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Zosteraceae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Zostera marina",
+        "nombre comun": "Hierba de Mar Profunda",
+        "rango oxigeno": [
+            9.0,
+            5.0
+        ],
+        "rango salinidad": [
+            35.0,
+            15.0
+        ],
+        "rango temperatura": [
+            20.0,
+            4.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Oceano profundo",
+        "esperanza de vida": 7.0,
+        "familia biologica": "Palmariaceae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Palmaria palmata",
+        "nombre comun": "Alga Roja Profunda",
+        "rango oxigeno": [
+            8.0,
+            4.0
+        ],
+        "rango salinidad": [
+            30.0,
+            10.0
+        ],
+        "rango temperatura": [
+            15.0,
+            2.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Poaceae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Spartina alterniflora",
+        "nombre comun": "Spartina Salina",
+        "rango oxigeno": [
+            9.0,
+            5.0
+        ],
+        "rango salinidad": [
+            40.0,
+            25.0
+        ],
+        "rango temperatura": [
+            30.0,
+            10.0
+        ],
+        "tasa de reproduccion": 2.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 6.0,
+        "familia biologica": "Ulvaceae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Ulva lactuca",
+        "nombre comun": "Alga Verde Enteromorfa",
+        "rango oxigeno": [
+            9.0,
+            4.0
+        ],
+        "rango salinidad": [
+            35.0,
+            20.0
+        ],
+        "rango temperatura": [
+            25.0,
+            10.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 8.0,
+        "familia biologica": "Amaranthaceae",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "Salicornia europaea",
+        "nombre comun": "Salicornia Europea",
+        "rango oxigeno": [
+            10.0,
+            6.0
+        ],
+        "rango salinidad": [
+            40.0,
+            30.0
+        ],
+        "rango temperatura": [
+            30.0,
+            12.0
+        ],
+        "tasa de reproduccion": 2.0
     }
 ]
