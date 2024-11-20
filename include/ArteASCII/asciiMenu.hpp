@@ -257,4 +257,19 @@ string ASCIIBiomaOceanoProfundo() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
+string ASCIIBiomaMarismasSalinas() {
+    return
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
+    "\n: MARISMAS SALINAS ,-~-~:"
+    "\n: .-,,.         ..,;!- ;:"
+    "\n:         /`---._ °  °  :"
+    "\n:       >>||||> o)  o  °:"
+    "\n:\\ /\'|\' >>\\_____/       :"
+    "\n: |\\ /\'     ⌐,  )((  ,¬ :"
+    "\n:\\|||_//   -─.)( ) )(.─-:"
+    "\n:                       :"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
 #endif // asciiMenu.hpp
