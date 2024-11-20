@@ -11,14 +11,14 @@
         "nivelOxigeno": 4.5,
         "nivelSalinidad": 35.0,
         "nivelTemperatura": 3.0,
-        "nombre": "Oceano Profundo"
+        "nombre": "Oceano profundo"
     },
     {
         "nivelContaminacion": 1.5,
         "nivelOxigeno": 6.0,
         "nivelSalinidad": 25.0,
         "nivelTemperatura": 20.0,
-        "nombre": "Marismas Salinas"
+        "nombre": "Marismas salinas"
     }
     
 ]

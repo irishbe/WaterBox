@@ -1,5 +1,0 @@
-Tipo de Evento: 0
-Descripción: [2024-11-15 23:31:03] Agregaste una especie Pez payaso al bioma Bioma temporal
-Bioma de Ocurrencia: Bioma temporal
-Especie 1: Pez payaso
------------------------

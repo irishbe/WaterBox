@@ -104,21 +104,9 @@ void wiki_seleccionarBioma(){
     string bioma, especieSeleccionada;
 
     vector<string> biomas = extraerNombres("Bioma");
-    vector<string> especiesArrecifeCoral = extraerNombres("", "Arrecifes de coral");
-    vector<string> especiesOceanoProfundo = extraerNombres("", "Oceano Profundo");
-    vector<string> especiesMarismasSalinas = extraerNombres("", "Marismas Salinas");
-
     bioma = seleccionConFlechas(biomas, tituloWikiWater(), "SELECCIONE UN BIOMA");
 
-    if (bioma == "Arrecifes de coral") {
-        especieSeleccionada = seleccionConFlechas(especiesArrecifeCoral, tituloWikiWater(), "ESPECIES EN ARRECIFES DE CORAL");
-    } else if (bioma == "Oceano profundo") {
-        especieSeleccionada = seleccionConFlechas(especiesOceanoProfundo, tituloWikiWater(), "ESPECIES EN OCEANO PROFUNDO");
-    } else if( bioma == "Marismas Salinas"){
-        especieSeleccionada = seleccionConFlechas(especiesMarismasSalinas, tituloWikiWater(), "ESPECIES EN MARISMAS SALINAS");
-    }else{
-        return;
-    }
+    especieSeleccionada = seleccionConFlechas( extraerNombres("", bioma), tituloWikiWater(), "ESPECIES EN ARRECIFES DE " + bioma);
 
     wiki_especies(especieSeleccionada);
 }
