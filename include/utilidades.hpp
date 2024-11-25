@@ -44,6 +44,13 @@ int obtenerAnchoConsola() {
     return csbi.srWindow.Right - csbi.srWindow.Left + 1; // Ancho de la ventana actual
 }
 
+int obtenerAltoConsola() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+    return csbi.srWindow.Bottom - csbi.srWindow.Top + 1; // Alto de la ventana actual
+}
+
 void moverCursor(int x, int y) {
     COORD coord; 
     coord.X = x;
@@ -372,6 +379,73 @@ string seleccionConFlechas(vector<string> opciones, string titulo, string subtit
             return opciones[index];  // Devuelve la opción seleccionada
         }
     }
+}
+
+
+
+// Función para imprimir la primera fila del marco
+void imprimirInicioMarco(int ancho) {
+    cout << "__|   |";
+    for (int i = 0; i < ancho - 14; i++) { // Rellenar con guiones _
+        cout << "_";
+    }
+    cout << "|   |__" << endl;
+}
+
+// Función para imprimir una fila con puntos (segunda fila del patrón)
+void imprimirIntermedioMarco(int ancho) {
+    cout << "   . .";
+    for (int i = 0; i < ancho - 12; i++) { // Rellenar con espacios
+        cout << " ";
+    }
+    cout << ". .   " << endl;
+}
+
+// Función para imprimir una fila con guiones y puntos (tercera fila del patrón)
+void imprimirFinalMarco(int ancho) {
+    cout << "__ . . ";
+    for (int i = 0; i < ancho - 14; i++) { // Rellenar con guiones _
+        cout << "_";
+    }
+    cout << " . . __" << endl;
+}
+
+// Función para imprimir una fila con barras verticales y espacio
+void imprimirFilaConBarras(int ancho) {
+    cout << "  |   |";
+    for (int i = 0; i < ancho - 14; i++) { // Rellenar con espacios
+        cout << " ";
+    }
+    cout << "|   |  " << endl;
+}
+
+// Función para imprimir el marco completo
+void imprimirMarcoPrincipal() {
+    int ancho = obtenerAnchoConsola();
+    int altura = obtenerAltoConsola();
+
+    if (ancho < 15 || altura < 7) {
+        cout << "La ventana de la consola es demasiado pequeña para imprimir el marco." << endl;
+        return;
+    }
+
+    // Imprimir la primera parte del marco
+    imprimirInicioMarco(ancho);
+    imprimirIntermedioMarco(ancho);
+    imprimirFinalMarco(ancho);
+
+    // Imprimir las filas intermedias
+    for (int i = 0; i < altura - 7; i++) { // Restamos 7 porque ya imprimimos la primera fila, la segunda fila, y la tercera fila
+        imprimirFilaConBarras(ancho);
+    }
+
+    // Imprimir la última parte del marco
+    imprimirInicioMarco(ancho);
+    imprimirIntermedioMarco(ancho);
+    imprimirFinalMarco(ancho);
+
+    // Imprimir la última fila (fila con barras)
+    imprimirFilaConBarras(ancho);
 }
 
 #endif // UTILIDADES.HPP
