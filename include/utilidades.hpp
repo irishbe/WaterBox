@@ -435,7 +435,7 @@ void imprimirMarcoPrincipal() {
     imprimirFinalMarco(ancho);
 
     // Imprimir las filas intermedias
-    for (int i = 0; i < altura - 7; i++) { // Restamos 7 porque ya imprimimos la primera fila, la segunda fila, y la tercera fila
+    for (int i = 0; i < altura - 8; i++) { // Restamos 7 + 1
         imprimirFilaConBarras(ancho);
     }
 

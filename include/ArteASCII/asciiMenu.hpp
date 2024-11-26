@@ -167,6 +167,34 @@ string ASCIIBuscarWikiwater() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
+string ASCIIReproduccion() {
+    return
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
+    "\n:     ___       ___     :"
+    "\n:   ><___>     <___><   :"
+    "\n:   <><    ><>      ><> :"
+    "\n: ><>        <><        :"
+    "\n:    <><  ><>     <><   :"
+    "\n:  ><> REPRODUCCIÓN ><> :"
+    "\n:                       :"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
+string ASCIIReproduccion() {
+    return
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
+    "\n:       .  ><>          :"
+    "\n:    .  |. .     ARBOL  :"
+    "\n:   \\|  \\| /.     DE    :"
+    "\n:  . |. |//    ESPECIES :"
+    "\n:   \\| \\|/  |.          :"
+    "\n:    |_\\|/__//          :"
+    "\n:                       :"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
 // ---------------------------------------- MENU MODIFICAR FACTORES ----------------------------------------
 
 string ASCIISalinidad() {
@@ -271,5 +299,7 @@ string ASCIIBiomaMarismasSalinas() {
     "\n:                       :"
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
+
+
 
 #endif // asciiMenu.hpp
