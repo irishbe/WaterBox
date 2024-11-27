@@ -6,7 +6,7 @@
 using namespace std;
 
 struct Especie {
-    int id;
+    string id;
     string tipoEspecie;
     DatosEspecie* datosEspecie;
     int vida = 100;
@@ -14,8 +14,12 @@ struct Especie {
     char genero;
     string color;
     string estadoSalud = "sano";
-    //Generacion* generacion;
-    Especie* sgteEspecie;
+
+    Especie* sgteEspecie = nullptr;
+    Especie* primerHijo = nullptr;
+    Especie* sgteHijo = nullptr;
+    Especie* padre = nullptr;
+    Especie* madre = nullptr;
 };
 
 #endif // ESPECIE_H

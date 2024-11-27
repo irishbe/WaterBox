@@ -166,5 +166,173 @@
             4.0
         ],
         "tasa de reproduccion": 5.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 20.0,
+        "familia biologica": "Anguillidae",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "Anguilla anguilla",
+        "nombre comun": "Anguila Europea",
+        "rango oxigeno": [
+            8.0,
+            3.0
+        ],
+        "rango salinidad": [
+            40.0,
+            10.0
+        ],
+        "rango temperatura": [
+            30.0,
+            5.0
+        ],
+        "tasa de reproduccion": 2.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 3.0,
+        "familia biologica": "Portunidae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Callinectes sapidus",
+        "nombre comun": "Cangrejo Azul",
+        "rango oxigeno": [
+            9.0,
+            4.0
+        ],
+        "rango salinidad": [
+            35.0,
+            15.0
+        ],
+        "rango temperatura": [
+            28.0,
+            10.0
+        ],
+        "tasa de reproduccion": 0.5
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Mytilidae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Geukensia demissa",
+        "nombre comun": "Almeja de Marisma",
+        "rango oxigeno": [
+            10.0,
+            5.0
+        ],
+        "rango salinidad": [
+            45.0,
+            15.0
+        ],
+        "rango temperatura": [
+            25.0,
+            5.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 15.0,
+        "familia biologica": "Centropomidae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Centropomus undecimalis",
+        "nombre comun": "Róbalo Común",
+        "rango oxigeno": [
+            8.0,
+            4.0
+        ],
+        "rango salinidad": [
+            40.0,
+            20.0
+        ],
+        "rango temperatura": [
+            30.0,
+            10.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Cichlidae",
+        "inactividad reproductiva": 0.2,
+        "nombre cientifico": "Oreochromis mossambicus",
+        "nombre comun": "Tilapia Mozambiqueña",
+        "rango oxigeno": [
+            8.0,
+            3.0
+        ],
+        "rango salinidad": [
+            30.0,
+            15.0
+        ],
+        "rango temperatura": [
+            35.0,
+            12.0
+        ],
+        "tasa de reproduccion": 0.3
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 5.0,
+        "familia biologica": "Gasterosteidae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Gasterosteus aculeatus",
+        "nombre comun": "Espinoso de Tres Espinas",
+        "rango oxigeno": [
+            9.0,
+            5.0
+        ],
+        "rango salinidad": [
+            35.0,
+            10.0
+        ],
+        "rango temperatura": [
+            25.0,
+            8.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 8.0,
+        "familia biologica": "Toxotidae",
+        "inactividad reproductiva": 0.5,
+        "nombre cientifico": "Toxotes jaculatrix",
+        "nombre comun": "Pez Arquero",
+        "rango oxigeno": [
+            7.0,
+            4.0
+        ],
+        "rango salinidad": [
+            25.0,
+            10.0
+        ],
+        "rango temperatura": [
+            30.0,
+            10.0
+        ],
+        "tasa de reproduccion": 1.0
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 7.0,
+        "familia biologica": "Asteriidae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Echinaster sepositus",
+        "nombre comun": "Estrella de Mar Roja",
+        "rango oxigeno": [
+            10.0,
+            4.0
+        ],
+        "rango salinidad": [
+            45.0,
+            20.0
+        ],
+        "rango temperatura": [
+            25.0,
+            10.0
+        ],
+        "tasa de reproduccion": 0.5
     }
 ]

@@ -1,7 +1,6 @@
-#include <iostream>
-#include "dibujosASCIII.hpp"
 #include "simulador.hpp"
 #include "wiki.hpp"
+#include "utilidades.hpp"
 
 using namespace std;
 
@@ -11,54 +10,55 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     pantallaCompleta();
 
-    string opcionMenu, advertencia = "EJECUTAR COMO ADMINISTRADOR EN CASO SE DEFORMEN LOS TEXTOS ASCII\n"; 
-    vector<string> opcionesMenu = {"INICIAR", "WIKIWATER", "CODIGOS", "SALIR"};
+    fondoRGB(7, 25, 82);
     
+    int opcion = -1;
+
+    string advertencia = textoRGB(242, 47, 6) + "EJECUTAR COMO ADMINISTRADOR PARA VISUALIZAR LOS COLORES DE FONDO Y LOS TITULOS ASCII\n" + textoRGB(255, 255, 255)+"\n\n"; 
+    
+    vector<string> dibujos = {
+        ASCIISimulador(),
+        ASCIIWikiWater(),
+        ASCIICodigos()
+    };
     advertencia.append( tituloWaterBox() );
 
     do{
-        opcionMenu = seleccionConFlechas( advertencia, opcionesMenu, "vertical", true, 30, 5);
+        opcion = seleccionarConDibujos(dibujos, advertencia);
 
-        system("cls");
-
-        if( opcionMenu == "INICIAR" ){
-            iniciarSimulador();
-        }
-        else if( opcionMenu == "WIKIWATER" ){
-            iniciarWiki();
-        }
-        else if( opcionMenu == "CODIGOS"){
-            ingresarCodigos();
-        }
-        else if( opcionMenu == "SALIR" || opcionMenu == ""){
-            cout<<"\nSaliendo...";
-            getch();
-        }
-        else{
-            cout << "Opcion invalida" << endl;
-            getch();
+        switch(opcion){
+            case 1: iniciarSimulador(); break;
+            case 2: iniciarWiki(); break;
+            case 3: ingresarCodigos(); break;
+            case -1: break;
         }
 
         system("cls");
 
-    }while( opcionMenu != "SALIR" && opcionMenu != "");
+    }while( opcion != -1);
 
     return 0;
 }
 
 void ingresarCodigos(){
+    int x = 10, y = 3;
     string codigo;
     
-    cout << "INGRESE UN CODIGO DE 5 CARACTERES..." << endl;
-    getline(cin, codigo);
+    y += imprimirTexto( tituloCodigos(), x, y, true);
+
+    fflush(stdin);
+    moverCursor(x, y + 3); cout << "INGRESE UN CODIGO DE 5 CARACTERES...";
+    moverCursor(x, y + 4); getline(cin, codigo);
 
     if( codigo == "ADMIN" ){
-        cout << "\n\nCODIGO ACEPTADO!" << endl << endl;
+        moverCursor(x, y + 8); cout << "CODIGO ACEPTADO! ";
         getch();
+        
         iniciarCrudJson();
 
     }else{
-        cout << "\n\nERROR..." << endl << endl;
+        moverCursor(x, y + 8); cout << "ERROR... ";
         getch();
     }
+
 }

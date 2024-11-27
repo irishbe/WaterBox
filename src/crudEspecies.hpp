@@ -1,26 +1,54 @@
-#ifndef CRUD_ESPECIES_H
-#define CRUD_ESPECIES_H
+#ifndef CRUD_ESPECIES_HPP
+#define CRUD_ESPECIES_HPP
 
-#include <iostream>
 #include "crudPoblaciones.hpp"
 #include "Evento.hpp"
 
 using namespace std;
 
-void generarIDs();
-void agregarEspecie();
-void enlistarEspecies();
-void buscarEspecie();
-void eliminarEspecie();
+vector<string> obtenerEspecies(Poblacion *poblacion){
+    vector<string> especies;
+    Especie* especie = poblacion->listaEspecies;
 
-Especie* extraerListaEspecies();
+    while ( especie != nullptr ) {
+        especies.push_back( especie->id + " - " + especie->datosEspecie->nombreComun );
+
+        especie = especie->sgteEspecie;
+    }
+
+    return especies; 
+}
+
+Especie* seleccionarEspecie(Poblacion *poblacionSelecionada){
+    if( poblacionSelecionada->listaEspecies == nullptr ){
+        cout << "No hay especies que seleccionar...";
+        getch();
+        return nullptr;
+    }
+
+    Especie* especieSeleccionada = poblacionSelecionada->listaEspecies;
+    string opcion;
+
+    opcion = seleccionarConFlechas( obtenerEspecies(poblacionSelecionada), tituloEspecie(), "SELECCIONE UNA ESPECIE");
+
+    while( especieSeleccionada != nullptr ){
+        
+        if ( especieSeleccionada->id == opcion.substr(0,7) ){ // Comparar el id
+            return especieSeleccionada;
+        }
+
+        especieSeleccionada = especieSeleccionada->sgteEspecie;
+    }
+    
+    return nullptr;
+}
 
 void agregarEspecie(){
     string tipoEspecie, nombreEspecie;
     Especie *nuevaEspecie = new Especie();
 
     // SELECCIONAR EL TIPO DE ESPECIE A AGREGAR
-    tipoEspecie = seleccionConFlechas("Tipo de especie\n", tiposEspecies, "horizontal");
+    tipoEspecie = seleccionarConFlechas(tiposEspecies, tituloAgregarEspecie(), "SELECCIONE UN TIPO DE ESPECIE");
     
     if( tipoEspecie.empty() ){
         return;
@@ -35,7 +63,7 @@ void agregarEspecie(){
     }
 
     // SELECCIONAR EL NOMBRE DE LA ESPECIE A AGREGAR
-    nombreEspecie = seleccionConFlechas("Seleccione el nombre de la especie", nombresEspecies, "vertical");
+    nombreEspecie = seleccionarConFlechas(nombresEspecies, tituloAgregarEspecie(), "SELECCIONE EL NOMBRE DE LA ESPECIE PARA AGREGAR");
     
     if( nombreEspecie.empty() ){
         return;
@@ -55,89 +83,30 @@ void agregarEspecie(){
     nuevaEspecie->datosEspecie = datos;
     nuevaEspecie->sgteEspecie = nullptr;
 
-    insertarEspecie(nuevaEspecie);
-    registrarEvento("AGREGAR ESPECIE", "Arrecifes de coral", nuevaEspecie);
+    agregarEspecieEnPoblacion(nuevaEspecie);
+    registrarEvento(AGREGAR_ESPECIE, partidaActual, nuevaEspecie);
 }
 
 void enlistarEspecies(){
-    Especie *listaEspecies = extraerListaEspecies(), *especieActual = nullptr;
+    Poblacion* poblacionSeleccionada = seleccionarPoblacion();
 
-    if ( listaEspecies == nullptr ){
-        cout << "\nNo hay especies en la lista..." << endl << endl;
+    if ( poblacionSeleccionada == nullptr ) {
         return;
     }
 
-    especieActual = listaEspecies;
+    vector<string> especies = obtenerEspecies( poblacionSeleccionada );
 
-    // IMPRESION DE LAS ESPECIES DISPONIBLES EN LA POBLACION
-    system("cls");
-    cout << "----------- LISTA DE ESPECIES DE LA POBLACION  -----------" << endl << endl;
-
-    while ( especieActual != nullptr ) {
-        cout << especieActual->id << ". " << especieActual->datosEspecie->nombreComun << endl;
-        especieActual = especieActual->sgteEspecie;
-    }
-
-    cout << endl;
-}
-
-void buscarEspecie() {
-    int idEspecie;
-    Especie *listaEspecies = extraerListaEspecies(), *especieActual = nullptr, *especieEncontrada = nullptr;
-
-    if ( listaEspecies == nullptr ){
-        cout << "\nNo hay especies en la lista..." << endl << endl;
-        return;
-    }
-
-    especieActual = listaEspecies;
-
-    // IMPRESION DE LAS ESPECIES DISPONIBLES EN LA POBLACION
-    system("cls");
-    cout << "----------- LISTA DE ESPECIES DE LA POBLACION  -----------" << endl << endl;
-
-    while ( especieActual != nullptr ) {
-        cout << especieActual->id << ". " << especieActual->datosEspecie->nombreComun << endl;
-        especieActual = especieActual->sgteEspecie;
-    }
-
-    cout << endl;
+    cout << "Lista de " << poblacionSeleccionada->nombreEspecie << " en la Poblacion con ID " << poblacionSeleccionada->id << endl << endl;
     
-
-    // BUSCANDO LA ESPECIE EN LA LISTA DE ESPECIES DE LA POBLACION
-    cout << "\nIngrese el ID de la especie que desea ver sus datos: "; cin >> idEspecie;
-
-    especieActual = listaEspecies;
-
-    while (especieActual != nullptr) {
-        if (especieActual->id == idEspecie) {
-            especieEncontrada = especieActual;  // Encontrar la especie
-            break;
-        }
-        especieActual = especieActual->sgteEspecie;
+    for(int i=0; i < especies.size() ; i++){
+       cout << "\t" << especies[i] << endl;
     }
-
-    if (especieEncontrada == nullptr) {
-        cout << "\nEspecie con ID (" << idEspecie << ") no encontrada..." << endl;
-        return;
-    }
-
-    cout << "\n\n----------- DATOS DE LA ESPECIE -----------" << endl << endl;
-    cout << "Nombre comun: " << especieEncontrada->datosEspecie->nombreComun << endl;
-    cout << "Nombre cientifico: " << especieEncontrada->datosEspecie->nombreCientifico << endl;
-    cout << "Familia biologica: " << especieEncontrada->datosEspecie->familiaBiologica << endl;
-    cout << "Bioma nativo: " << especieEncontrada->datosEspecie->biomaNativo << endl;
-    cout << "Esperanza de vida: " << especieEncontrada->datosEspecie->esperanzaVida << endl;
-    cout << "Tasa de reproduccion: " << especieEncontrada->datosEspecie->tasaReproduccion << endl;
-    cout << "Inactividad reproductiva: " << especieEncontrada->datosEspecie->inactividadReproductiva << endl;
-    cout << "Rango salinidad: [" << especieEncontrada->datosEspecie->salinidadMax << ", " << especieEncontrada->datosEspecie->salinidadMin << "]" << endl;
-    cout << "Rango oxigeno: [" << especieEncontrada->datosEspecie->oxigenoMax << ", " << especieEncontrada->datosEspecie->oxigenoMin << "]" << endl;
-    cout << "Rango temperatura: [" << especieEncontrada->datosEspecie->temperaturaMax << ", " << especieEncontrada->datosEspecie->temperaturaMin << "]" << endl << endl;
+    
 }
 
 void eliminarEspecie() {
-    int idEspecie;
-    Especie *listaEspecies = extraerListaEspecies(), *especieActual = nullptr, *especieAnterior = nullptr, *especieEncontrada = nullptr;
+    string idEspecie;
+    Especie *listaEspecies = nullptr, *especieActual = nullptr, *especieAnterior = nullptr, *especieEncontrada = nullptr;
 
     if ( listaEspecies == nullptr ){
         cout << "\nNo hay especies en la lista..." << endl << endl;
@@ -159,7 +128,7 @@ void eliminarEspecie() {
     
 
     // BUSCANDO LA ESPECIE EN LA LISTA DE ESPECIES DE LA POBLACION
-    cout << "\nIngrese el ID de la especie que desea ver sus datos: "; cin >> idEspecie;
+    cout << "\nIngrese el ID de la especie que desea ver sus datos: "; getline(cin, idEspecie);
 
     especieActual = listaEspecies;
 
@@ -212,31 +181,119 @@ void eliminarEspecie() {
     }
 
 
-    registrarEvento("ELIMINAR ESPECIE", especieEncontrada->datosEspecie->biomaNativo, especieEncontrada);
+    registrarEvento(ELIMINAR_ESPECIE, partidaActual, especieEncontrada);
 }
 
-Especie* extraerListaEspecies(){
-    int idPoblacion;
-    Poblacion* poblacionSeleccionada;
-    Especie* especieActual = nullptr;
+void reproducirEspecies(){
+    // Escogiendo a las 2 especies de una misma poblacion
+    Poblacion* poblacionSeleccionada = seleccionarPoblacion();
+    Especie *especiePadre = nullptr, *especieMadre = nullptr, *especieHija = new Especie();
 
-    mostrarPoblaciones();
-
-    if( listaPoblaciones == nullptr ){
-        return nullptr;
+    if ( poblacionSeleccionada == nullptr ) {
+        return;
     }
+
+    especiePadre = seleccionarEspecie(poblacionSeleccionada);
+
+    if( especiePadre == nullptr ){
+        return;
+    }
+
+    especieMadre = seleccionarEspecie(poblacionSeleccionada);
+
+    if( especieMadre == nullptr ){
+        return;
     
-    cout << "\nIngrese el ID de la población que desea ver sus especies: "; cin >> idPoblacion;
-
-    // IMPRIMIENDO LA LISTA DE ESPECIES DE LA POBLACION
-    poblacionSeleccionada = extraerPoblacion(idPoblacion);
-
-    if( poblacionSeleccionada == nullptr ){
-        cout << "No hay especies que enlistar..." <<endl << endl;
-        return nullptr;
+    } else if( especieMadre == especiePadre ){
+        cout << "La especie padre no puede ser la misma que la madre..." << endl;
+        getch();
+        return;
+    
+    } else if( especieMadre->tipoEspecie != especiePadre->tipoEspecie ){
+        cout << "No se pueden reproducir especies de diferentes tipos..." << endl;
+        getch();
+        return;
     }
 
-    return poblacionSeleccionada->listaEspecies;
+    // Especificando sus relaciones familiares
+    especieHija->padre = especiePadre;
+    especieHija->madre = especieMadre;
+    especieHija->tipoEspecie = especiePadre->tipoEspecie;
+    especieHija->datosEspecie = especiePadre->datosEspecie;
+
+    if ( especiePadre->primerHijo == nullptr ) {
+        especiePadre->primerHijo = especieHija;
+    
+    } else {
+        // Navegar hasta el último hijo y añadir el nuevo
+        Especie* hijoActual = especiePadre->primerHijo;
+        
+        while ( hijoActual->sgteHijo ) {
+            hijoActual = hijoActual->sgteHijo;
+        }
+
+        hijoActual->sgteHijo = especieHija;
+    }
+
+    // Agregando la especie al simulador
+    agregarEspecieEnPoblacion(especieHija);
+    registrarEvento(REPRODUCCION, partidaActual, especiePadre, especieMadre, especieHija);
+}
+
+void imprimirArbol(Especie* especie, int nivel = 0) {
+    if (!especie) return;
+
+    // Imprimir la especie con indentación adecuada según el nivel
+    cout << textoRGB(96,99,18) << "▓▓▓ " << endl;
+    for (int i = 0; i < nivel; ++i) cout << textoRGB(96,99,18)  << "▓▓▓";
+    cout << textoRGB(96,99,18) << "▓▓▓ " << textoRGB(96,99,18)  << especie->datosEspecie->nombreComun << " " << especie->id;
+
+    // Mostrar los padres si existen
+    if (especie->padre || especie->madre) {
+        cout << " (";
+        if (especie->padre) {
+            cout << "Padre: " << especie->padre->id;
+        }
+        if (especie->padre && especie->madre) {
+            cout << ", ";
+        }
+        if (especie->madre) {
+            cout << "Madre: " << especie->madre->id;
+        }
+        cout << ")";
+    }
+
+    cout << endl;
+
+    // Mostrar los hijos con indentación aumentada
+    Especie* hijo = especie->primerHijo;
+    while (hijo) {
+        imprimirArbol(hijo, nivel + 1);
+        hijo = hijo->sgteHijo;
+    }
+}
+
+void imprimirArbolDePoblacion() {
+    Poblacion* poblacionSeleccionada = seleccionarPoblacion();
+
+    if (poblacionSeleccionada == nullptr) {
+        return;
+    }
+
+    cout << "Árbol generacional de la Población de " << poblacionSeleccionada->tipoEspecie << " con ID "<< poblacionSeleccionada->id << endl << endl;
+
+    // Recorrer y mostrar solo las especies raíz (sin padre)
+    Especie* listaEspecies = poblacionSeleccionada->listaEspecies;
+    while (listaEspecies) {
+
+        if (listaEspecies->padre == nullptr) {
+            imprimirArbol(listaEspecies, 0);
+        }
+
+        listaEspecies = listaEspecies->sgteEspecie;
+    }
+
+    getch();
 }
 
 #endif // CRUD_ESPECIES_H

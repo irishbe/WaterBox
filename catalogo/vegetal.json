@@ -21,24 +21,45 @@
         "tasa de reproduccion": 20.0
     },
     {
-        "bioma nativo": "A",
-        "esperanza de vida": 13.0,
-        "familia biologica": "A",
-        "inactividad reproductiva": 13.0,
-        "nombre cientifico": "AA",
-        "nombre comun": "AA",
+        "bioma nativo": "Arrecifes de coral",
+        "esperanza de vida": 10.0,
+        "familia biologica": "Hydrocharitaceae",
+        "inactividad reproductiva": 0.3,
+        "nombre cientifico": "Thalassia testudinum",
+        "nombre comun": "Hierba Marina",
         "rango oxigeno": [
-            1.0,
-            13.0
+            8.0,
+            4.0
         ],
         "rango salinidad": [
-            131.0,
-            13.0
+            40.0,
+            25.0
         ],
         "rango temperatura": [
-            1.0,
-            2.0
+            30.0,
+            25.0
         ],
-        "tasa de reproduccion": 123.0
+        "tasa de reproduccion": 0.5
+    },
+    {
+        "bioma nativo": "Marismas salinas",
+        "esperanza de vida": 8.0,
+        "familia biologica": "Amaranthaceae",
+        "inactividad reproductiva": 1.0,
+        "nombre cientifico": "Salicornia europaea",
+        "nombre comun": "Salicornia Europea",
+        "rango oxigeno": [
+            10.0,
+            6.0
+        ],
+        "rango salinidad": [
+            40.0,
+            30.0
+        ],
+        "rango temperatura": [
+            30.0,
+            12.0
+        ],
+        "tasa de reproduccion": 2.0
     }
 ]

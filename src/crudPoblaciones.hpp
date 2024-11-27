@@ -4,23 +4,53 @@
 
 using namespace std;
 
-void insertarEspecie(Especie* nuevaEspecie);
-Poblacion* extraerPoblacion(int id);
-
-void crearPoblacion(Especie* nuevaEspecie);
-void mostrarPoblaciones();
-void mostrarEspeciesDePoblacion(int id);
-
 Poblacion* listaPoblaciones = nullptr;
 
+vector<string> obtenerPoblaciones(){
+    vector<string> poblaciones;
+    Poblacion* poblacion = listaPoblaciones;
+    
+    while (poblacion != nullptr) {
+        poblaciones.push_back( poblacion->id + " - " + poblacion->nombreEspecie );
+
+        poblacion = poblacion->sgtePoblacion;
+    }
+
+    return poblaciones;    
+}
+
+Poblacion *seleccionarPoblacion(){
+    
+    if( listaPoblaciones == nullptr ){
+        cout << "No hay poblaciones que seleccionar...";
+        getch();
+        return nullptr;
+    }
+
+    Poblacion *poblacionSeleccionada = listaPoblaciones;
+    string opcion;
+
+    opcion = seleccionarConFlechas( obtenerPoblaciones(), tituloPoblacion(), "SELECCIONE UNA POBLACION");
+
+    while( poblacionSeleccionada != nullptr ){
+        
+        if ( poblacionSeleccionada->id == opcion.substr(0,4) ){ // Comparar el id
+            return poblacionSeleccionada;
+        }
+
+        poblacionSeleccionada = poblacionSeleccionada->sgtePoblacion;
+    }
+    
+    return nullptr;
+}
 
 void generarIDPoblacion() {
     Poblacion* poblacionActual = listaPoblaciones;
-    int id = 0;
+    int id = 1;
 
     // Recorremos la lista de poblaciones para asignar los IDs
-    while ( poblacionActual != nullptr ){
-        poblacionActual->id = id;
+    while (poblacionActual != nullptr) {
+        poblacionActual->id = "P" + generarIDConFormato(id, 3); // Prefijo 'P' seguido de 3 dígitos
         id++;
         poblacionActual = poblacionActual->sgtePoblacion;
     }
@@ -28,17 +58,47 @@ void generarIDPoblacion() {
 
 void generarIDEspecie(Poblacion* poblacion) {
     Especie* especieActual = poblacion->listaEspecies;
-    int id = 0;
+    int id = 1;
 
-    // Recorremos la lista de poblaciones para asignar los IDs
-    while ( especieActual != nullptr ){
-        especieActual->id = id;
+    // Recorremos la lista de especies para asignar los IDs
+    while (especieActual != nullptr) {
+        cout << poblacion->id << endl;
+        especieActual->id = "E" + poblacion->id.substr(1,3) + generarIDConFormato(id, 3);
         id++;
         especieActual = especieActual->sgteEspecie;
     }
 }
 
-void insertarEspecie(Especie* nuevaEspecie){
+void crearPoblacion(Especie* nuevaEspecie){
+    Poblacion* nuevaPoblacion = new Poblacion();
+
+    nuevaPoblacion->antePoblacion = nullptr;
+    nuevaPoblacion->sgtePoblacion = nullptr;
+
+    nuevaPoblacion->listaEspecies = nuevaEspecie;
+    nuevaPoblacion->tipoEspecie = nuevaEspecie->tipoEspecie;
+    nuevaPoblacion->nombreEspecie = nuevaEspecie->datosEspecie->nombreComun;
+    nuevaPoblacion->contadorEspecies = 1;
+
+    if ( listaPoblaciones == nullptr ){
+        listaPoblaciones = nuevaPoblacion;
+
+    }else{
+        Poblacion *aux = listaPoblaciones;
+
+        while( aux->sgtePoblacion != nullptr ){
+            aux = aux->sgtePoblacion;
+        }
+
+        nuevaPoblacion->antePoblacion = aux;
+        aux->sgtePoblacion = nuevaPoblacion;
+    }
+    
+    generarIDPoblacion();
+    generarIDEspecie(nuevaPoblacion);
+}
+
+void agregarEspecieEnPoblacion(Especie* nuevaEspecie){
     bool existePoblacion = false;
     Poblacion* poblacionActual = listaPoblaciones;
     Poblacion* poblacionEncontrada = nullptr;
@@ -69,93 +129,4 @@ void insertarEspecie(Especie* nuevaEspecie){
     } else{
         crearPoblacion(nuevaEspecie);
     }
-}
-
-void crearPoblacion(Especie* nuevaEspecie){
-    Poblacion* nuevaPoblacion = new Poblacion();
-
-    nuevaPoblacion->antePoblacion = nullptr;
-    nuevaPoblacion->sgtePoblacion = nullptr;
-
-    nuevaPoblacion->listaEspecies = nuevaEspecie;
-    nuevaPoblacion->tipoEspecie = nuevaEspecie->tipoEspecie;
-    nuevaPoblacion->nombreEspecie = nuevaEspecie->datosEspecie->nombreComun;
-    nuevaPoblacion->contadorEspecies = 0;
-
-    generarIDEspecie(nuevaPoblacion);
-
-    if ( listaPoblaciones == nullptr ){
-        listaPoblaciones = nuevaPoblacion;
-
-    }else{
-        Poblacion *aux = listaPoblaciones;
-
-        while( aux->sgtePoblacion != nullptr ){
-            aux = aux->sgtePoblacion;
-        }
-
-        nuevaPoblacion->antePoblacion = aux;
-        aux->sgtePoblacion = nuevaPoblacion;
-    }
-
-    generarIDPoblacion();
-}
-
-void mostrarPoblaciones() {
-    Poblacion* poblacionActual = listaPoblaciones;
-
-    if ( listaPoblaciones == nullptr ) {
-        cout << "No hay poblaciones registradas." << endl << endl;
-        return;
-    }
-
-    cout << "----------- LISTA DE POBLACIONES -----------" << endl << endl;
-    
-    while ( poblacionActual != nullptr ) {
-        cout << poblacionActual->id << ". Poblacion de (" << poblacionActual->tipoEspecie << " - " << poblacionActual->nombreEspecie << ")" << endl;
-        poblacionActual = poblacionActual->sgtePoblacion;
-    }
-}
-
-void buscarPoblacion() {
-    int id;
-    cout << "Ingrese el ID de la población a buscar: "; cin >> id;
-
-    Poblacion* poblacionBuscada = listaPoblaciones;
-
-    // RECORRE PARA BUSCAR LA POBLACION SEGUN EL ID
-    while ( poblacionBuscada != nullptr ) {
-
-        if ( poblacionBuscada->id == id) {
-            cout << "POBLACION ENCONTRADA! " << endl;
-
-            cout << "ID: " << poblacionBuscada->id << endl;
-            cout << "Tipo de sus especies: " << poblacionBuscada->tipoEspecie << endl;
-            cout << "Nombre de sus especies: " << poblacionBuscada->nombreEspecie << endl;
-            cout << "Cantidad de especies presentes: " << poblacionBuscada->contadorEspecies << endl;
-
-            return;
-        }
-
-        poblacionBuscada = poblacionBuscada->sgtePoblacion;
-    }
-
-    cout << "Población con ID " << id << " no encontrada." << endl;
-}
-
-Poblacion* extraerPoblacion(int id){
-    Poblacion* poblacionBuscada = listaPoblaciones;
-
-    // RECORRE PARA BUSCAR LA POBLACION SEGUN EL ID
-    while ( poblacionBuscada != nullptr ) {
-
-        if ( poblacionBuscada->id == id) {
-            return poblacionBuscada;
-        }
-
-        poblacionBuscada = poblacionBuscada->sgtePoblacion;
-    }
-
-    cout << "Población con ID " << id << " no encontrada." << endl;
-    return poblacionBuscada;
 }
