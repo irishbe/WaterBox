@@ -1,0 +1,25 @@
+Tipo de Evento: AGREGAR_ESPECIE
+Descripción: [2024-12-03 15:16:56] Agregaste a la nueva especie Tiburon de arrecife con ID E001001
+Especie 1: Tiburon de arrecife
+*******************************************************************************************************
+Tipo de Evento: AGREGAR_ESPECIE
+Descripción: [2024-12-03 15:17:00] Agregaste a la nueva especie Langosta comun con ID E002001
+Especie 1: Langosta comun
+*******************************************************************************************************
+Tipo de Evento: AGREGAR_ESPECIE
+Descripción: [2024-12-03 15:17:05] Agregaste a la nueva especie Salicornia Europea con ID E003001
+Especie 1: Salicornia Europea
+*******************************************************************************************************
+Tipo de Evento: AGREGAR_ESPECIE
+Descripción: [2024-12-03 15:17:11] Agregaste a la nueva especie Pez payaso con ID E004001
+Especie 1: Pez payaso
+*******************************************************************************************************
+Tipo de Evento: MODIFICAR_FACTORES
+Descripción: [2024-12-03 15:17:43] Modificaste los factores del bioma Arrecifes de Coral [o:10.000000,s:34.000000,t:26.500000,c:5.000000]
+*******************************************************************************************************
+Tipo de Evento: MODIFICAR_FACTORES
+Descripción: [2024-12-03 15:17:51] Modificaste los factores del bioma Arrecifes de Coral [o:10.000000,s:34.000000,t:20.000000,c:5.000000]
+*******************************************************************************************************
+Tipo de Evento: MODIFICAR_FACTORES
+Descripción: [2024-12-03 15:17:53] Modificaste los factores del bioma Arrecifes de Coral [o:10.000000,s:34.000000,t:20.000000,c:5.000000]
+*******************************************************************************************************

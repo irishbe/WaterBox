@@ -1,6 +1,6 @@
-CONTEO GENERAL DE LOS EVENTOS OCURRIDOS EN EL SIMULADOR
+CONTEO DE EVENTOS EN LA PARTIDA aaaa
 *******************************************************************************************************
-AGREGAR_ESPECIE = 12
+AGREGAR_ESPECIE = 4
 ELIMINAR_ESPECIE = 0
 MODIFICAR_FACTORES = 3
 REPRODUCCION = 0

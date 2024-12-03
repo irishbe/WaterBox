@@ -1,0 +1,12 @@
+INFO DE LA PARTIDA
+*******************************************************************************************************
+aaaa
+[2024-12-03 15:16:47]
+[0-00-00 00:00:00]
+Arrecifes de Coral
+6
+34
+26.5
+5
+eventosPartida[aaaa].txt
+conteoEventosPartida[aaaa].txt
