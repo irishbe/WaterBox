@@ -1,6 +1,11 @@
 #ifndef EVENTO_HPP
 #define EVENTO_HPP
 
+
+#include <random>
+#include "crudEspecies.hpp"
+#include "crudPoblaciones.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -339,5 +344,136 @@ void mostrarEventos() {
         cout << eventos[i].descripcion << endl;
     }
 }
+
+//FUNCION AÑADIDA KEVIN
+
+
+// Función para generar un número aleatorio dentro de un rango
+int generarNumeroAleatorio(int min, int max) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(min, max);
+    return dis(gen);
+}
+
+// Función para seleccionar una especie aleatoria de una población
+Especie* seleccionarEspecieAleatoria(Poblacion* poblacion) {
+    if (poblacion->contadorEspecies == 0) return nullptr;
+    int indice = generarNumeroAleatorio(0, poblacion->contadorEspecies - 1);
+    Especie* especie = poblacion->listaEspecies;
+
+    while (indice-- > 0 && especie) {
+        especie = especie->sgteEspecie;
+    }
+
+    return especie;
+}
+
+// Generador de eventos aleatorios
+void generarEventoAleatorio() {
+    if (!listaPoblaciones) {
+        cout << "No hay poblaciones disponibles para generar eventos aleatorios." << endl;
+        return;
+    }
+
+    int tipoEvento = generarNumeroAleatorio(0, 6); // Según el enum TipoEvento
+    Poblacion* poblacionSeleccionada = listaPoblaciones;
+
+    // Seleccionar una población aleatoria
+    int indicePoblacion = generarNumeroAleatorio(0, contarPoblaciones() - 1);
+    while (indicePoblacion-- > 0 && poblacionSeleccionada) {
+        poblacionSeleccionada = poblacionSeleccionada->sgtePoblacion;
+    }
+
+    Especie* especie1 = nullptr;
+    Especie* especie2 = nullptr;
+
+    switch (tipoEvento) {
+        case AGREGAR_ESPECIE:
+            agregarEspecie(); // Utiliza la función de agregar especie existente
+            cout << "Evento: Agregar especie generado aleatoriamente." << endl;
+            break;
+
+        case ELIMINAR_ESPECIE:
+            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            if (especie1) {
+                cout << "Evento: Especie eliminada aleatoriamente: " << especie1->datosEspecie->nombreComun << endl;
+                eliminarEspecie(); // Utiliza la función existente
+            }
+            break;
+
+        case MODIFICAR_FACTORES:
+            {
+                int factor = generarNumeroAleatorio(0, 3);
+                float nuevoValor;
+
+                switch (factor) {
+                    case 0: // Salinidad
+                        nuevoValor = generarNumeroAleatorio(salinidadMin, salinidadMax);
+                        partidaActual.bioma->nivelSalinidad = nuevoValor;
+                        cout << "Evento: Modificando salinidad a nivel " << nuevoValor << " g/L." << endl;
+                        break;
+                    case 1: // Oxígeno
+                        nuevoValor = generarNumeroAleatorio(oxigenoMin, oxigenoMax);
+                        partidaActual.bioma->nivelOxigeno = nuevoValor;
+                        cout << "Evento: Modificando oxígeno a nivel " << nuevoValor << " mg/L." << endl;
+                        break;
+                    case 2: // Temperatura
+                        nuevoValor = generarNumeroAleatorio(temperaturaMin, temperaturaMax);
+                        partidaActual.bioma->nivelTemperatura = nuevoValor;
+                        cout << "Evento: Modificando temperatura a nivel " << nuevoValor << " °C." << endl;
+                        break;
+                }
+            }
+            break;
+
+        case REPRODUCCION:
+            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            especie2 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            if (especie1 && especie2 && especie1 != especie2) {
+                cout << "Evento: Reproducción exitosa entre: " << especie1->datosEspecie->nombreComun
+                     << " (hembra) y " << especie2->datosEspecie->nombreComun << " (macho)." << endl;
+                reproducirEspecies();
+            }
+            break;
+
+        case DEPREDACION:
+            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            especie2 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            if (especie1 && especie2 && especie1 != especie2) {
+                cout << "Evento: El depredador " << especie1->datosEspecie->nombreComun
+                     << " ha atacado a " << especie2->datosEspecie->nombreComun << endl;
+            }
+            break;
+
+        case CAZA:
+            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            especie2 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            if (especie1 && especie2 && especie1 != especie2) {
+                cout << "Evento: La especie " << especie1->datosEspecie->nombreComun
+                     << " ha sido cazada por " << especie2->datosEspecie->nombreComun << endl;
+            }
+            break;
+
+        case ENFERMEDAD:
+            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
+            if (especie1) {
+                bool fueraRango = especie1->datosEspecie->salinidadMax < partidaActual.bioma->nivelSalinidad ||
+                                  especie1->datosEspecie->oxigenoMin > partidaActual.bioma->nivelOxigeno ||
+                                  especie1->datosEspecie->temperaturaMax < partidaActual.bioma->nivelTemperatura;
+
+                if (fueraRango) {
+                    cout << "Evento: La especie " << especie1->datosEspecie->nombreComun
+                         << " ha muerto debido a factores ambientales." << endl;
+                } else {
+                    cout << "Evento: La especie " << especie1->datosEspecie->nombreComun
+                         << " no ha sido afectada por factores ambientales." << endl;
+                }
+            }
+            break;
+    }
+}
+
+
 
 #endif // EVENTO_HPP
