@@ -133,7 +133,8 @@ void menuOpcionesSimulador(){
             case 3: modificarFactor(); desplegarCuadros = true; break;
             case 4: eliminarEspecie(); desplegarCuadros = true; break;
             case 5: reproducirEspecies(); desplegarCuadros = true; break;
-            case 6: generarEventoAleatorio(); //imprimirArbolDePoblacion(); desplegarCuadros = false; break;
+            case 6: imprimirArbolDePoblacion(); desplegarCuadros = false; break;
+            //generarEventoAleatorio(); 
             case -1: break;
         }
 
