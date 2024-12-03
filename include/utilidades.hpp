@@ -15,7 +15,7 @@
 using namespace std;
 
 // Constantes
-const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224;
+const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224, BACKSPACE = 8;
 const int LEFT = 75, RIGHT = 77, UP = 72, DOWN = 80, ZERO = '0';
 
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING

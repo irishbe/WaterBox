@@ -3,6 +3,7 @@
 
 #include "crudDatos.hpp"
 #include "Poblacion.hpp"
+#include "busquedaBinaria.hpp"
 
 using namespace std;
 
@@ -88,16 +89,21 @@ void wiki_especies(string nombreEspecie, string tipoEspecie = ""){
 
 // MENÚ BUSCAR ESPECIE
 void wiki_buscar(){
-    string tipoEspecie, nombreEspecie;
-    
-    tipoEspecie = seleccionarConFlechas(tiposEspecies, tituloWikiWater(), "SELECCIONE EL TIPO DE ESPECIE A BUSCAR");
+    vector<string> nombresEspecies, nombresEspecies2;
+    string nombreEspecie;
 
-    if( tipoEspecie == "" ) return;
+    nombresEspecies = extraerNombres("Animal");
+    nombresEspecies2 = extraerNombres("Vegetal");
 
-    cout << "\n\tIngresa el nombre de la especie: "; 
-    getline(cin, nombreEspecie);
+    // Fusionamos los dos vectores en uno solo
+    nombresEspecies.insert(nombresEspecies.end(), nombresEspecies2.begin(), nombresEspecies2.end());
 
-    wiki_especies(nombreEspecie, tipoEspecie);
+    nombreEspecie = busquedaBinaria(nombresEspecies);
+
+    if(nombreEspecie == "") return;
+
+    cout << "PRUEBA4";
+    wiki_especies(nombreEspecie);
 }
 
 void wiki_seleccionarBioma(){
