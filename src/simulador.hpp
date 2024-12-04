@@ -3,9 +3,9 @@
 
 #include "crudEspecies.hpp"
 #include "crudEventos.hpp"
+#include "crudPartidas.hpp"
 #include "utilidades.hpp"
 #include "Evento.hpp"
-#include "Partida.hpp"
 
 using namespace std;
 
@@ -136,8 +136,9 @@ void menuOpcionesSimulador(){
     }
 
     do {
+        almacenarPartida(partidaActual);
 
-        if( generarNumeroAleatorio(1, 5) == 1 ){ // Probabilidad de 0.20 de ocurrir un evento random
+        if( generarNumeroAleatorio(1, 4) == 1 ){ // Probabilidad de 0.25 de ocurrir un evento random
             generarEventoAleatorio();
             desplegarCuadros = true;
             continue;

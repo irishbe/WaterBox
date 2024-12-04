@@ -94,6 +94,14 @@ void generarEventoAleatorio() {
         }
 
         case MODIFICAR_FACTORES:
+
+            switch( generarNumeroAleatorio(1, 4) ){
+                case 1: partidaActual->bioma->nivelOxigeno = generarNumeroAleatorio(0,14); break;
+                case 2: partidaActual->bioma->nivelSalinidad = generarNumeroAleatorio(0,330); break;
+                case 3: partidaActual->bioma->nivelTemperatura = generarNumeroAleatorio(0,40); break;
+                case 4: partidaActual->bioma->nivelContaminacion = generarNumeroAleatorio(0,100); break;
+            }
+
             registrarEvento(MODIFICAR_FACTORES, partidaActual);
             evaluarCambioFactores();
             break;
