@@ -1,16 +1,8 @@
 #ifndef EVENTO_HPP
 #define EVENTO_HPP
 
-
 #include <random>
-#include "Especie.hpp"
-#include "Poblacion.hpp"
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include "Especie.hpp"
+#include "utilidades.hpp"
 #include "Partida.hpp"
 
 using namespace std;
@@ -295,7 +287,12 @@ void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* espec
             descripcion += " Los " + especie1->datosEspecie->nombreComun + " con ID's " + 
                             especie1->id + " y " + especie2->id + " se reproducieron, " +
                             "generando a la especie con ID " + especie3->id;
-            break;          
+            break;
+        case ENFERMEDAD:
+            descripcion += " La especie " + especie1->datosEspecie->nombreComun + " con ID " + 
+                           especie1->id + " se ha enfermado por los factores del bioma, perdiendo " + 
+                           to_string( 100 - especie1->vida) + " de vida";
+            break;       
         case CREAR_ESPECIE_ADMIN:
             descripcion += " Creaste una nueva especie " + especie1->datosEspecie->nombreComun;
             break;
@@ -359,32 +356,64 @@ int generarNumeroAleatorio(int min, int max) {
     return dis(gen);
 }
 
-/* Función para seleccionar una especie aleatoria de una población
-void generarEventoAleatorio() {
-    if (!listaPoblaciones) {
-        cout << "No hay poblaciones disponibles para generar eventos aleatorios." << endl;
-        return;
+Poblacion* poblacionAleatoria(){
+    if ( partidaActual->listaPoblaciones == nullptr ) return nullptr;
+
+    Poblacion* poblacionAleatoria = partidaActual->listaPoblaciones;
+    int contadorPoblaciones = 0;
+
+    while (poblacionAleatoria != nullptr) {
+        contadorPoblaciones++;
+        poblacionAleatoria = poblacionAleatoria->sgtePoblacion;
     }
 
-    int tipoEvento = generarNumeroAleatorio(0, 6); // Enum TipoEvento
-    Poblacion* poblacionSeleccionada = listaPoblaciones;
+    
+    poblacionAleatoria = partidaActual->listaPoblaciones;
 
     // Seleccionar una población aleatoria
-    int indicePoblacion = generarNumeroAleatorio(0, contarPoblaciones() - 1);
-    while (indicePoblacion-- > 0 && poblacionSeleccionada) {
-        poblacionSeleccionada = poblacionSeleccionada->sgtePoblacion;
+    int indicePoblacion = generarNumeroAleatorio(0, contadorPoblaciones - 1);
+
+    while (indicePoblacion-- > 0 && poblacionAleatoria) {
+        poblacionAleatoria = poblacionAleatoria->sgtePoblacion;
     }
 
-    Especie* especie1 = nullptr;
-    Especie* especie2 = nullptr;
-    string descripcionEvento;
+    return poblacionAleatoria;
+}
+
+Especie* especieAleatoria(Poblacion* poblacion){
+    if (poblacion == nullptr) return nullptr;
+
+    Especie* especieAleatoria = poblacion->listaEspecies;
+
+    // Seleccionar una especie aleatoria
+    int indiceEspecie = generarNumeroAleatorio(0, poblacion->contadorEspecies - 1);
+
+    while (indiceEspecie-- > 0 && especieAleatoria) {
+        especieAleatoria = especieAleatoria->sgteEspecie;
+    }
+
+    return especieAleatoria;
+}
+
+/*
+//Función para seleccionar una especie aleatoria de una población
+void generarEventoAleatorio() {
+    Evento* eventoAleatorio = new Evento();
 
     switch (tipoEvento) {
         case AGREGAR_ESPECIE:
-            agregarEspecie(); // Función existente para agregar especie
-            descripcionEvento = "Especie agregada aleatoriamente";
-            registrarEvento(AGREGAR_ESPECIE, descripcionEvento, nullptr, nullptr, poblacionSeleccionada->bioma);
-            cout << descripcionEvento << endl;
+            vector<string> nombresEspecies;
+            Especie* nuevaEspecie = new Especie();
+            int index;
+
+            if( generarNumeroAleatorio(1,2) == 1 ) ? nuevaEspecie->tipoEspecie = "Animal" : nuevaEspecie->tipoEspecie = "Vegetal";
+
+            nombresEspecies = extraerNombres(nuevaEspecie->tipoEspecie);
+            index = generarNumeroAleatorio(0, nombresEspecies.size() - 1);
+            nuevaEspecie->datosEspecie = extraerDatosEspecie( nuevaEspecie->tipoEspecie, nombresEspecies[index] );
+
+            agregarEspecieEnPoblacion(nuevaEspecie);
+            registrarEvento(AGREGAR_ESPECIE, partidaActual, nuevaEspecie);
             break;
 
         case ELIMINAR_ESPECIE:

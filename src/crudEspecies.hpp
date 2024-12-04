@@ -11,7 +11,7 @@ vector<string> obtenerEspecies(Poblacion *poblacion){
     Especie* especie = poblacion->listaEspecies;
 
     while ( especie != nullptr ) {
-        especies.push_back( especie->id + " - " + especie->datosEspecie->nombreComun );
+        especies.push_back( especie->id + " - " + especie->datosEspecie->nombreComun + " - " + to_string(especie->vida) + " HP");
 
         especie = especie->sgteEspecie;
     }
@@ -41,6 +41,40 @@ Especie* seleccionarEspecie(Poblacion *poblacionSelecionada){
     }
     
     return nullptr;
+}
+
+void verificarRangoFactores(Especie* &especie, Bioma* bioma) {
+    int vidaInicial = especie->vida;
+
+    // Verificar rango oxígeno
+    if (!(especie->datosEspecie->oxigenoMin <= bioma->nivelOxigeno && 
+          especie->datosEspecie->oxigenoMax >= bioma->nivelOxigeno)) {
+        
+        especie->vida -= 10;
+    }
+
+    // Verificar rango temperatura
+    if (!(especie->datosEspecie->temperaturaMin <= bioma->nivelTemperatura && 
+          especie->datosEspecie->temperaturaMax >= bioma->nivelTemperatura)) {
+        
+        especie->vida -= 10;
+    }
+
+    // Verificar rango salinidad
+    if (!(especie->datosEspecie->salinidadMin <= bioma->nivelSalinidad && 
+          especie->datosEspecie->salinidadMax >= bioma->nivelSalinidad)) {
+        
+        especie->vida -= 10;
+    }
+
+    // Verificar el % de contaminacion
+    int vidaContaminacion = (bioma->nivelContaminacion / 10) * 10;
+
+    especie->vida -= vidaContaminacion;
+
+    if( vidaInicial != especie->vida ){
+        registrarEvento(ENFERMEDAD, partidaActual, especie);
+    }
 }
 
 void agregarEspecie(){
@@ -85,6 +119,8 @@ void agregarEspecie(){
 
     agregarEspecieEnPoblacion(nuevaEspecie);
     registrarEvento(AGREGAR_ESPECIE, partidaActual, nuevaEspecie);
+
+    verificarRangoFactores(nuevaEspecie, partidaActual->bioma);
 }
 
 void enlistarEspecies(){

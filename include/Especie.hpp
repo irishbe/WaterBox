@@ -10,10 +10,6 @@ struct Especie {
     string tipoEspecie;
     DatosEspecie* datosEspecie;
     int vida = 100;
-    //time_t tiempoVida;
-    char genero;
-    string color;
-    string estadoSalud = "sano";
 
     Especie* sgteEspecie = nullptr;
     Especie* primerHijo = nullptr;

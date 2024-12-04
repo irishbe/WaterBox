@@ -593,7 +593,24 @@ vector<string> extraerNombres(string categoria, string nombreBioma) {
     json datosJson;
     vector<string> nombres;
 
-    // CASO 1: EXTRAER NOMBRES DE ESPECIES DE UN BIOMA ESPECIFICO
+    // CASO 1: EXTRAER TODOS LOS NOMBRES DE ESPECIES
+    if(categoria == "Especies"){
+        datosJson = leerArchivo(vegetalesJson);
+
+        for (const auto& especie : datosJson) {
+            nombres.push_back(especie["nombre comun"]);
+        }
+
+        datosJson = leerArchivo(animalesJson);
+
+        for (const auto& especie : datosJson) {
+            nombres.push_back(especie["nombre comun"]);
+        }
+
+        return nombres;
+    }
+
+    // CASO 2: EXTRAER NOMBRES DE ESPECIES DE UN BIOMA ESPECIFICO
     if (nombreBioma != "") {
         vector<json> archivos = {leerArchivo(animalesJson), leerArchivo(vegetalesJson)};
 
@@ -609,7 +626,7 @@ vector<string> extraerNombres(string categoria, string nombreBioma) {
     }
 
     if (categoria == "Bioma") {
-        // CASO 2: EXTRAER NOMBRES DE BIOMAS
+        // CASO 3: EXTRAER NOMBRES DE BIOMAS
         datosJson = leerArchivo(biomasJson);
 
         for (const auto& bioma : datosJson) {
@@ -619,7 +636,7 @@ vector<string> extraerNombres(string categoria, string nombreBioma) {
         return nombres;
 
     } else if (categoria == "Animal" || categoria == "Vegetal") {
-        // CASO 3 Y 4: EXTRAER NOMBRES DE ANIMALES O VEGETALES SIN FILTRO DE BIOMA
+        // CASO 4 y 5: EXTRAER NOMBRES DE ANIMALES O VEGETALES SIN FILTRO DE BIOMA
         datosJson = (categoria == "Animal") ? leerArchivo(animalesJson) : leerArchivo(vegetalesJson);
 
         for (const auto& especie : datosJson) {

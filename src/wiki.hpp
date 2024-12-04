@@ -89,14 +89,10 @@ void wiki_especies(string nombreEspecie, string tipoEspecie = ""){
 
 // MENÚ BUSCAR ESPECIE
 void wiki_buscar(){
-    vector<string> nombresEspecies, nombresEspecies2;
+    vector<string> nombresEspecies;
     string nombreEspecie;
 
-    nombresEspecies = extraerNombres("Animal");
-    nombresEspecies2 = extraerNombres("Vegetal");
-
-    // Fusionamos los dos vectores en uno solo
-    nombresEspecies.insert(nombresEspecies.end(), nombresEspecies2.begin(), nombresEspecies2.end());
+    nombresEspecies = extraerNombres("Especies");
 
     nombreEspecie = busquedaBinaria(nombresEspecies);
 

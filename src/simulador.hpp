@@ -20,6 +20,7 @@ void imprimirPoblaciones();
 void menuPartidasSimulador();
 void menuOpcionesSimulador();
 int mostrarMenuFactores();
+void evaluarCambioFactores();
 
 void crearPartida(){
     Partida* nuevaPartida = new Partida();
@@ -203,7 +204,7 @@ void modificarFactor() {
     vector<string> dibujos = {
         ASCIIOxigeno(),
         ASCIISalinidad(),
-        ASCIIModificarFactores(),
+        ASCIITemperatura(),
         ASCIIContaminacion()
     };
     
@@ -255,10 +256,27 @@ void modificarFactor() {
             case -1: break;
         }
 
-        registrarEvento(MODIFICAR_FACTORES, partidaActual);
         system("cls");
 
     } while (opcion != -1);
+
+    registrarEvento(MODIFICAR_FACTORES, partidaActual);
+    evaluarCambioFactores();
+}
+
+void evaluarCambioFactores(){
+    Poblacion* pActual = partidaActual->listaPoblaciones;
+
+    while( pActual != nullptr ){
+        Especie* eActual = pActual->listaEspecies;
+
+        while( eActual != nullptr ){
+            verificarRangoFactores(eActual, partidaActual->bioma);
+            eActual = eActual->sgteEspecie;
+        }
+
+        pActual = pActual->sgtePoblacion;
+    }
 }
 
 #endif // SIMULADOR_H
