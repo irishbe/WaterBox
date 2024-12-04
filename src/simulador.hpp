@@ -108,7 +108,6 @@ void menuPartidasSimulador(){
         switch (opcion){
             case 1: crearPartida(); break;
             case 2: seleccionarPartida(); break;
-            case -1: break;
         }
 
     }while(partidaActual == nullptr);
@@ -132,16 +131,15 @@ void menuOpcionesSimulador(){
     } else if( partidaActual->bioma->nombre == "Oceano profundo" ){
         fondoRGB(2, 4, 37);
     } else if( partidaActual->bioma->nombre == "Marismas salinas" ){
-
+        fondoRGB(74, 113, 131);
     }
 
     do {
         almacenarPartida(partidaActual);
 
-        if( generarNumeroAleatorio(1, 4) == 1 ){ // Probabilidad de 0.25 de ocurrir un evento random
+        if( generarNumeroAleatorio(1, 3) == 1 ){ // Probabilidad de 0.33 de ocurrir un evento random
             generarEventoAleatorio();
             desplegarCuadros = true;
-            continue;
         }
 
         if (desplegarCuadros){
@@ -163,7 +161,6 @@ void menuOpcionesSimulador(){
             case 4: eliminarEspecie(); desplegarCuadros = true; break;
             case 5: reproducirEspecies(); desplegarCuadros = true; break;
             case 6: imprimirArbolDePoblacion(); desplegarCuadros = false; break;
-            case -1: break;
         }
 
         system("cls");
@@ -242,7 +239,10 @@ void modificarFactores() {
                 if (oxigeno < oxigenoMin || oxigeno > oxigenoMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << oxigenoMin << " y " << oxigenoMax << " mg/L." << endl;
                     getch();
+                    break;
                 }
+
+                partidaActual->bioma->nivelOxigeno = oxigeno;
                 break;
             case 2: // Salinidad
                 salinidad = partidaActual->bioma->nivelSalinidad;
@@ -252,7 +252,10 @@ void modificarFactores() {
                 if (salinidad < salinidadMin || salinidad > salinidadMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << salinidadMin << " y " << salinidadMax << " ups." << endl;
                     getch();
+                    break;
                 }
+
+                partidaActual->bioma->nivelSalinidad = salinidad;
                 break;
             case 3: // Temperatura
                 temperatura = partidaActual->bioma->nivelTemperatura;
@@ -262,7 +265,10 @@ void modificarFactores() {
                 if (temperatura < temperaturaMin || temperatura > temperaturaMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << temperaturaMin << " y " << temperaturaMax << " °C." << endl;
                     getch();
+                    break;
                 }
+
+                partidaActual->bioma->nivelTemperatura = temperatura;
                 break;
             case 4: // Contaminación
                 contaminacion = partidaActual->bioma->nivelContaminacion;
@@ -272,9 +278,11 @@ void modificarFactores() {
                 if (contaminacion < contaminacionMin || contaminacion > contaminacionMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << contaminacionMin << " y " << contaminacionMax << " %." << endl;
                     getch();
+                    break;
                 }
+
+                partidaActual->bioma->nivelContaminacion = contaminacion;
                 break;
-            case -1: break;
         }
 
         system("cls");

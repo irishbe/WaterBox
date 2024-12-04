@@ -58,6 +58,7 @@ struct Evento {
 
 // Listas globales para la pila y las colas
 Evento* pilaEventos = nullptr;
+Evento* colaEventos = nullptr;
 
 // Archivo de eventos .txt
 const string ARCHIVO_CONTEO_GENERAL = "contadorEventosGeneral.txt";
@@ -79,6 +80,19 @@ Evento* pop(Evento*& pilaEventos) {
     return eventoEliminado;
 }
 
+// Función para agregar evento al final de la cola
+void enqueue(Evento*& colaEventos, Evento* nuevoEvento) {
+    if (!colaEventos) {
+        colaEventos = nuevoEvento;
+    } else {
+        Evento* temp = colaEventos;
+        while (temp->sgteEvento) {
+            temp = temp->sgteEvento;
+        }
+        temp->sgteEvento = nuevoEvento;
+    }
+}
+
 // Funcion para ordenar los eventos por fecha
 void ordenarEventosPorTiempo(vector<Evento>& eventos) {
     int n = eventos.size();
@@ -95,12 +109,20 @@ void ordenarEventosPorTiempo(vector<Evento>& eventos) {
 }
 
 // Juntar y extrer todos los eventos de la cola y la pila ordenados por tiempo
-vector<Evento> eventosPila(){
+vector<Evento> eventosPilaCola(){
     vector<Evento> eventos;
 
     // Agregar eventos de la pila al vector
     Evento* temp = pilaEventos;
 
+    while (temp != nullptr) {
+        eventos.push_back(*temp);
+        temp = temp->sgteEvento;
+    }
+
+    // Agregar eventos de la cola al vector
+    temp = colaEventos;
+    
     while (temp != nullptr) {
         eventos.push_back(*temp);
         temp = temp->sgteEvento;
@@ -303,7 +325,11 @@ void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* espec
     nuevoEvento->especie3 = especie3;
     nuevoEvento->sgteEvento = nullptr;
     
-    push(pilaEventos, nuevoEvento);
+    if( nuevoEvento->tipo == AGREGAR_ESPECIE || nuevoEvento->tipo == ELIMINAR_ESPECIE || nuevoEvento->tipo == MODIFICAR_FACTORES ){
+        push(pilaEventos, nuevoEvento);
+    }else{
+        enqueue(colaEventos, nuevoEvento);
+    }
 
     almacenarEventos(nuevoEvento);
 }
@@ -311,21 +337,15 @@ void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* espec
 // Función para mostrar los eventos registrados en pantalla
 // Función para mostrar los últimos 5 eventos registrados en pantalla
 void mostrarEventos() {
-    int x = 15, y = 26;
+    int x = 15, y = 33;
     
     moverCursor(x, y); 
     cout << "Historial de eventos: ";
 
-    // Obtener los eventos de la pila o registro
-    vector<Evento> eventos = eventosPila();
-
-    // Calcular el índice inicial para los últimos 10 eventos
-    int inicio = max(0, (int)eventos.size() - 10);
-
-    // Mostrar solo los últimos 5 eventos
-    for (int i = inicio; i < eventos.size(); i++) {
-        moverCursor(x+3, y + 1 + i - inicio); 
-        cout << eventos[i].descripcion << endl;
+    // Mostramos los eventos en el orden adecuado
+    vector<Evento> eventos = eventosPilaCola();
+    for(int i=0; i < eventos.size(); i++) {
+        moverCursor(x,y+2+i); cout << eventos[i].descripcion;
     }
 }
 

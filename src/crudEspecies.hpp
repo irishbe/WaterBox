@@ -268,9 +268,9 @@ void imprimirArbol(Especie* especie, int nivel = 0) {
     if (!especie) return;
 
     // Imprimir la especie con indentación adecuada según el nivel
-    cout << textoRGB(96,99,18) << "▓▓▓ " << endl;
-    for (int i = 0; i < nivel; ++i) cout << textoRGB(96,99,18)  << "▓▓▓";
-    cout << textoRGB(96,99,18) << "▓▓▓ " << textoRGB(96,99,18)  << especie->datosEspecie->nombreComun << " " << especie->id;
+    cout << textoRGB(96, 235, 101) << "▓▓▓ " << endl;
+    for (int i = 0; i < nivel; ++i) cout << textoRGB(96, 235, 101)  << "▓▓▓";
+    cout << textoRGB(96, 235, 101) << "▓▓▓ " << textoRGB(255,255,255)  << especie->datosEspecie->nombreComun << " " << especie->id;
 
     // Mostrar los padres si existen
     if (especie->padre || especie->madre) {

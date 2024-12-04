@@ -4,10 +4,11 @@
 
 // Función para generar un número aleatorio dentro de un rango
 int generarNumeroAleatorio(int min, int max) {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(min, max);
-    return dis(gen);
+    // Semilla para la generación de números aleatorios
+    std::srand(static_cast<unsigned>(std::time(0))); // Usar el tiempo actual como semilla
+
+    // Generar un número aleatorio entre [minimo, maximo]
+    return min + std::rand() % (max - min + 1);
 }
 
 Poblacion* poblacionAleatoria(){
@@ -52,7 +53,15 @@ Especie* especieAleatoria(Poblacion* poblacion){
 
 void generarEventoAleatorio() {
     Evento* eventoAleatorio = new Evento();
-    int tipoEvento = generarNumeroAleatorio(0, 4); // Enum TipoEvento
+    int num = generarNumeroAleatorio(1, 4); // Enum TipoEvento
+    TipoEvento tipoEvento;
+
+    switch (num){
+        case 1: tipoEvento = AGREGAR_ESPECIE; break;
+        case 2: tipoEvento = ELIMINAR_ESPECIE; break;
+        case 3: tipoEvento = MODIFICAR_FACTORES; break;
+        case 4: tipoEvento = REPRODUCCION; break;
+    }
 
     switch (tipoEvento) {
         case AGREGAR_ESPECIE: {
@@ -94,7 +103,6 @@ void generarEventoAleatorio() {
         }
 
         case MODIFICAR_FACTORES:
-
             switch( generarNumeroAleatorio(1, 4) ){
                 case 1: partidaActual->bioma->nivelOxigeno = generarNumeroAleatorio(0,14); break;
                 case 2: partidaActual->bioma->nivelSalinidad = generarNumeroAleatorio(0,330); break;
@@ -108,6 +116,7 @@ void generarEventoAleatorio() {
 
         case REPRODUCCION: {
             Poblacion* poblacionSeleccionada = poblacionAleatoria();
+
             if (!poblacionSeleccionada) {
                 return;
             }
@@ -120,52 +129,5 @@ void generarEventoAleatorio() {
             }
             break;
         }
-
-        /*
-        case DEPREDACION: {
-            Poblacion* poblacionSeleccionada = poblacionAleatoria();
-            if (!poblacionSeleccionada) {
-                return;
-            }
-
-            Especie* especie1 = especieAleatoria(poblacionSeleccionada);
-            Especie* especie2 = especieAleatoria(poblacionSeleccionada);
-
-            if (especie1 && especie2 && especie1 != especie2) {
-                registrarEvento(DEPREDACION, partidaActual, especie1, especie2);
-            }
-            break;
-        }
-
-        case ENFERMEDAD: {
-            Poblacion* poblacionSeleccionada = poblacionAleatoria();
-
-            if (!poblacionSeleccionada) {
-                return;
-            }
-
-            Especie* especie1 = especieAleatoria(poblacionSeleccionada);
-
-            if (especie1) {
-                registrarEvento(ENFERMEDAD, partidaActual, especie1);
-            }
-            break;
-        }
-
-        case CAZA: {
-            Poblacion* poblacionSeleccionada = poblacionAleatoria();
-            if (!poblacionSeleccionada) {
-                return;
-            }
-
-            Especie* especie1 = especieAleatoria(poblacionSeleccionada);
-            Especie* especie2 = especieAleatoria(poblacionSeleccionada);
-
-            if (especie1 && especie2 && especie1 != especie2) {
-                registrarEvento(CAZA, partidaActual, especie1, especie2);
-            }
-            break;
-        }
-        */
     }
 }

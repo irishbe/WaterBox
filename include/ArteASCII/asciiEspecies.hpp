@@ -12,21 +12,21 @@ string textoRGB(int r, int g, int b) {
 
 //Dibujos especies
 string pezPayaso(){
-        return  textoRGB(255,127,0) + " m  m\n" +
-                textoRGB(255,127,0) + "><" + 
-                textoRGB(255,255,255) + "(" + 
-                textoRGB(255,127,0) + "(" +
-                textoRGB(255,255,255) + "(" +
-                textoRGB(255,127,0) + "(" +
-                textoRGB(255,255,255) + "'>" +
+        return  textoRGB(255, 127, 0) + " m  m\n" +
+                textoRGB(255, 127, 0) + "><" + 
+                textoRGB(255, 255, 255) + "(" + 
+                textoRGB(255, 127, 0) + "(" +
+                textoRGB(255, 255, 255) + "(" +
+                textoRGB(255, 127, 0) + "(" +
+                textoRGB(255, 255, 255) + "'>" +
                 textoRGB(255,255,255);
 }
 
  string tiburonDeArrecife(){
-        return  textoRGB(9,12,187) + "\\_____)\\_____\n" +
-                textoRGB(9,12,187) + "/--_____||__`_>\n" + 
-                textoRGB(9,12,187) + "        )/     \n" + 
-                textoRGB(9,12,187) + "        '        " +
+        return  textoRGB(134, 141, 252) + "\\_____)\\_____\n" +
+                textoRGB(134, 141, 252) + "/--_____||__`_>\n" + 
+                textoRGB(134, 141, 252) + "        )/     \n" + 
+                textoRGB(134, 141, 252) + "        '        " +
                 textoRGB(255,255,255);
 }
 
@@ -206,7 +206,7 @@ string obtenerSprite(string nombreEspecie) {
     } else if( nombreEspecie == "Pez Vibora" ){
         sprite = pezVibora();
 
-    } else if( nombreEspecie == "Anguilla Europea" ){
+    } else if( nombreEspecie == "Anguila Europea" ){
         sprite = anguilaEuropea();
 
     } else if( nombreEspecie == "Cangrejo Azul" ){
@@ -233,7 +233,7 @@ string obtenerSprite(string nombreEspecie) {
     } else if( nombreEspecie == "Algas coralinas" ){
         sprite = algasCoralinas();
 
-    } else if( nombreEspecie == "Hiberna Marina" ){
+    } else if( nombreEspecie == "Hierba Marina" ){
         sprite = hierbaMarina();
 
     } else if( nombreEspecie == "Salicornia Europea" ){
