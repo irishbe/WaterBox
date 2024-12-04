@@ -196,7 +196,7 @@ string ASCIIReproduccion() {
     "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
 }
 
-string ASCIIReproduccion() {
+string ASCIIArbolEspecies() {
     return
     ".oOo.oOo.oOo.oOo.oOo.oOo."
     "\n:                       :"

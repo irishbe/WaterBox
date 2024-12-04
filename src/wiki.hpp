@@ -80,7 +80,7 @@ void wiki_especies(string nombreEspecie, string tipoEspecie = ""){
     moverCursor(100, y + 5); cout << "Inactividad reproductiva: " << datosEspecie->inactividadReproductiva << endl;
     moverCursor(100, y + 6); cout << "Temperatura: " << datosEspecie->temperaturaMin <<" C° - " << datosEspecie->temperaturaMax <<" C°" << endl;
     moverCursor(100, y + 7); cout << "Salinidad: " << datosEspecie->salinidadMin <<" ups - " << datosEspecie->salinidadMax <<" ups" << endl;
-    moverCursor(100, y + 8); cout << "Temperatura: " << datosEspecie->oxigenoMin <<" mg/L - " << datosEspecie->oxigenoMax <<" mg/L" << endl;
+    moverCursor(100, y + 8); cout << "Oxígeno: " << datosEspecie->oxigenoMin <<" mg/L - " << datosEspecie->oxigenoMax <<" mg/L" << endl;
 
     getch();
     fondoRGB(7, 25, 82);
