@@ -139,140 +139,129 @@ void enlistarEspecies(){
     
 }
 
-void eliminarEspecie() {
-    string idEspecie;
-    Especie *listaEspecies = nullptr, *especieActual = nullptr, *especieAnterior = nullptr, *especieEncontrada = nullptr;
-
-    if ( listaEspecies == nullptr ){
-        cout << "\nNo hay especies en la lista..." << endl << endl;
+void procesoEliminarEspecie(Poblacion* poblacion, Especie* especieSeleccionada) {
+    if (poblacion == nullptr || especieSeleccionada == nullptr) {
+        // No se imprimen mensajes, solo se retorna
         return;
     }
 
-    especieActual = listaEspecies;
+    // Referencias para la lista de especies
+    Especie* especieActual = poblacion->listaEspecies;
+    Especie* especieAnterior = nullptr;
 
-    // IMPRESION DE LAS ESPECIES DISPONIBLES EN LA POBLACION
-    system("cls");
-    cout << "----------- LISTA DE ESPECIES DE LA POBLACION  -----------" << endl << endl;
+    // Buscar y eliminar la especie seleccionada
+    while (especieActual != nullptr) {
+        if (especieActual == especieSeleccionada) {
+            if (especieAnterior == nullptr) {
+                // Eliminar la cabeza de la lista
+                poblacion->listaEspecies = especieActual->sgteEspecie;
+            } else {
+                // Ajustar los punteros para eliminar la especie
+                especieAnterior->sgteEspecie = especieActual->sgteEspecie;
+            }
 
-    while ( especieActual != nullptr ) {
-        cout << especieActual->id << ". " << especieActual->datosEspecie->nombreComun << endl;
-        especieActual = especieActual->sgteEspecie;
-    }
+            // Liberar memoria de la especie y sus datos
+            if (especieActual->datosEspecie) {
+                delete especieActual->datosEspecie;
+            }
+            delete especieActual;
 
-    cout << endl;
-    
-
-    // BUSCANDO LA ESPECIE EN LA LISTA DE ESPECIES DE LA POBLACION
-    cout << "\nIngrese el ID de la especie que desea ver sus datos: "; getline(cin, idEspecie);
-
-    especieActual = listaEspecies;
-
-    while ( especieActual != nullptr ) {
-
-        if (especieActual->id == idEspecie) {
-            especieEncontrada = especieActual;  // Encontrar la especie
-            break;
+            // Registrar el evento de eliminación (sin imprimir)
+            registrarEvento(ELIMINAR_ESPECIE, partidaActual, especieSeleccionada);
+            return;
         }
 
         especieAnterior = especieActual;
         especieActual = especieActual->sgteEspecie;
     }
-
-    if ( especieEncontrada == nullptr ) {
-        cout << "\nEspecie con ID (" << idEspecie << ") no encontrada..." << endl;
-        return;
-    }
-
-    // VERIFICA SI SE BORRA LA CABEZA
-    if ( especieAnterior == nullptr ) {
-        listaEspecies = especieActual->sgteEspecie;
-
-    } else{
-        especieAnterior->sgteEspecie = especieActual->sgteEspecie;
-        
-        delete especieActual->datosEspecie;
-        delete especieActual;
-
-        // ELIMINAR POBLACION SI NO HAY ESPECIES
-        Poblacion* poblacionActual = partidaActual->listaPoblaciones;
-
-        while (poblacionActual != nullptr) {
-            if (poblacionActual->listaEspecies == nullptr) {
-
-                // ELIMINAR POBLACION VACIA
-                if (poblacionActual->antePoblacion != nullptr) {
-                    poblacionActual->antePoblacion->sgtePoblacion = poblacionActual->sgtePoblacion;
-                }
-
-                if (poblacionActual->sgtePoblacion != nullptr) {
-                    poblacionActual->sgtePoblacion->antePoblacion = poblacionActual->antePoblacion;
-                }
-
-                delete poblacionActual;
-                break;
-            }
-            poblacionActual = poblacionActual->sgtePoblacion;
-        }
-    }
-
-
-    registrarEvento(ELIMINAR_ESPECIE, partidaActual, especieEncontrada);
 }
 
-void reproducirEspecies(){
-    // Escogiendo a las 2 especies de una misma poblacion
+void eliminarEspecie() {
+    // Seleccionar la población de la que se eliminará una especie
     Poblacion* poblacionSeleccionada = seleccionarPoblacion();
-    Especie *especiePadre = nullptr, *especieMadre = nullptr, *especieHija = new Especie();
-
-    if ( poblacionSeleccionada == nullptr ) {
+    if (poblacionSeleccionada == nullptr) {
         return;
     }
 
-    especiePadre = seleccionarEspecie(poblacionSeleccionada);
-
-    if( especiePadre == nullptr ){
+    // Seleccionar la especie a eliminar
+    Especie* especieSeleccionada = seleccionarEspecie(poblacionSeleccionada);
+    if (especieSeleccionada == nullptr) {
         return;
     }
 
-    especieMadre = seleccionarEspecie(poblacionSeleccionada);
+    // Llamar a la función de proceso para eliminar la especie seleccionada
+    procesoEliminarEspecie(poblacionSeleccionada, especieSeleccionada);
+}
 
-    if( especieMadre == nullptr ){
-        return;
-    
-    } else if( especieMadre == especiePadre ){
-        cout << "La especie padre no puede ser la misma que la madre..." << endl;
-        getch();
-        return;
-    
-    } else if( especieMadre->tipoEspecie != especiePadre->tipoEspecie ){
-        cout << "No se pueden reproducir especies de diferentes tipos..." << endl;
-        getch();
+void procesoReproduccion(Especie* especiePadre, Especie* especieMadre, Poblacion* poblacionSeleccionada) {
+    if (!especiePadre || !especieMadre || !poblacionSeleccionada) {
+        cout << "Datos incompletos para realizar la reproducción." << endl;
         return;
     }
 
-    // Especificando sus relaciones familiares
+    // Crear la nueva especie hija
+    Especie* especieHija = new Especie();
     especieHija->padre = especiePadre;
     especieHija->madre = especieMadre;
-    especieHija->tipoEspecie = especiePadre->tipoEspecie;
-    especieHija->datosEspecie = especiePadre->datosEspecie;
+    especieHija->tipoEspecie = especiePadre->tipoEspecie; // Asumimos que son del mismo tipo
+    especieHija->datosEspecie = new DatosEspecie(*especiePadre->datosEspecie); // Copiar características
 
-    if ( especiePadre->primerHijo == nullptr ) {
+    // Añadir la hija a la lista de hijos del padre
+    if (!especiePadre->primerHijo) {
         especiePadre->primerHijo = especieHija;
-    
     } else {
-        // Navegar hasta el último hijo y añadir el nuevo
         Especie* hijoActual = especiePadre->primerHijo;
-        
-        while ( hijoActual->sgteHijo ) {
+        while (hijoActual->sgteHijo) {
             hijoActual = hijoActual->sgteHijo;
         }
-
         hijoActual->sgteHijo = especieHija;
     }
 
-    // Agregando la especie al simulador
+    // Añadir la nueva especie hija a la población
     agregarEspecieEnPoblacion(especieHija);
+
+    // Registrar el evento
     registrarEvento(REPRODUCCION, partidaActual, especiePadre, especieMadre, especieHija);
+
+    cout << "Reproducción exitosa. La nueva especie ha sido creada." << endl;
+}
+
+void reproducirEspecies() {
+    // Escogiendo la población
+    Poblacion* poblacionSeleccionada = seleccionarPoblacion();
+    if (!poblacionSeleccionada) {
+        cout << "No se seleccionó ninguna población." << endl;
+        return;
+    }
+
+    // Escogiendo las especies padre y madre
+    Especie* especiePadre = seleccionarEspecie(poblacionSeleccionada);
+    if (!especiePadre) {
+        cout << "No se seleccionó ninguna especie padre." << endl;
+        return;
+    }
+
+    Especie* especieMadre = seleccionarEspecie(poblacionSeleccionada);
+    if (!especieMadre) {
+        cout << "No se seleccionó ninguna especie madre." << endl;
+        return;
+    }
+
+    // Validaciones
+    if (especiePadre == especieMadre) {
+        cout << "La especie padre no puede ser la misma que la madre." << endl;
+        getch();
+        return;
+    }
+
+    if (especiePadre->tipoEspecie != especieMadre->tipoEspecie) {
+        cout << "No se pueden reproducir especies de diferentes tipos." << endl;
+        getch();
+        return;
+    }
+
+    // Realizar la reproducción
+    procesoReproduccion(especiePadre, especieMadre, poblacionSeleccionada);
 }
 
 void imprimirArbol(Especie* especie, int nivel = 0) {

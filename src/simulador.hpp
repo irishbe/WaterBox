@@ -49,8 +49,8 @@ void crearPartida(){
     system("cls");
 
     switch(opcion){
-        case 1: nuevaPartida->bioma = extraerBioma("Arrecifes de Coral"); fondoRGB(0, 109, 198); break;
-        case 2: nuevaPartida->bioma = extraerBioma("Oceano profundo"); fondoRGB(2, 4, 37); break;
+        case 1: nuevaPartida->bioma = extraerBioma("Arrecifes de Coral"); break;
+        case 2: nuevaPartida->bioma = extraerBioma("Oceano profundo"); break;
         case 3: nuevaPartida->bioma = extraerBioma("Marismas salinas"); break;
         case -1: break;
     }
@@ -123,9 +123,18 @@ void menuOpcionesSimulador(){
         ASCIIArbolPoblacion()
     };
 
+    if( partidaActual->bioma->nombre == "Arrecifes de Coral" ) {
+        fondoRGB(0, 109, 198);
+    } else if( partidaActual->bioma->nombre == "Oceano profundo" ){
+        fondoRGB(2, 4, 37);
+    } else if( partidaActual->bioma->nombre == "Marismas salinas" ){
+
+    }
+
     do {
 
         if (desplegarCuadros){
+            imprimirMarcoSimulador();
             mostrarTodosCuadros();
             imprimirPoblaciones();
             mostrarEventos();
@@ -155,8 +164,10 @@ void menuOpcionesSimulador(){
 }
 
 void mostrarTodosCuadros() {
-    cout << "Partida: " << partidaActual->nombreJugador << endl;
-    cout << "Bioma: " << partidaActual->bioma->nombre << endl << endl;
+    int x = 15, y = 3;
+
+    moverCursor(x,y); cout << "Partida: " << partidaActual->nombreJugador;
+    moverCursor(x+30,y);cout << "Bioma: " << partidaActual->bioma->nombre;
 
     // Cálculo de los porcentajes según los valores ingresados
     int porcentajeOxigeno = (partidaActual->bioma->nivelOxigeno - oxigenoMin) * 100 / (oxigenoMax - oxigenoMin);
@@ -165,17 +176,17 @@ void mostrarTodosCuadros() {
     int porcentajeContaminacion = (partidaActual->bioma->nivelTemperatura - contaminacionMin) * 100 / (contaminacionMax - contaminacionMin);
 
     // Mostrar barras de progreso
-    imprimirBarra("Oxígeno", porcentajeOxigeno); cout << "\t";
-    imprimirBarra("Salinidad", porcentajeSalinidad); cout << "\t";
-    imprimirBarra("Temperatura", porcentajeTemperatura); cout << "\t";
-    imprimirBarra("Contaminación", porcentajeContaminacion); cout << endl;
+    moverCursor(x,y+2); imprimirBarra("Oxígeno", porcentajeOxigeno);
+    moverCursor(x+30,y+2); imprimirBarra("Salinidad", porcentajeSalinidad);
+    moverCursor(x+60,y+2); imprimirBarra("Temperatura", porcentajeTemperatura); cout << "\t";
+    moverCursor(x+90,y+2); imprimirBarra("Contaminación", porcentajeContaminacion); cout << endl;
 }
 
 void imprimirPoblaciones() {
     Poblacion* poblacionActual = partidaActual->listaPoblaciones;
     
     // Variables locales para las posiciones
-    int x = 15, y = 5;  // Posición inicial en Y
+    int x = 15, y = 10;  // Posición inicial en Y
     const int anchoCuadro = 30; // Ancho del cuadro
     const int limiteX = 130;    // Límite máximo de la pantalla en X
     const int espacioEntreCuadros = 3; // Espacio adicional entre cuadros

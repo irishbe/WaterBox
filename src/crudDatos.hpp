@@ -5,6 +5,7 @@
 #include <fstream>
 #include <cctype>
 #include "DatosEspecie.hpp"
+#include "estadisticas.hpp"
 #include "Bioma.hpp"
 #include "Evento.hpp"
 #include "utilidades.hpp"
@@ -38,53 +39,40 @@ Bioma* extraerDatosBioma();
 vector<string> extraerNombres(string categoria, string nombreBioma = "");
 
 void iniciarCrudJson() {
-    int opcion;
+    string opcion = "";
+    vector<string> opciones = {
+        "1. Crear datos de una categoria",
+        "2. Modificar datos de una categoria",
+        "3. Eliminar datos de una categoria",
+        "4. Extraer datos de una categoria",
+        "5. Ver estadisticas",
+        "6. SALIR"
+    };
 
     do {
-        system("cls");
-        menu();
-        cin >> opcion;
+        opcion = seleccionarConFlechas(opciones, tituloAdmin(), "SELECCIONE UNA OPCION");
 
-        switch (opcion) {
-            case 1:
-                crearDatosCategoria();
-                system("pause");
-                break;
-            case 2:
-                modificarDatosCategoria();
-                system("pause");
-                break;
-            case 3:
-                eliminarDatosCategoria();
-                system("pause");
-                break;
-            case 4:
-                extraerDatosCategoria();
-                system("pause");
-                break;
-            case 0:
-                break;
-            default:
-                cout << "Saliendo..." << endl;
-                system("pause");
-                break;
+        if(opcion == "1. Crear datos de una categoria" ) {
+            crearDatosCategoria();
+
+        } else if(opcion == "2. Modificar datos de una categoria"){
+            modificarDatosCategoria();
+
+        } else if(opcion == "3. Eliminar datos de una categoria"){
+            eliminarDatosCategoria();
+
+        } else if(opcion == "4. Extraer datos de una categoria"){
+            extraerDatosCategoria();
+
+        } else if(opcion == "5. Ver estadisticas"){
+            imprimirEstadisticas();
         }
-
+        
+        getch();
         system("cls");
 
-    } while (opcion != 0);
+    } while (opcion != "");
 
-}
-
-void menu() {
-    cout << "MENU DE ARCHIVOS" << endl << endl;
-    cout << "1. Crear datos de una categoria" << endl;
-    cout << "2. Modificar datos de una categoria" << endl;
-    cout << "3. Eliminar datos de una categoria" << endl;
-    cout << "4. Extraer datos de una categoria" << endl;
-    cout << "0. SALIR" << endl;
-    
-    cout << "\nElige tu opcion--> ";
 }
 
 //*******************************************************************************************************

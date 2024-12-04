@@ -15,7 +15,7 @@ void wiki_lista();
 void iniciarWiki() {
     int opcion = -1;
     vector<string> dibujos{
-        ASCIIBuscarPorNombre(),
+        ASCIIBuscadorEspecies(),
         ASCIIBuscarPorBioma(),
         ASCIIBuscarPorFamilia(),
     };

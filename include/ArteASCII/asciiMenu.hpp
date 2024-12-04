@@ -52,6 +52,21 @@ string ASCIIWikiWater() {
 
 // ------------------------------------------- MENU WIKIWATER -------------------------------------------
 
+string ASCIIBuscadorEspecies() {
+    return
+    ".oOo.oOo.oOo.oOo.oOo.oOo."
+    "\n:                       :"
+    "\n: BUSCADOR DE        °  :"
+    "\n:   ESPECIES      °     :"
+    "\n:            .-\"\"-.  o  :"
+    "\n:   ________/   \\\\ \\  ° :"
+    "\n:  |_|______ >><(((('>  :"
+    "\n:           \\   // /    :"
+    "\n:            \'-..-\'     :"
+    "\n:                       :"
+    "\n.oOo.oOo.oOo.oOo.oOo.oOo.";
+}
+
 string ASCIIBuscarPorNombre() {
     return
     ".oOo.oOo.oOo.oOo.oOo.oOo."

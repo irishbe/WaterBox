@@ -309,180 +309,24 @@ void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* espec
 }
 
 // Función para mostrar los eventos registrados en pantalla
+// Función para mostrar los últimos 5 eventos registrados en pantalla
 void mostrarEventos() {
-    cout << "\nHistorial de eventos :" << endl << endl;
+    int x = 15, y = 25;
+    
+    moverCursor(x, y); 
+    cout << "Historial de eventos: ";
 
-    // Mostramos los eventos en el orden adecuado
+    // Obtener los eventos de la pila o registro
     vector<Evento> eventos = eventosPila();
-    for(int i=0; i < eventos.size(); i++) {
+
+    // Calcular el índice inicial para los últimos 10 eventos
+    int inicio = max(0, (int)eventos.size() - 10);
+
+    // Mostrar solo los últimos 5 eventos
+    for (int i = inicio; i < eventos.size(); i++) {
+        moverCursor(x+3, y + 1 + i - inicio); 
         cout << eventos[i].descripcion << endl;
     }
 }
-
-//FUNCION AÑADIDA KEVIN
-
-
-// Función para generar un número aleatorio dentro de un rango
-int generarNumeroAleatorio(int min, int max) {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(min, max);
-    return dis(gen);
-}
-
-Poblacion* poblacionAleatoria(){
-    if ( partidaActual->listaPoblaciones == nullptr ) return nullptr;
-
-    Poblacion* poblacionAleatoria = partidaActual->listaPoblaciones;
-    int contadorPoblaciones = 0;
-
-    while (poblacionAleatoria != nullptr) {
-        contadorPoblaciones++;
-        poblacionAleatoria = poblacionAleatoria->sgtePoblacion;
-    }
-
-    
-    poblacionAleatoria = partidaActual->listaPoblaciones;
-
-    // Seleccionar una población aleatoria
-    int indicePoblacion = generarNumeroAleatorio(0, contadorPoblaciones - 1);
-
-    while (indicePoblacion-- > 0 && poblacionAleatoria) {
-        poblacionAleatoria = poblacionAleatoria->sgtePoblacion;
-    }
-
-    return poblacionAleatoria;
-}
-
-Especie* especieAleatoria(Poblacion* poblacion){
-    if (poblacion == nullptr) return nullptr;
-
-    Especie* especieAleatoria = poblacion->listaEspecies;
-
-    // Seleccionar una especie aleatoria
-    int indiceEspecie = generarNumeroAleatorio(0, poblacion->contadorEspecies - 1);
-
-    while (indiceEspecie-- > 0 && especieAleatoria) {
-        especieAleatoria = especieAleatoria->sgteEspecie;
-    }
-
-    return especieAleatoria;
-}
-
-/*
-//Función para seleccionar una especie aleatoria de una población
-void generarEventoAleatorio() {
-    Evento* eventoAleatorio = new Evento();
-
-    switch (tipoEvento) {
-        case AGREGAR_ESPECIE:
-            vector<string> nombresEspecies;
-            Especie* nuevaEspecie = new Especie();
-            int index;
-
-            if( generarNumeroAleatorio(1,2) == 1 ) ? nuevaEspecie->tipoEspecie = "Animal" : nuevaEspecie->tipoEspecie = "Vegetal";
-
-            nombresEspecies = extraerNombres(nuevaEspecie->tipoEspecie);
-            index = generarNumeroAleatorio(0, nombresEspecies.size() - 1);
-            nuevaEspecie->datosEspecie = extraerDatosEspecie( nuevaEspecie->tipoEspecie, nombresEspecies[index] );
-
-            agregarEspecieEnPoblacion(nuevaEspecie);
-            registrarEvento(AGREGAR_ESPECIE, partidaActual, nuevaEspecie);
-            break;
-
-        case ELIMINAR_ESPECIE:
-            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            if (especie1) {
-                descripcionEvento = "Especie eliminada aleatoriamente: " + especie1->datosEspecie->nombreComun;
-                eliminarEspecie(); // Función existente para eliminar especie
-                registrarEvento(ELIMINAR_ESPECIE, descripcionEvento, especie1, nullptr, poblacionSeleccionada->bioma);
-                cout << descripcionEvento << endl;
-            }
-            break;
-
-        case MODIFICAR_FACTORES:
-            {
-                int factor = generarNumeroAleatorio(0, 3);
-                float nuevoValor;
-
-                switch (factor) {
-                    case 0: // Salinidad
-                        nuevoValor = generarNumeroAleatorio(salinidadMin, salinidadMax);
-                        partidaActual.bioma->nivelSalinidad = nuevoValor;
-                        descripcionEvento = "Modificando salinidad a nivel " + to_string(nuevoValor) + " g/L.";
-                        registrarEvento(MODIFICAR_FACTORES, descripcionEvento, nullptr, nullptr, partidaActual.bioma);
-                        break;
-                    case 1: // Oxígeno
-                        nuevoValor = generarNumeroAleatorio(oxigenoMin, oxigenoMax);
-                        partidaActual.bioma->nivelOxigeno = nuevoValor;
-                        descripcionEvento = "Modificando oxígeno a nivel " + to_string(nuevoValor) + " mg/L.";
-                        registrarEvento(MODIFICAR_FACTORES, descripcionEvento, nullptr, nullptr, partidaActual.bioma);
-                        break;
-                    case 2: // Temperatura
-                        nuevoValor = generarNumeroAleatorio(temperaturaMin, temperaturaMax);
-                        partidaActual.bioma->nivelTemperatura = nuevoValor;
-                        descripcionEvento = "Modificando temperatura a nivel " + to_string(nuevoValor) + " °C.";
-                        registrarEvento(MODIFICAR_FACTORES, descripcionEvento, nullptr, nullptr, partidaActual.bioma);
-                        break;
-                }
-                cout << descripcionEvento << endl;
-            }
-            break;
-
-        case REPRODUCCION:
-            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            especie2 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            if (especie1 && especie2 && especie1 != especie2) {
-                descripcionEvento = "Reproducción exitosa entre: " + especie1->datosEspecie->nombreComun +
-                                    " (hembra) y " + especie2->datosEspecie->nombreComun + " (macho).";
-                registrarEvento(REPRODUCCION, descripcionEvento, especie1, especie2, poblacionSeleccionada->bioma);
-                cout << descripcionEvento << endl;
-            }
-            break;
-
-        case DEPREDACION:
-            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            especie2 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            if (especie1 && especie2 && especie1 != especie2) {
-                descripcionEvento = "El depredador " + especie1->datosEspecie->nombreComun +
-                                    " ha atacado a " + especie2->datosEspecie->nombreComun;
-                registrarEvento(DEPREDACION, descripcionEvento, especie1, especie2, poblacionSeleccionada->bioma);
-                cout << descripcionEvento << endl;
-            }
-            break;
-
-        case CAZA:
-            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            especie2 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            if (especie1 && especie2 && especie1 != especie2) {
-                descripcionEvento = "La especie " + especie1->datosEspecie->nombreComun +
-                                    " ha sido cazada por " + especie2->datosEspecie->nombreComun;
-                registrarEvento(CAZA, descripcionEvento, especie1, especie2, poblacionSeleccionada->bioma);
-                cout << descripcionEvento << endl;
-            }
-            break;
-
-        case ENFERMEDAD:
-            especie1 = seleccionarEspecieAleatoria(poblacionSeleccionada);
-            if (especie1) {
-                bool fueraRango = especie1->datosEspecie->salinidadMax < partidaActual.bioma->nivelSalinidad ||
-                                  especie1->datosEspecie->oxigenoMin > partidaActual.bioma->nivelOxigeno ||
-                                  especie1->datosEspecie->temperaturaMax < partidaActual.bioma->nivelTemperatura;
-
-                if (fueraRango) {
-                    descripcionEvento = "La especie " + especie1->datosEspecie->nombreComun +
-                                        " ha muerto debido a factores ambientales.";
-                } else {
-                    descripcionEvento = "La especie " + especie1->datosEspecie->nombreComun +
-                                        " no ha sido afectada por factores ambientales.";
-                }
-                registrarEvento(ENFERMEDAD, descripcionEvento, especie1, nullptr, poblacionSeleccionada->bioma);
-                cout << descripcionEvento << endl;
-            }
-            break;
-    }
-}
-*/
-
 
 #endif // EVENTO_HPP
