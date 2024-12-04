@@ -320,4 +320,19 @@ void imprimirArbolDePoblacion() {
     getch();
 }
 
+void evaluarCambioFactores(){
+    Poblacion* pActual = partidaActual->listaPoblaciones;
+
+    while( pActual != nullptr ){
+        Especie* eActual = pActual->listaEspecies;
+
+        while( eActual != nullptr ){
+            verificarRangoFactores(eActual, partidaActual->bioma);
+            eActual = eActual->sgteEspecie;
+        }
+
+        pActual = pActual->sgtePoblacion;
+    }
+}
+
 #endif // CRUD_ESPECIES_H

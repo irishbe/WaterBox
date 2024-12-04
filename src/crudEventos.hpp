@@ -52,7 +52,7 @@ Especie* especieAleatoria(Poblacion* poblacion){
 
 void generarEventoAleatorio() {
     Evento* eventoAleatorio = new Evento();
-    int tipoEvento = generarNumeroAleatorio(0, 6); // Enum TipoEvento
+    int tipoEvento = generarNumeroAleatorio(0, 4); // Enum TipoEvento
 
     switch (tipoEvento) {
         case AGREGAR_ESPECIE: {
@@ -113,6 +113,7 @@ void generarEventoAleatorio() {
             break;
         }
 
+        /*
         case DEPREDACION: {
             Poblacion* poblacionSeleccionada = poblacionAleatoria();
             if (!poblacionSeleccionada) {
@@ -130,17 +131,15 @@ void generarEventoAleatorio() {
 
         case ENFERMEDAD: {
             Poblacion* poblacionSeleccionada = poblacionAleatoria();
+
             if (!poblacionSeleccionada) {
                 return;
             }
 
             Especie* especie1 = especieAleatoria(poblacionSeleccionada);
-            if (especie1) {
-                bool fueraRango = especie1->datosEspecie->salinidadMax < partidaActual->bioma->nivelSalinidad ||
-                                  especie1->datosEspecie->oxigenoMin > partidaActual->bioma->nivelOxigeno ||
-                                  especie1->datosEspecie->temperaturaMax < partidaActual->bioma->nivelTemperatura;
 
-                registrarEvento(ENFERMEDAD, partidaActual, especie1, nullptr, fueraRango ? "Muere por factores ambientales" : "No afectada");
+            if (especie1) {
+                registrarEvento(ENFERMEDAD, partidaActual, especie1);
             }
             break;
         }
@@ -159,5 +158,6 @@ void generarEventoAleatorio() {
             }
             break;
         }
+        */
     }
 }

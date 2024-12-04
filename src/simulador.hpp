@@ -2,6 +2,7 @@
 #define SIMULADOR_HPP
 
 #include "crudEspecies.hpp"
+#include "crudEventos.hpp"
 #include "utilidades.hpp"
 #include "Evento.hpp"
 #include "Partida.hpp"
@@ -46,6 +47,9 @@ void crearPartida(){
     };
         
     opcion = seleccionarConDibujos(dibujos, tituloBiomas(), "SELECCIONE UN BIOMA");
+
+    if(opcion == -1 ) return;
+
     system("cls");
 
     switch(opcion){
@@ -133,6 +137,12 @@ void menuOpcionesSimulador(){
 
     do {
 
+        if( generarNumeroAleatorio(1, 5) == 1 ){ // Probabilidad de 0.20 de ocurrir un evento random
+            generarEventoAleatorio();
+            desplegarCuadros = true;
+            continue;
+        }
+
         if (desplegarCuadros){
             imprimirMarcoSimulador();
             mostrarTodosCuadros();
@@ -152,7 +162,6 @@ void menuOpcionesSimulador(){
             case 4: eliminarEspecie(); desplegarCuadros = true; break;
             case 5: reproducirEspecies(); desplegarCuadros = true; break;
             case 6: imprimirArbolDePoblacion(); desplegarCuadros = false; break;
-            //generarEventoAleatorio(); 
             case -1: break;
         }
 
@@ -273,21 +282,6 @@ void modificarFactores() {
 
     registrarEvento(MODIFICAR_FACTORES, partidaActual);
     evaluarCambioFactores();
-}
-
-void evaluarCambioFactores(){
-    Poblacion* pActual = partidaActual->listaPoblaciones;
-
-    while( pActual != nullptr ){
-        Especie* eActual = pActual->listaEspecies;
-
-        while( eActual != nullptr ){
-            verificarRangoFactores(eActual, partidaActual->bioma);
-            eActual = eActual->sgteEspecie;
-        }
-
-        pActual = pActual->sgtePoblacion;
-    }
 }
 
 #endif // SIMULADOR_H
