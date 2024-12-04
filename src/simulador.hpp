@@ -22,35 +22,35 @@ void menuOpcionesSimulador();
 int mostrarMenuFactores();
 
 void crearPartida(){
-    Partida nuevaPartida;
+    Partida* nuevaPartida = new Partida();
 
     int x = 10, y = 3, opcion = -1;
     y += imprimirTexto( tituloWaterBox(), x, y, true) + 3;
 
     fflush(stdin);
     moverCursor(x, y); cout << "INGRESE SU NOMBRE DE JUGADOR:";
-    moverCursor(x, y + 1); getline(cin, nuevaPartida.nombreJugador);
+    moverCursor(x, y + 1); getline(cin, nuevaPartida->nombreJugador);
     
-    nuevaPartida.tiempoInicio = getTiempoActual();
-    nuevaPartida.tiempoTranscurrido = calcularTiempoTranscurrido( nuevaPartida.tiempoInicio );
-    nuevaPartida.archivoInfo = "infoPartida[" + nuevaPartida.nombreJugador + "].txt";
-    nuevaPartida.archivoEventos = "eventosPartida[" + nuevaPartida.nombreJugador + "].txt";
-    nuevaPartida.archivoConteoEventos = "conteoEventosPartida[" + nuevaPartida.nombreJugador + "].txt";
+    nuevaPartida->tiempoInicio = getTiempoActual();
+    nuevaPartida->tiempoTranscurrido = calcularTiempoTranscurrido( nuevaPartida->tiempoInicio );
+    nuevaPartida->archivoInfo = "infoPartida[" + nuevaPartida->nombreJugador + "].txt";
+    nuevaPartida->archivoEventos = "eventosPartida[" + nuevaPartida->nombreJugador + "].txt";
+    nuevaPartida->archivoConteoEventos = "conteoEventosPartida[" + nuevaPartida->nombreJugador + "].txt";
 
     // Seleccionando el bioma
     vector<string> dibujos = {
         ASCIIBiomaArrecifeCoral(),
         ASCIIBiomaOceanoProfundo(),
-        "Marismas salinas"
+        ASCIIBiomaMarismasSalinas()
     };
         
     opcion = seleccionarConDibujos(dibujos, tituloBiomas(), "SELECCIONE UN BIOMA");
     system("cls");
 
     switch(opcion){
-        case 1: nuevaPartida.bioma = extraerBioma("Arrecifes de Coral"); fondoRGB(0, 109, 198); break;
-        case 2: nuevaPartida.bioma = extraerBioma("Oceano profundo"); fondoRGB(2, 4, 37); break;
-        case 3: nuevaPartida.bioma = extraerBioma("Marismas salinas"); break;
+        case 1: nuevaPartida->bioma = extraerBioma("Arrecifes de Coral"); fondoRGB(0, 109, 198); break;
+        case 2: nuevaPartida->bioma = extraerBioma("Oceano profundo"); fondoRGB(2, 4, 37); break;
+        case 3: nuevaPartida->bioma = extraerBioma("Marismas salinas"); break;
         case -1: break;
     }
 
@@ -58,10 +58,19 @@ void crearPartida(){
     partidaActual = nuevaPartida;
 }
 
-void seleccionarPartida(){
-    string opcion = seleccionarConFlechas( obtenerPartidas(), tituloWaterBox(), "SELECCIONE UNA PARTIDA");
+void seleccionarPartida() {
+    vector<string> partidas = obtenerPartidas();
 
-    if( opcion.empty() ){
+    // Validar si hay partidas antes de proceder
+    if (partidas.empty()) {
+        cout << "No hay partidas disponibles para seleccionar." << endl;
+        getch();
+        return;
+    }
+
+    string opcion = seleccionarConFlechas(partidas, tituloWaterBox(), "SELECCIONE UNA PARTIDA");
+
+    if (opcion.empty()) {
         return;
     }
 
@@ -70,11 +79,7 @@ void seleccionarPartida(){
 
 // Función para iniciar el simulador
 void iniciarSimulador() {
-
-    if( partidaActual.nombreJugador.empty() ){
-        menuPartidasSimulador();
-    }
-
+    menuPartidasSimulador();
     menuOpcionesSimulador();
 }
 
@@ -86,19 +91,22 @@ void menuPartidasSimulador(){
         "CARGAR PARTIDA"
     };
 
-    opcion = seleccionarConDibujos( dibujos, tituloWaterBox(), "SELECCIONE UNA OPCION");
+    do{
+        opcion = seleccionarConDibujos( dibujos, tituloWaterBox(), "SELECCIONE UNA OPCION");
 
-    if( opcion == -1 ){
-        return;
-    }
+        if( opcion == -1 ){
+            return;
+        }
 
-    system("cls");
+        system("cls");
 
-    switch (opcion){
-        case 1: crearPartida(); break;
-        case 2: seleccionarPartida(); break;
-        case -1: break;
-    }
+        switch (opcion){
+            case 1: crearPartida(); break;
+            case 2: seleccionarPartida(); break;
+            case -1: break;
+        }
+
+    }while(partidaActual == nullptr);
 }
 
 void menuOpcionesSimulador(){
@@ -146,14 +154,14 @@ void menuOpcionesSimulador(){
 }
 
 void mostrarTodosCuadros() {
-    cout << "Partida: " << partidaActual.nombreJugador << endl;
-    cout << "Bioma: " << partidaActual.bioma->nombre << endl << endl;
+    cout << "Partida: " << partidaActual->nombreJugador << endl;
+    cout << "Bioma: " << partidaActual->bioma->nombre << endl << endl;
 
     // Cálculo de los porcentajes según los valores ingresados
-    int porcentajeOxigeno = (partidaActual.bioma->nivelOxigeno - oxigenoMin) * 100 / (oxigenoMax - oxigenoMin);
-    int porcentajeSalinidad = (partidaActual.bioma->nivelSalinidad - salinidadMin) * 100 / (salinidadMax - salinidadMin);
-    int porcentajeTemperatura = (partidaActual.bioma->nivelTemperatura - temperaturaMin) * 100 / (temperaturaMax - temperaturaMin);
-    int porcentajeContaminacion = (partidaActual.bioma->nivelTemperatura - contaminacionMin) * 100 / (contaminacionMax - contaminacionMin);
+    int porcentajeOxigeno = (partidaActual->bioma->nivelOxigeno - oxigenoMin) * 100 / (oxigenoMax - oxigenoMin);
+    int porcentajeSalinidad = (partidaActual->bioma->nivelSalinidad - salinidadMin) * 100 / (salinidadMax - salinidadMin);
+    int porcentajeTemperatura = (partidaActual->bioma->nivelTemperatura - temperaturaMin) * 100 / (temperaturaMax - temperaturaMin);
+    int porcentajeContaminacion = (partidaActual->bioma->nivelTemperatura - contaminacionMin) * 100 / (contaminacionMax - contaminacionMin);
 
     // Mostrar barras de progreso
     imprimirBarra("Oxígeno", porcentajeOxigeno); cout << "\t";
@@ -163,7 +171,7 @@ void mostrarTodosCuadros() {
 }
 
 void imprimirPoblaciones() {
-    Poblacion* poblacionActual = listaPoblaciones;
+    Poblacion* poblacionActual = partidaActual->listaPoblaciones;
     
     // Variables locales para las posiciones
     int x = 15, y = 5;  // Posición inicial en Y
@@ -190,6 +198,7 @@ void imprimirPoblaciones() {
 
 void modificarFactor() {
     int opcion = -1;
+    float oxigeno, salinidad, temperatura, contaminacion;
     
     vector<string> dibujos = {
         ASCIIOxigeno(),
@@ -204,33 +213,41 @@ void modificarFactor() {
 
         switch (opcion) {
             case 1: // Oxígeno
+                oxigeno = partidaActual->bioma->nivelOxigeno;
+
                 cout << "Ingrese el nivel de oxígeno (Mín. 0 / Máx. 14 mg/L): ";
-                cin >> partidaActual.bioma->nivelOxigeno;
-                if (partidaActual.bioma->nivelOxigeno < oxigenoMin || partidaActual.bioma->nivelOxigeno > oxigenoMax) {
+                cin >> oxigeno;
+                if (oxigeno < oxigenoMin || oxigeno > oxigenoMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << oxigenoMin << " y " << oxigenoMax << " mg/L." << endl;
                     getch();
                 }
                 break;
             case 2: // Salinidad
+                salinidad = partidaActual->bioma->nivelSalinidad;
+
                 cout << "Ingrese el nivel de salinidad (Mín. 0 / Máx. 330 ups): ";
-                cin >> partidaActual.bioma->nivelSalinidad;
-                if (partidaActual.bioma->nivelSalinidad < salinidadMin || partidaActual.bioma->nivelSalinidad > salinidadMax) {
+                cin >> salinidad;
+                if (salinidad < salinidadMin || salinidad > salinidadMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << salinidadMin << " y " << salinidadMax << " ups." << endl;
                     getch();
                 }
                 break;
             case 3: // Temperatura
+                temperatura = partidaActual->bioma->nivelTemperatura;
+
                 cout << "Ingrese la temperatura (Mín. 0 / Máx. 40 °C): ";
-                cin >> partidaActual.bioma->nivelTemperatura;
-                if (partidaActual.bioma->nivelTemperatura < temperaturaMin || partidaActual.bioma->nivelTemperatura > temperaturaMax) {
+                cin >> temperatura;
+                if (temperatura < temperaturaMin || temperatura > temperaturaMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << temperaturaMin << " y " << temperaturaMax << " °C." << endl;
                     getch();
                 }
                 break;
             case 4: // Contaminación
+                contaminacion = partidaActual->bioma->nivelContaminacion;
+
                 cout << "Ingrese el nivel de contaminación (Mín. 0 / Máx. 100 %): ";
-                cin >> partidaActual.bioma->nivelContaminacion;
-                if (partidaActual.bioma->nivelContaminacion < contaminacionMin || partidaActual.bioma->nivelContaminacion > contaminacionMax) {
+                cin >> contaminacion;
+                if (contaminacion < contaminacionMin || contaminacion > contaminacionMax) {
                     cout << "Valor fuera de rango. Debe estar entre " << contaminacionMin << " y " << contaminacionMax << " %." << endl;
                     getch();
                 }

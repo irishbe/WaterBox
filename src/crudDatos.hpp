@@ -130,7 +130,7 @@ void crearDatosCategoria() {
         datosJson.push_back(datosBioma);
         escribirArchivo(biomasJson, datosJson);
 
-        partidaActual.bioma = bioma;
+        partidaActual->bioma = bioma;
 
         registrarEvento(CREAR_BIOMA_ADMIN, partidaActual);
         cout << "\nBioma creado con exito " << endl;
@@ -296,7 +296,7 @@ void modificarDatosCategoria() {
 
                 escribirArchivo(biomasJson, datosJson);
 
-                partidaActual.bioma = bioma;
+                partidaActual->bioma = bioma;
 
                 registrarEvento(EDITAR_BIOMA_ADMIN, partidaActual);
                 cout << "Bioma actualizado correctamente.\n";
@@ -669,7 +669,7 @@ void eliminarDatosCategoria() {
                 Bioma *bioma;
                 bioma->nombre = nombre;
 
-                partidaActual.bioma = bioma;
+                partidaActual->bioma = bioma;
 
                 registrarEvento(ELIMINAR_BIOMA_ADMIN, partidaActual);
                 cout << "Bioma eliminado exitosamente." << endl;

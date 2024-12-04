@@ -3,6 +3,7 @@
 
 #include "Tiempo.hpp"
 #include "Bioma.hpp"
+#include "Poblacion.hpp"
 
 using namespace std;
 
@@ -10,35 +11,37 @@ struct Partida {
     string nombreJugador;
     Tiempo tiempoInicio;
     Tiempo tiempoTranscurrido;
-    Bioma* bioma;
     string archivoInfo;
     string archivoEventos;
     string archivoConteoEventos;
+    
+    Bioma* bioma = nullptr;
+    Poblacion* listaPoblaciones = nullptr;
 };
 
-Partida partidaActual;
+Partida* partidaActual = nullptr;
 
-void almacenarPartida(Partida partida){
-    ofstream archivo( partida.archivoInfo );
+void almacenarPartida(Partida* partida) {
+    ofstream archivo(partida->archivoInfo);
 
     archivo << "INFO DE LA PARTIDA" << endl;
     archivo << "*******************************************************************************************************" << endl;
-    archivo << partida.nombreJugador << endl;
-    archivo << formatearTiempo( partida.tiempoInicio ) << endl;
-    archivo << formatearTiempo( partida.tiempoTranscurrido ) << endl;
-    archivo << partida.bioma->nombre << endl;
-    archivo << partida.bioma->nivelOxigeno << endl;
-    archivo << partida.bioma->nivelSalinidad << endl;
-    archivo << partida.bioma->nivelTemperatura << endl;
-    archivo << partida.bioma->nivelContaminacion << endl;
-    archivo << partida.archivoEventos << endl;
-    archivo << partida.archivoConteoEventos << endl;
+    archivo << "Nombre jugador = " << partida->nombreJugador << endl;
+    archivo << "Tiempo inicio = " << formatearTiempo(partida->tiempoInicio) << endl;
+    archivo << "Tiempo transcurrido = " << formatearTiempo(partida->tiempoTranscurrido) << endl;
+    archivo << "Bioma = " << partida->bioma->nombre << endl;
+    archivo << "Nivel oxígeno = " << partida->bioma->nivelOxigeno << endl;
+    archivo << "Nivel salinidad = " << partida->bioma->nivelSalinidad << endl;
+    archivo << "Nivel temperatura = " << partida->bioma->nivelTemperatura << endl;
+    archivo << "Nivel contaminación = " << partida->bioma->nivelContaminacion << endl;
+    archivo << "Archivo eventos = " << partida->archivoEventos << endl;
+    archivo << "Archivo conteo eventos = " << partida->archivoConteoEventos << endl;
 
     archivo.close();
 }
     
-Partida cargarPartida(string archivoInfo) {
-    Partida partida;
+Partida* cargarPartida(string archivoInfo) {
+    Partida* partida = new Partida();
     ifstream archivo(archivoInfo);
     string linea;
 
@@ -51,45 +54,59 @@ Partida cargarPartida(string archivoInfo) {
     getline(archivo, linea); // INFO DE LA PARTIDA
     getline(archivo, linea); // *******************************************************************************************************
 
-    // Leer el resto de los datos en orden
-    getline(archivo, partida.nombreJugador); // Nombre del jugador
+    // Leer cada línea con formato "Etiqueta = Valor"
+    getline(archivo, linea);
+    partida->nombreJugador = linea.substr(linea.find('=') + 2);
 
     string strTiempoInicio, strTiempoTranscurrido;
 
-    getline(archivo, strTiempoInicio);               // Tiempo de inicio (formateado como string)
-    getline(archivo, strTiempoTranscurrido);         // Tiempo transcurrido (formateado como string)
+    getline(archivo, linea);
+    strTiempoInicio = linea.substr(linea.find('=') + 2);
+
+    getline(archivo, linea);
+    strTiempoTranscurrido = linea.substr(linea.find('=') + 2);
 
     // Convertir las cadenas de tiempo a la estructura Tiempo
-    partida.tiempoInicio = desformatearTiempo(strTiempoInicio);
-    partida.tiempoTranscurrido = desformatearTiempo(strTiempoTranscurrido);
+    partida->tiempoInicio = desformatearTiempo(strTiempoInicio);
+    partida->tiempoTranscurrido = desformatearTiempo(strTiempoTranscurrido);
 
     // Crear un nuevo objeto Bioma para cargar sus datos
-    partida.bioma = new Bioma();
+    partida->bioma = new Bioma();
 
-    // Leer el nombre del bioma (con espacios si los hay)
-    getline(archivo, partida.bioma->nombre);         // Nombre del bioma
+    getline(archivo, linea);
+    partida->bioma->nombre = linea.substr(linea.find('=') + 2);
 
     string nivelOxigeno, nivelSalinidad, nivelTemperatura, nivelContaminacion;
 
-    // Leer los niveles de manera correcta, evitando problemas de espacio
-    getline(archivo, nivelOxigeno);                  // Nivel de oxígeno (como string)
-    getline(archivo, nivelSalinidad);                // Nivel de salinidad (como string)
-    getline(archivo, nivelTemperatura);              // Nivel de temperatura (como string)
-    getline(archivo, nivelContaminacion);            // Nivel de contaminación (como string)
+    // Leer niveles con etiquetas y convertirlos a float
+    getline(archivo, linea);
+    nivelOxigeno = linea.substr(linea.find('=') + 2);
 
-    // Convertir los niveles de string a float
-    partida.bioma->nivelOxigeno = stof(nivelOxigeno);
-    partida.bioma->nivelSalinidad = stof(nivelSalinidad);
-    partida.bioma->nivelTemperatura = stof(nivelTemperatura);
-    partida.bioma->nivelContaminacion = stof(nivelContaminacion);
+    getline(archivo, linea);
+    nivelSalinidad = linea.substr(linea.find('=') + 2);
+
+    getline(archivo, linea);
+    nivelTemperatura = linea.substr(linea.find('=') + 2);
+
+    getline(archivo, linea);
+    nivelContaminacion = linea.substr(linea.find('=') + 2);
+
+    partida->bioma->nivelOxigeno = stof(nivelOxigeno);
+    partida->bioma->nivelSalinidad = stof(nivelSalinidad);
+    partida->bioma->nivelTemperatura = stof(nivelTemperatura);
+    partida->bioma->nivelContaminacion = stof(nivelContaminacion);
 
     // Leer archivos asociados
-    getline(archivo, partida.archivoEventos);
-    getline(archivo, partida.archivoConteoEventos);
+    getline(archivo, linea);
+    partida->archivoEventos = linea.substr(linea.find('=') + 2);
+
+    getline(archivo, linea);
+    partida->archivoConteoEventos = linea.substr(linea.find('=') + 2);
 
     archivo.close();
     return partida;
 }
+
 
 bool esArchivoValido(const string& nombreArchivo) {
     // Verifica si el nombre tiene el formato "infoPartida[nombre].txt"

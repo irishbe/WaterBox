@@ -35,7 +35,10 @@ void buscarPorPrefijo(Nodo* nodo, string prefijo, vector<string>& resultados) {
         return;
     }
 
-    if (nodo->palabra.find(prefijo) == 0) {
+    string palabraMin = toLowerStr(nodo->palabra);
+    string prefijoMin = toLowerStr(prefijo);
+
+    if (palabraMin.find(prefijoMin) == 0) {
         resultados.push_back(nodo->palabra);
     }
 
@@ -59,10 +62,16 @@ void desplegarBuscador(Nodo *raiz, vector<string> &resultados) {
 
         tecla = getch();
 
-        if (tecla == BACKSPACE && !prefijo.empty()) {
+        if( tecla == ESC ){
+            break;
+
+        }else if ( tecla == BACKSPACE && !prefijo.empty() ) {
             prefijo.pop_back();
 
-        } else if (isalpha(tecla)) {
+        } else if( tecla == SPACEBAR ) {
+            prefijo += " ";
+
+        } else if ( isalpha(tecla) ) {
             prefijo += tecla;
         }
 
@@ -82,7 +91,7 @@ void desplegarBuscador(Nodo *raiz, vector<string> &resultados) {
             }
         }
 
-    }while(tecla != ESC && tecla != ENTER);
+    }while(tecla != ENTER);
 }
 
 string busquedaBinaria(vector<string> opciones){
@@ -98,7 +107,10 @@ string busquedaBinaria(vector<string> opciones){
     do{
 
         desplegarBuscador(raiz, resultados);
-        opcion = seleccionarConFlechas(resultados, "SELECCIONE UNA RESPUESTA");
+
+        if( !resultados.empty() ){
+            opcion = seleccionarConFlechas(resultados, "SELECCIONE UNA RESPUESTA");
+        }
 
         system("cls");
 

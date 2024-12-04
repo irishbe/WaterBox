@@ -3,8 +3,8 @@
 
 
 #include <random>
-#include "crudEspecies.hpp"
-#include "crudPoblaciones.hpp"
+#include "Especie.hpp"
+#include "Poblacion.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -56,10 +56,12 @@ struct Evento {
     TipoEvento tipo;
     string descripcion;
     Tiempo tiempo;
-    Partida partida;
-    Especie* especie1;
-    Especie* especie2;
-    Evento* sgteEvento;
+
+    Partida* partida = nullptr;
+    Especie* especie1 = nullptr;
+    Especie* especie2 = nullptr;
+    Especie* especie3 = nullptr;
+    Evento* sgteEvento = nullptr;
 };
 
 // Listas globales para la pila y las colas
@@ -193,13 +195,13 @@ void almacenarConteoPartida(Evento *nuevoEvento) {
     string linea, contenido;
 
     // Abrir el archivo para lectura, si no existe lo inicializamos
-    ifstream archivoLectura(nuevoEvento->partida.archivoConteoEventos);
+    ifstream archivoLectura(nuevoEvento->partida->archivoConteoEventos);
 
     if (!archivoLectura) {
         // Crear archivo con valores iniciales
-        ofstream archivoEscritura(nuevoEvento->partida.archivoConteoEventos);
+        ofstream archivoEscritura(nuevoEvento->partida->archivoConteoEventos);
 
-        archivoEscritura << "CONTEO DE EVENTOS EN LA PARTIDA " << nuevoEvento->partida.nombreJugador << endl;
+        archivoEscritura << "CONTEO DE EVENTOS EN LA PARTIDA " << nuevoEvento->partida->nombreJugador << endl;
         archivoEscritura << "*******************************************************************************************************" << endl;
         archivoEscritura << TipoEventoToString(AGREGAR_ESPECIE) << " = 0" << endl;
         archivoEscritura << TipoEventoToString(ELIMINAR_ESPECIE) << " = 0" << endl;
@@ -218,7 +220,7 @@ void almacenarConteoPartida(Evento *nuevoEvento) {
         archivoEscritura.close();
 
         // Reabrir para lectura
-        archivoLectura.open(nuevoEvento->partida.archivoConteoEventos);
+        archivoLectura.open(nuevoEvento->partida->archivoConteoEventos);
     }
 
     // Leer todo el archivo y actualizar el conteo
@@ -232,28 +234,28 @@ void almacenarConteoPartida(Evento *nuevoEvento) {
     archivoLectura.close();
 
     // Escribir el contenido actualizado
-    ofstream archivoEscritura(nuevoEvento->partida.archivoConteoEventos);
+    ofstream archivoEscritura(nuevoEvento->partida->archivoConteoEventos);
     archivoEscritura << contenido;
     archivoEscritura.close();
 }
 
 // Almacenar eventos en los archivos de partida y general
 void almacenarEventos(Evento* nuevoEvento) {
-    ofstream archivo( nuevoEvento->partida.archivoEventos, ios::app);
+    ofstream archivo( nuevoEvento->partida->archivoEventos, ios::app);
     
     if ( !archivo ) {
         archivo.close();
-        archivo.open(nuevoEvento->partida.archivoEventos, ios::out);
+        archivo.open(nuevoEvento->partida->archivoEventos, ios::out);
 
         // Escribir encabezado
-        archivo << "PARTIDA: " << nuevoEvento->partida.nombreJugador << endl;
-        archivo << "FECHA DE LA PARTIDA: " << formatearFecha(nuevoEvento->partida.tiempoInicio) << endl;
-        archivo << "BIOMA DE LA PARTIDA: " << nuevoEvento->partida.bioma << endl;
+        archivo << "PARTIDA: " << nuevoEvento->partida->nombreJugador << endl;
+        archivo << "FECHA DE LA PARTIDA: " << formatearFecha(nuevoEvento->partida->tiempoInicio) << endl;
+        archivo << "BIOMA DE LA PARTIDA: " << nuevoEvento->partida->bioma << endl;
         archivo << "EVENTOS REGISTRADOS:" << endl;
         archivo << "*******************************************************************************************************" << endl;
 
         archivo.close();
-        archivo.open(nuevoEvento->partida.archivoEventos, ios::app);
+        archivo.open(nuevoEvento->partida->archivoEventos, ios::app);
     }
 
     archivo << "Tipo de Evento: " << TipoEventoToString(nuevoEvento->tipo) << endl;
@@ -268,7 +270,7 @@ void almacenarEventos(Evento* nuevoEvento) {
     almacenarConteoPartida(nuevoEvento);
 }
 
-void registrarEvento(TipoEvento tipo, Partida partida, Especie* especie1 = nullptr, Especie* especie2 = nullptr, Especie* especie3 = nullptr) {
+void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* especie1 = nullptr, Especie* especie2 = nullptr, Especie* especie3 = nullptr) {
     Evento* nuevoEvento = new Evento();
     string descripcion = formatearTiempo( getTiempoActual() );
 
@@ -283,11 +285,11 @@ void registrarEvento(TipoEvento tipo, Partida partida, Especie* especie1 = nullp
                            " con ID " + especie1->id;
             break;
         case MODIFICAR_FACTORES:
-            descripcion += " Modificaste los factores del bioma " + partida.bioma->nombre + " " +
-                           "[o:" + to_string(partida.bioma->nivelOxigeno)       + "," +
-                           "s:"  + to_string(partida.bioma->nivelSalinidad)     + "," +
-                           "t:"  + to_string(partida.bioma->nivelTemperatura)   + "," +
-                           "c:"  + to_string(partida.bioma->nivelContaminacion) + "]";
+            descripcion += " Modificaste los factores del bioma " + partida->bioma->nombre + " " +
+                           "[o:" + to_string(partida->bioma->nivelOxigeno)       + "," +
+                           "s:"  + to_string(partida->bioma->nivelSalinidad)     + "," +
+                           "t:"  + to_string(partida->bioma->nivelTemperatura)   + "," +
+                           "c:"  + to_string(partida->bioma->nivelContaminacion) + "]";
             break;
         case REPRODUCCION:
             descripcion += " Los " + especie1->datosEspecie->nombreComun + " con ID's " + 
@@ -304,13 +306,13 @@ void registrarEvento(TipoEvento tipo, Partida partida, Especie* especie1 = nullp
             descripcion += " Eliminaste la especie " + especie1->datosEspecie->nombreComun;
             break;
         case CREAR_BIOMA_ADMIN:
-            descripcion += " Creaste un nuevo bioma " + partida.bioma->nombre;
+            descripcion += " Creaste un nuevo bioma " + partida->bioma->nombre;
             break;
         case EDITAR_BIOMA_ADMIN:
-            descripcion += " Editaste el bioma " + partida.bioma->nombre;
+            descripcion += " Editaste el bioma " + partida->bioma->nombre;
             break;
         case ELIMINAR_BIOMA_ADMIN:
-            descripcion += " Eliminaste el bioma " + partida.bioma->nombre;
+            descripcion += " Eliminaste el bioma " + partida->bioma->nombre;
             break;
         default:
             descripcion += " Evento ??? registrado.";
@@ -323,6 +325,7 @@ void registrarEvento(TipoEvento tipo, Partida partida, Especie* especie1 = nullp
     nuevoEvento->partida = partida;
     nuevoEvento->especie1 = especie1;
     nuevoEvento->especie2 = especie2;
+    nuevoEvento->especie3 = especie3;
     nuevoEvento->sgteEvento = nullptr;
     
     if( nuevoEvento->tipo == AGREGAR_ESPECIE || nuevoEvento->tipo == ELIMINAR_ESPECIE || nuevoEvento->tipo == MODIFICAR_FACTORES ){
@@ -356,7 +359,7 @@ int generarNumeroAleatorio(int min, int max) {
     return dis(gen);
 }
 
-// Función para seleccionar una especie aleatoria de una población
+/* Función para seleccionar una especie aleatoria de una población
 void generarEventoAleatorio() {
     if (!listaPoblaciones) {
         cout << "No hay poblaciones disponibles para generar eventos aleatorios." << endl;
@@ -476,7 +479,7 @@ void generarEventoAleatorio() {
             break;
     }
 }
-
+*/
 
 
 #endif // EVENTO_HPP

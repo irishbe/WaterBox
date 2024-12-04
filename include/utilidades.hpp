@@ -15,7 +15,7 @@
 using namespace std;
 
 // Constantes
-const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224, BACKSPACE = 8;
+const char ENTER = 13, ESC = 27, TECLA_ESPECIAL = 224, BACKSPACE = 8, SPACEBAR = 32;
 const int LEFT = 75, RIGHT = 77, UP = 72, DOWN = 80, ZERO = '0';
 
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
@@ -106,6 +106,14 @@ string generarIDConFormato(int numero, int longitud) {
     ostringstream stream;
     stream << setw(longitud) << setfill('0') << numero;
     return stream.str();
+}
+
+string toLowerStr(const string& cadena) {
+    string resultado = cadena;
+    for (char& c : resultado) {
+        c = std::tolower(static_cast<unsigned char>(c)); // Asegurar conversión correcta
+    }
+    return resultado;
 }
 
 int imprimirTexto(string texto, int x, int y, bool centrar, bool isSubtitulo = false) {

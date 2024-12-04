@@ -159,7 +159,7 @@ void eliminarEspecie() {
         delete especieActual;
 
         // ELIMINAR POBLACION SI NO HAY ESPECIES
-        Poblacion* poblacionActual = listaPoblaciones;
+        Poblacion* poblacionActual = partidaActual->listaPoblaciones;
 
         while (poblacionActual != nullptr) {
             if (poblacionActual->listaEspecies == nullptr) {

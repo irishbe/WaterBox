@@ -1,14 +1,12 @@
-#include "Poblacion.hpp"
 #include "crudDatos.hpp"
 #include "Evento.hpp"
+#include "Partida.hpp"
 
 using namespace std;
 
-Poblacion* listaPoblaciones = nullptr;
-
 vector<string> obtenerPoblaciones(){
     vector<string> poblaciones;
-    Poblacion* poblacion = listaPoblaciones;
+    Poblacion* poblacion = partidaActual->listaPoblaciones;
     
     while (poblacion != nullptr) {
         poblaciones.push_back( poblacion->id + " - " + poblacion->nombreEspecie );
@@ -21,13 +19,13 @@ vector<string> obtenerPoblaciones(){
 
 Poblacion *seleccionarPoblacion(){
     
-    if( listaPoblaciones == nullptr ){
+    if( partidaActual->listaPoblaciones == nullptr ){
         cout << "No hay poblaciones que seleccionar...";
         getch();
         return nullptr;
     }
 
-    Poblacion *poblacionSeleccionada = listaPoblaciones;
+    Poblacion *poblacionSeleccionada = partidaActual->listaPoblaciones;
     string opcion;
 
     opcion = seleccionarConFlechas( obtenerPoblaciones(), tituloPoblacion(), "SELECCIONE UNA POBLACION");
@@ -45,7 +43,7 @@ Poblacion *seleccionarPoblacion(){
 }
 
 void generarIDPoblacion() {
-    Poblacion* poblacionActual = listaPoblaciones;
+    Poblacion* poblacionActual = partidaActual->listaPoblaciones;
     int id = 1;
 
     // Recorremos la lista de poblaciones para asignar los IDs
@@ -80,11 +78,11 @@ void crearPoblacion(Especie* nuevaEspecie){
     nuevaPoblacion->nombreEspecie = nuevaEspecie->datosEspecie->nombreComun;
     nuevaPoblacion->contadorEspecies = 1;
 
-    if ( listaPoblaciones == nullptr ){
-        listaPoblaciones = nuevaPoblacion;
+    if ( partidaActual->listaPoblaciones == nullptr ){
+        partidaActual->listaPoblaciones = nuevaPoblacion;
 
     }else{
-        Poblacion *aux = listaPoblaciones;
+        Poblacion *aux = partidaActual->listaPoblaciones;
 
         while( aux->sgtePoblacion != nullptr ){
             aux = aux->sgtePoblacion;
@@ -100,7 +98,7 @@ void crearPoblacion(Especie* nuevaEspecie){
 
 void agregarEspecieEnPoblacion(Especie* nuevaEspecie){
     bool existePoblacion = false;
-    Poblacion* poblacionActual = listaPoblaciones;
+    Poblacion* poblacionActual = partidaActual->listaPoblaciones;
     Poblacion* poblacionEncontrada = nullptr;
 
     // RECORRE PARA BUSCAR SI EXISTE UNA POBLACION PARA ESA ESPECIE
