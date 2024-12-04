@@ -58,7 +58,6 @@ struct Evento {
 
 // Listas globales para la pila y las colas
 Evento* pilaEventos = nullptr;
-Evento* colaEventos = nullptr;
 
 // Archivo de eventos .txt
 const string ARCHIVO_CONTEO_GENERAL = "contadorEventosGeneral.txt";
@@ -80,19 +79,6 @@ Evento* pop(Evento*& pilaEventos) {
     return eventoEliminado;
 }
 
-// Función para agregar evento al final de la cola
-void enqueue(Evento*& colaEventos, Evento* nuevoEvento) {
-    if (!colaEventos) {
-        colaEventos = nuevoEvento;
-    } else {
-        Evento* temp = colaEventos;
-        while (temp->sgteEvento) {
-            temp = temp->sgteEvento;
-        }
-        temp->sgteEvento = nuevoEvento;
-    }
-}
-
 // Funcion para ordenar los eventos por fecha
 void ordenarEventosPorTiempo(vector<Evento>& eventos) {
     int n = eventos.size();
@@ -109,20 +95,12 @@ void ordenarEventosPorTiempo(vector<Evento>& eventos) {
 }
 
 // Juntar y extrer todos los eventos de la cola y la pila ordenados por tiempo
-vector<Evento> eventosPilaCola(){
+vector<Evento> eventosPila(){
     vector<Evento> eventos;
 
     // Agregar eventos de la pila al vector
     Evento* temp = pilaEventos;
 
-    while (temp != nullptr) {
-        eventos.push_back(*temp);
-        temp = temp->sgteEvento;
-    }
-
-    // Agregar eventos de la cola al vector
-    temp = colaEventos;
-    
     while (temp != nullptr) {
         eventos.push_back(*temp);
         temp = temp->sgteEvento;
@@ -325,11 +303,7 @@ void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* espec
     nuevoEvento->especie3 = especie3;
     nuevoEvento->sgteEvento = nullptr;
     
-    if( nuevoEvento->tipo == AGREGAR_ESPECIE || nuevoEvento->tipo == ELIMINAR_ESPECIE || nuevoEvento->tipo == MODIFICAR_FACTORES ){
-        push(pilaEventos, nuevoEvento);
-    }else{
-        enqueue(colaEventos, nuevoEvento);
-    }
+    push(pilaEventos, nuevoEvento);
 
     almacenarEventos(nuevoEvento);
 }
@@ -339,7 +313,7 @@ void mostrarEventos() {
     cout << "\nHistorial de eventos :" << endl << endl;
 
     // Mostramos los eventos en el orden adecuado
-    vector<Evento> eventos = eventosPilaCola();
+    vector<Evento> eventos = eventosPila();
     for(int i=0; i < eventos.size(); i++) {
         cout << eventos[i].descripcion << endl;
     }

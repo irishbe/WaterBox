@@ -33,9 +33,6 @@ void iniciarWiki() {
             case 3: // Por listado
                 wiki_lista();
                 break;
-            case -1: // Salir
-                cout << "Saliendo... " << endl;
-                break;
         }
 
     } while(opcion != -1);
@@ -98,7 +95,6 @@ void wiki_buscar(){
 
     if(nombreEspecie == "") return;
 
-    cout << "PRUEBA4";
     wiki_especies(nombreEspecie);
 }
 
@@ -108,7 +104,11 @@ void wiki_seleccionarBioma(){
     vector<string> biomas = extraerNombres("Bioma");
     bioma = seleccionarConFlechas(biomas, tituloWikiWater(), "SELECCIONE UN BIOMA");
 
+    if( bioma == "") return;
+
     especieSeleccionada = seleccionarConFlechas( extraerNombres("", bioma), tituloWikiWater(), "ESPECIES EN ARRECIFES DE " + bioma);
+
+    if (especieSeleccionada == "") return;
 
     wiki_especies(especieSeleccionada);
 }

@@ -3,6 +3,7 @@
 
 #include "crudPoblaciones.hpp"
 #include "Evento.hpp"
+#include <cmath>
 
 using namespace std;
 
@@ -68,9 +69,7 @@ void verificarRangoFactores(Especie* &especie, Bioma* bioma) {
     }
 
     // Verificar el % de contaminacion
-    int vidaContaminacion = (bioma->nivelContaminacion / 10) * 10;
-
-    especie->vida -= vidaContaminacion;
+    especie->vida -= floor(bioma->nivelContaminacion / 10) * 10;
 
     if( vidaInicial != especie->vida ){
         registrarEvento(ENFERMEDAD, partidaActual, especie);

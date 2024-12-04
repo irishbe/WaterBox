@@ -114,7 +114,7 @@ string busquedaBinaria(vector<string> opciones){
 
         system("cls");
 
-    }while(opcion != "");
+    }while(opcion == "");
 
     return opcion;
 }

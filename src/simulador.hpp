@@ -15,7 +15,7 @@ const float contaminacionMin = 0, contaminacionMax = 100;
 
 // Declaraciones de funciones
 void mostrarTodosCuadros();
-void modificarFactor();
+void modificarFactores();
 void imprimirPoblaciones();
 void menuPartidasSimulador();
 void menuOpcionesSimulador();
@@ -139,7 +139,7 @@ void menuOpcionesSimulador(){
         switch (opcion){
             case 1: agregarEspecie(); desplegarCuadros = true; break;
             case 2: enlistarEspecies(); desplegarCuadros = false; getch(); break;
-            case 3: modificarFactor(); desplegarCuadros = true; break;
+            case 3: modificarFactores(); desplegarCuadros = true; break;
             case 4: eliminarEspecie(); desplegarCuadros = true; break;
             case 5: reproducirEspecies(); desplegarCuadros = true; break;
             case 6: imprimirArbolDePoblacion(); desplegarCuadros = false; break;
@@ -197,7 +197,7 @@ void imprimirPoblaciones() {
     }
 }
 
-void modificarFactor() {
+void modificarFactores() {
     int opcion = -1;
     float oxigeno, salinidad, temperatura, contaminacion;
     
