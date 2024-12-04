@@ -1,8 +1,0 @@
-Tipo de Evento: AGREGAR_ESPECIE
-Descripción: [2024-12-02 21:58:37] Agregaste a la nueva especie Pez payaso con ID E001001
-Especie 1: Pez payaso
-*******************************************************************************************************
-Tipo de Evento: AGREGAR_ESPECIE
-Descripción: [2024-12-02 21:58:40] Agregaste a la nueva especie Langosta comun con ID E002001
-Especie 1: Langosta comun
-*******************************************************************************************************
