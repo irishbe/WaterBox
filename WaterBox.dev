@@ -28,8 +28,8 @@ Folders=include,src
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000000
-UnitCount=15
+CompilerSettings=0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+UnitCount=14
 
 [VersionInfo]
 Major=1
@@ -91,16 +91,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit8]
-FileName=include\recursosASCII.h
-CompileCpp=1
-Folder=include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit9]
 FileName=include\Tiempo.hpp
 CompileCpp=1
 Folder=include
@@ -110,7 +100,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit10]
+[Unit9]
 FileName=include\utilidades.h
 CompileCpp=1
 Folder=include
@@ -120,8 +110,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit11]
+[Unit10]
 FileName=src\crudDatos.hpp
+CompileCpp=1
+Folder=src
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit11]
+FileName=src\crudEspecies.hpp
 CompileCpp=1
 Folder=src
 Compile=1
@@ -161,16 +161,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit12]
-FileName=src\crudEspecies.hpp
-CompileCpp=1
-Folder=src
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit13]
 FileName=src\crudPoblaciones.hpp
 CompileCpp=1
 Folder=src
@@ -180,8 +170,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit14]
+[Unit13]
 FileName=src\simulador.hpp
+CompileCpp=1
+Folder=src
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit14]
+FileName=src\wiki.hpp
 CompileCpp=1
 Folder=src
 Compile=1
