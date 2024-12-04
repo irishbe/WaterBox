@@ -448,4 +448,58 @@ void imprimirMarcoPrincipal() {
     imprimirFilaConBarras(ancho);
 }
 
+void imprimirMarcoSimulador() {
+    int ancho = obtenerAnchoConsola();
+    int altura = obtenerAltoConsola();
+
+    if (ancho < 15 || altura < 7) {
+        cout << "La ventana de la consola es demasiado pequeña para imprimir el marco." << endl;
+        return;
+    }
+
+    // IMPRIMIR LA PARTE PARA LOS FACTORES
+
+    // Imprimir la primera parte del marco
+    imprimirInicioMarco(ancho);
+    imprimirIntermedioMarco(ancho);
+    imprimirFinalMarco(ancho);
+
+    // Imprimir las filas intermedias
+    for (int i = 0; i < 3; i++) { // Restamos 7 + 1
+        imprimirFilaConBarras(ancho);
+    }
+
+    // Imprimir la última parte del marco
+    imprimirInicioMarco(ancho);
+    imprimirIntermedioMarco(ancho);
+    imprimirFinalMarco(ancho);
+
+    // IMPRIMIR LA PARTE PRINCIPAL DEL SIMULADOR
+
+    // Imprimir las filas intermedias
+    for (int i = 0; i < altura - 28; i++) { // Restamos 7 + 1
+        imprimirFilaConBarras(ancho);
+    }
+
+    // Imprimir la última parte del marco
+    imprimirInicioMarco(ancho);
+    imprimirIntermedioMarco(ancho);
+    imprimirFinalMarco(ancho);
+
+    // IMPRIMIR LA PARTE DE LOS MENSAJES
+
+    // Imprimir las filas intermedias
+    for (int i = 0; i < 12; i++) { // Restamos 7 + 1
+        imprimirFilaConBarras(ancho);
+    }
+
+    // Imprimir la última parte del marco
+    imprimirInicioMarco(ancho);
+    imprimirIntermedioMarco(ancho);
+    imprimirFinalMarco(ancho);
+
+    // Imprimir la última fila (fila con barras)
+    imprimirFilaConBarras(ancho);
+}
+
 #endif // UTILIDADES.HPP
