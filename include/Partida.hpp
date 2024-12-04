@@ -14,11 +14,11 @@ struct Partida {
     string archivoInfo;
     string archivoEventos;
     string archivoConteoEventos;
-    
+
     Bioma* bioma = nullptr;
     Poblacion* listaPoblaciones = nullptr;
 };
 
 Partida* partidaActual = nullptr;
 
-#endif // PARTIDA_HPP
+#endif // PARTIDA_HPPs

@@ -337,7 +337,7 @@ void registrarEvento(TipoEvento tipo, Partida* partida = nullptr, Especie* espec
 // Función para mostrar los eventos registrados en pantalla
 // Función para mostrar los últimos 5 eventos registrados en pantalla
 void mostrarEventos() {
-    int x = 15, y = 33;
+    int x = 15, y = 32;
     
     moverCursor(x, y); 
     cout << "Historial de eventos: ";
